@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform, kDebugMode, kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:package_info_plus_web/package_info_plus_web.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DefaultConfig {
   static late String authBaseUrl = "";
@@ -37,7 +38,8 @@ class DefaultConfig {
   static get theAuthBaseUrl {
     return authBaseUrl;
   }
-static get theApiStatus {
+
+  static get theApiStatus {
     return apiStatus;
   }
 
@@ -78,12 +80,14 @@ static get theApiStatus {
         {
           "development": jsonEncode(
             {
-              "sanityProjectId": "x",
-              "sanityDB": "x",
-              "blankUrl": "x",
-              "authBaseUrl": "x",
-              "homepageProfileDurationSecs": "x",
-              "homepagePostDurationSecs": "x",
+              "sanityProjectId": dotenv.env['SANITY_PROJECT_ID'] ?? "x",
+              "sanityDB": dotenv.env['SANITY_DB'] ?? "x",
+              "blankUrl": dotenv.env['BLANK_URL'] ?? "x",
+              "authBaseUrl": dotenv.env['AUTH_BASE_URL'] ?? "x",
+              "homepageProfileDurationSecs":
+              dotenv.env['HOME_PROFILE_DURATION'] ?? "x",
+              "homepagePostDurationSecs":
+              dotenv.env['HOME_POST_DURATION'] ?? "x",
             },
           ),
           "production": jsonEncode(
@@ -94,6 +98,18 @@ static get theApiStatus {
               "authBaseUrl": "x",
               "homepageProfileDurationSecs": "x",
               "homepagePostDurationSecs": "x",
+            },
+          ),
+          "deployment": jsonEncode(
+            {
+              "sanityProjectId": dotenv.env['SANITY_PROJECT_ID'] ?? "x",
+              "sanityDB": dotenv.env['SANITY_DB'] ?? "x",
+              "blankUrl": dotenv.env['BLANK_URL'] ?? "x",
+              "authBaseUrl": dotenv.env['AUTH_BASE_URL'] ?? "x",
+              "homepageProfileDurationSecs":
+                  dotenv.env['HOME_PROFILE_DURATION'] ?? "x",
+              "homepagePostDurationSecs":
+                  dotenv.env['HOME_POST_DURATION'] ?? "x",
             },
           )
         },
@@ -106,10 +122,19 @@ static get theApiStatus {
             final FirebaseRemoteConfig remoteConfig =
                 FirebaseRemoteConfig.instance;
 
-            var rawData = jsonDecode(remoteConfig
-                    .getAll()[kDebugMode ? 'development' : 'production']
-                    ?.asString() ??
-                "");
+            getMode() {
+              // if (dotenv.env[
+              //         'FIREBASE_SERVICE_ACCOUNT_THE_HANDSOMEST_NERD_AUTH'] !=
+              //     "") {
+              //   print('mode: deployment ');
+              //   return 'deployment';
+              // }
+              print(" mode: $kDebugMode");
+              return kDebugMode ? 'development' : 'production';
+            }
+
+            var rawData =
+                jsonDecode(remoteConfig.getAll()[getMode()]?.asString() ?? "");
 
             if (rawData['authBaseUrl'] != null) {
               authBaseUrl = rawData['authBaseUrl'];
@@ -127,7 +152,8 @@ static get theApiStatus {
                   int.parse(rawData['homepageProfileDurationSecs']);
             }
             if (rawData['homepagePostDurationSecs'] != null) {
-              homepagePostDurationSecs =  int.parse(rawData['homepagePostDurationSecs']);
+              homepagePostDurationSecs =
+                  int.parse(rawData['homepagePostDurationSecs']);
             }
 
             print("Config from remote: $authBaseUrl");

@@ -25,6 +25,7 @@ import 'package:package_info_plus_web/package_info_plus_web.dart';
 import 'config/firebase_options.dart';
 import 'models/controllers/auth_inherited.dart';
 import 'pages/login_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // import '../../platform_dependent/image_uploader.dart'
 //     if (dart.library.io) '../../platform_dependent/image_uploader_io.dart'
@@ -36,7 +37,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
   // Ideal time to initialize
-
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
