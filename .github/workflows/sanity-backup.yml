@@ -21,7 +21,7 @@ jobs:
         with:
           args: dataset export production backups/backup.tar.gz
       - name: Upload backup.tar.gz
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: backup-tarball
           path: backups/backup.tar.gz
