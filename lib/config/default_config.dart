@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform, kDebugMode, kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:package_info_plus_web/package_info_plus_web.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DefaultConfig {
   static late String authBaseUrl = "";
@@ -80,14 +79,14 @@ class DefaultConfig {
         {
           "development": jsonEncode(
             {
-              "sanityProjectId": dotenv.env['SANITY_PROJECT_ID'] ?? "x",
-              "sanityDB": dotenv.env['SANITY_DB'] ?? "x",
-              "blankUrl": dotenv.env['BLANK_URL'] ?? "x",
-              "authBaseUrl": dotenv.env['AUTH_BASE_URL'] ?? "x",
+              "sanityProjectId": "x",
+              "sanityDB": "x",
+              "blankUrl": "x",
+              "authBaseUrl": "x",
               "homepageProfileDurationSecs":
-              dotenv.env['HOME_PROFILE_DURATION'] ?? "x",
+              "x",
               "homepagePostDurationSecs":
-              dotenv.env['HOME_POST_DURATION'] ?? "x",
+              "x",
             },
           ),
           "production": jsonEncode(
@@ -102,14 +101,14 @@ class DefaultConfig {
           ),
           "deployment": jsonEncode(
             {
-              "sanityProjectId": dotenv.env['SANITY_PROJECT_ID'] ?? "x",
-              "sanityDB": dotenv.env['SANITY_DB'] ?? "x",
-              "blankUrl": dotenv.env['BLANK_URL'] ?? "x",
-              "authBaseUrl": dotenv.env['AUTH_BASE_URL'] ?? "x",
+              "sanityProjectId": "x",
+              "sanityDB": "x",
+              "blankUrl": "x",
+              "authBaseUrl": "x",
               "homepageProfileDurationSecs":
-                  dotenv.env['HOME_PROFILE_DURATION'] ?? "x",
+                  "x",
               "homepagePostDurationSecs":
-                  dotenv.env['HOME_POST_DURATION'] ?? "x",
+                  "x",
             },
           )
         },
@@ -123,12 +122,6 @@ class DefaultConfig {
                 FirebaseRemoteConfig.instance;
 
             getMode() {
-              // if (dotenv.env[
-              //         'FIREBASE_SERVICE_ACCOUNT_THE_HANDSOMEST_NERD_AUTH'] !=
-              //     "") {
-              //   print('mode: deployment ');
-              //   return 'deployment';
-              // }
               print(" mode: $kDebugMode");
               return kDebugMode ? 'development' : 'production';
             }
