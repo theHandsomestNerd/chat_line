@@ -9,11 +9,9 @@ class ProfileSolo extends StatelessWidget {
   const ProfileSolo({
     super.key,
     required this.profile,
-    
   });
 
   final AppUser profile;
-  
 
   // This widget is the root of your application.
   @override
@@ -32,8 +30,8 @@ class ProfileSolo extends StatelessWidget {
                   width: 110,
                   child: CardWithBackground(
                     image: NetworkImage(MyImageBuilder()
-                            .urlFor(profile.profileImage, 110,110)
-                            !.url()),
+                        .urlFor(profile.profileImage, 110, 110)!
+                        .url()),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text("${profile.displayName}"),
@@ -44,7 +42,10 @@ class ProfileSolo extends StatelessWidget {
                   height: 110,
                   width: 110,
                   child: CardWithBackground(
-                    image: const AssetImage('assets/blankProfileImage.png'),
+                    image: Image(
+                            image: const AssetImage(
+                                'assets/blankProfileImage.png'))
+                        .image,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text("${profile.displayName}"),

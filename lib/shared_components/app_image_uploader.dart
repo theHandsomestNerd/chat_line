@@ -14,13 +14,20 @@ class AppImageUploader extends StatefulWidget {
   final String? text;
   final ImageProvider? image;
   final ImageUploader imageUploader;
+  final bool? hideInfo;
+
+  final width;
+  final height;
 
   const AppImageUploader(
       {super.key,
       required this.uploadImage,
       required this.imageUploader,
       this.image,
-      this.text});
+      this.width,
+      this.height,
+        this.hideInfo,
+      this.text,});
 
   @override
   State<AppImageUploader> createState() => _AppImageUploaderState();
@@ -72,62 +79,63 @@ class _AppImageUploaderState extends State<AppImageUploader> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-    return Column(
+    return Flex(
+      direction: Axis.vertical,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Column(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                imageToBeUploaded != null
-                    ? Column(
-                        key: ObjectKey(imageToBeUploaded),
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                              height: 350.0,
-                              width: 350.0,
-                            child: CardWithBackground(
-                              height: 350,
-                              width: 350,
-                              image:
-                                  _getMyProfileImage(widget.imageUploader.file),
-                              child: OutlinedButton(
-                                onPressed: () async {
-                                  await widget.imageUploader.uploadImage().then(
-                                    (theImage) async {
-                                      setState(
-                                        () {
-                                          // print("the image from uploadImage befoe comprssion $theImage");
-                                          imageToBeUploaded =
-                                              _getMyProfileImage(theImage);
-                                        },
-                                      );
-                                      widget.uploadImage(widget.imageUploader);
-                                    },
-                                  );
+        imageToBeUploaded != null
+            ? Flex(
+                direction: Axis.vertical,
+                key: ObjectKey(imageToBeUploaded),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: widget.height,
+                    width: widget.width,
+                    child: CardWithBackground(
+                      height: widget.height,
+                      width: widget.width,
+                      image: _getMyProfileImage(widget.imageUploader.file),
+                      child: OutlinedButton(
+                        onPressed: () async {
+                          await widget.imageUploader.uploadImage().then(
+                            (theImage) async {
+                              setState(
+                                () {
+                                  // print("the image from uploadImage befoe comprssion $theImage");
+                                  imageToBeUploaded =
+                                      _getMyProfileImage(theImage);
                                 },
-                                child: Text(widget.text ?? "Change Photo"),
-                              ),
-                            ),
-                          ),
-                          Text(widget.imageUploader.file?.name ?? ""),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          widget.imageUploader.file?.size != null
-                              ? Text(
-                                  "${widget.imageUploader.file?.size.toString() ?? ''} bytes")
-                              : const Text(""),
-                        ],
-                      )
-                    : Column(
-                        children: const [],
+                              );
+                              widget.uploadImage(widget.imageUploader);
+                            },
+                          );
+                        },
+                        child: Text(widget.text ?? "Change Photo"),
                       ),
-              ],
-            ),
-          ],
-        ),
+                    ),
+                  ),
+                  if(widget.hideInfo != true && widget.imageUploader.file?.name != null) ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 100, minHeight: 0),
+                    child: Column(
+                      children: [
+                        Text(widget.imageUploader.file?.name ?? ""),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        widget.imageUploader.file?.size != null
+                            ? Text(
+                            "${widget.imageUploader.file?.size.toString() ?? ''} bytes")
+                            : const Text(""),
+                      ],
+                    ),
+
+                  ),
+                ],
+              )
+            : Column(
+                children: const [],
+              ),
       ],
     );
   }

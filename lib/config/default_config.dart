@@ -34,6 +34,22 @@ class DefaultConfig {
 
   static Future<void>? initializingConfig;
 
+  static get theVersion {
+    return version;
+  }
+
+  static get thebuildNumber {
+    return buildNumber;
+  }
+
+  static get theApiVersion {
+    return apiVersion;
+  }
+
+  static get theApiDb {
+    return apiSanityDB;
+  }
+
   static get theAuthBaseUrl {
     return authBaseUrl;
   }
@@ -83,10 +99,8 @@ class DefaultConfig {
               "sanityDB": "x",
               "blankUrl": "x",
               "authBaseUrl": "x",
-              "homepageProfileDurationSecs":
-              "x",
-              "homepagePostDurationSecs":
-              "x",
+              "homepageProfileDurationSecs": "x",
+              "homepagePostDurationSecs": "x",
             },
           ),
           "production": jsonEncode(
@@ -105,10 +119,8 @@ class DefaultConfig {
               "sanityDB": "x",
               "blankUrl": "x",
               "authBaseUrl": "x",
-              "homepageProfileDurationSecs":
-                  "x",
-              "homepagePostDurationSecs":
-                  "x",
+              "homepageProfileDurationSecs": "x",
+              "homepagePostDurationSecs": "x",
             },
           )
         },

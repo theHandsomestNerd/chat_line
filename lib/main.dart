@@ -14,6 +14,7 @@ import 'package:cookout/pages/profiles_page.dart';
 import 'package:cookout/pages/register_page.dart';
 import 'package:cookout/pages/settings_page.dart';
 import 'package:cookout/pages/solo_profile_page.dart';
+import 'package:cookout/shared_components/bug_reporter/bug_reporter.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,8 +31,6 @@ import 'pages/login_page.dart';
 //     if (dart.library.io) '../../platform_dependent/image_uploader_io.dart'
 //     if (dart.library.html) '../../platform_dependent/image_uploader_html.dart';
 
-
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
@@ -40,12 +39,10 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-   DefaultConfig();
-   await DefaultConfig.initializingConfig;
+  DefaultConfig();
+  await DefaultConfig.initializingConfig;
 
-
-
-print("main auth url ${DefaultConfig.theAuthBaseUrl}");
+  print("main auth url ${DefaultConfig.theAuthBaseUrl}");
 
   if (kDebugMode) {
     //Emulator setup
@@ -84,8 +81,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
-
   }
 
   String id = "";
@@ -136,15 +131,15 @@ class _MyAppState extends State<MyApp> {
         title: 'Cookout',
         routes: {
           '/home': (context) {
-            return HomePage();
+            return BugReporter(child: HomePage());
           },
-          '/postsPage': (context) => PostsPage(),
-          '/createPostsPage': (context) => CreatePostPage(),
-          '/register': (context) => RegisterPage(),
-          '/': (context) => LoginPage(),
+          '/postsPage': (context) => BugReporter(child: PostsPage()),
+          '/createPostsPage': (context) => BugReporter(child: CreatePostPage()),
+          '/register': (context) => BugReporter(child: RegisterPage()),
+          '/': (context) => BugReporter(child: LoginPage()),
           // '/editProfile': (context) => const EditProfilePage(),
-          '/logout': (context) => LogoutPage(),
-          '/profilesPage': (context) => ProfilesPage(),
+          '/logout': (context) => BugReporter(child: LogoutPage()),
+          '/profilesPage': (context) => BugReporter(child: ProfilesPage()),
           '/profile': (context) {
             var arguments = (ModalRoute.of(context)?.settings.arguments ??
                 <String, dynamic>{}) as Map;
@@ -163,10 +158,12 @@ class _MyAppState extends State<MyApp> {
               }
             }
 
-            return SoloProfilePage(
-              thisProfile: thisProfile,
-              key: ObjectKey(arguments["id"]),
-              id: theId,
+            return BugReporter(
+              child: SoloProfilePage(
+                thisProfile: thisProfile,
+                key: ObjectKey(arguments["id"]),
+                id: theId,
+              ),
             );
           },
           '/myProfile': (context) {
@@ -177,9 +174,11 @@ class _MyAppState extends State<MyApp> {
                 thisProfile = element;
               }
             });
-            return SoloProfilePage(
-              thisProfile: thisProfile,
-              id: theId,
+            return BugReporter(
+              child: SoloProfilePage(
+                thisProfile: thisProfile,
+                id: theId,
+              ),
             );
           },
           // '/postsPage': (context) {
@@ -188,7 +187,7 @@ class _MyAppState extends State<MyApp> {
           //   );
           // },
           '/settings': (context) {
-            return SettingsPage();
+            return BugReporter(child: SettingsPage());
           },
         },
         theme: ThemeData(

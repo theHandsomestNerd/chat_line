@@ -290,6 +290,8 @@ class _EditProfileTabState extends State<EditProfileTab> {
               children: [
                 ListTile(
                   title: AppImageUploader(
+                    height: 350,
+                    width: 350,
                     text: "Change Profile Photo",
                     image: _getMyProfileImage(imageUploader.file),
                     imageUploader: imageUploader,

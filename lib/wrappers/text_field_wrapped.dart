@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class TextFieldWrapped extends StatefulWidget {
   const TextFieldWrapped({
     Key? key,
+    this.maxLines,
     this.initialValue,
     this.autofocus,
     this.setField,
     this.validator,
     this.labelText,
+    this.borderColor,
     this.autocorrect,
     this.autoCorrect,
     this.obscureText,
@@ -16,6 +18,7 @@ class TextFieldWrapped extends StatefulWidget {
   }) : super(key: key);
 
   final String? initialValue;
+  final Color? borderColor;
   final String? labelText;
   final bool? obscureText;
   final bool? enableSuggestions;
@@ -25,6 +28,7 @@ class TextFieldWrapped extends StatefulWidget {
   final setField;
   final IconData? icon;
   final validator;
+  final int? maxLines;
 
   @override
   State<TextFieldWrapped> createState() => _TextFieldWrappedState();
@@ -43,6 +47,7 @@ class _TextFieldWrappedState extends State<TextFieldWrapped> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: widget.maxLines ?? 1,
       autofocus: widget.autofocus ?? false,
       obscureText: widget.obscureText ?? false,
       enableSuggestions: widget.enableSuggestions ?? false,
@@ -55,16 +60,19 @@ class _TextFieldWrappedState extends State<TextFieldWrapped> {
         widget.setField(e);
       },
       decoration: InputDecoration(
+        alignLabelWithHint: true,
         helperText: errorText,
         filled: true,
         fillColor: Colors.white70,
         prefixIcon: widget.icon!=null? Icon(widget.icon):null,
-        border: const OutlineInputBorder(
+        border: OutlineInputBorder(
+          borderSide: BorderSide( color: widget.borderColor??Colors.blue), //<-- SEE HERE
           borderRadius: BorderRadius.all(
             Radius.circular(30.0),
           ),
         ),
         labelText: widget.labelText,
+        labelStyle: TextStyle(),
       ),
     );
   }

@@ -130,6 +130,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
         child: Column(
           children: [
             AppImageUploader(
+              height: 350,
+              width: 350,
               text: "Change Main Post Photo",
               imageUploader: imageUploader!,
               uploadImage: (uploader) {
@@ -149,6 +151,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
               ),
             ),
             LoadingButton(
+              isDisabled: ((_postBody?.length ?? -1) <= 0),
               action: () async {
                 var status = await _makePost(context);
                 print("statusssssssssss $status");
