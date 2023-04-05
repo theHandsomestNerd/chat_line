@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../config/default_config.dart';
 import '../models/controllers/auth_inherited.dart';
+import '../shared_components/logo.dart';
 import '../shared_components/menus/login_menu.dart';
 import '../wrappers/loading_button.dart';
 
@@ -101,11 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: Colors.white.withOpacity(0.5),
         // Here we take the value from the LoginPage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: SizedBox(
-          height: 100,
-          width: 100,
-          child: Image.asset('assets/logo.png'),
-        ),
+        title: Logo(),
       ),
       body: Flex(
         direction: Axis.horizontal,
