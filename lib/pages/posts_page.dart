@@ -18,10 +18,7 @@ import '../shared_components/posts/post_thread.dart';
 class PostsPage extends StatefulWidget {
   const PostsPage({
     super.key,
-    
   });
-
-
 
   @override
   State<PostsPage> createState() => _PostsPageState();
@@ -34,13 +31,12 @@ class _PostsPageState extends State<PostsPage> {
   ImageUploader? imageUploader;
   AuthController? authController;
   PostController? postController;
-
+  late AnalyticsController? analyticsController=null;
 
   @override
   initState() {
     super.initState();
     imageUploader = ImageUploaderImpl();
-
 
     _getPosts().then((listOfPosts) {
       _postsList = listOfPosts;
@@ -57,12 +53,18 @@ class _PostsPageState extends State<PostsPage> {
 
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
-
-    theAnalyticsController?.logScreenView('Posts Page');
-
-    authController = theAuthController;
-    postController = thePostController;
-    _postsList = await _getPosts();
+    if (analyticsController == null && theAnalyticsController != null) {
+      analyticsController = theAnalyticsController;
+      theAnalyticsController?.logScreenView('Posts Page');
+    }
+    if (authController == null && theAuthController != null) {
+      authController = theAuthController;
+    }
+    if (postController == null && thePostController != null) {
+      postController = thePostController;
+    }
+    var thePosts = await _getPosts();
+    _postsList = thePosts;
     setState(() {});
     // if (kDebugMode) {
     //   print("dependencies changed profile list");
@@ -98,6 +100,7 @@ class _PostsPageState extends State<PostsPage> {
       ),
       body: FullPageLayout(
         child: PostThread(
+          analyticsController: analyticsController,
           key: ObjectKey(_postsList),
           posts: _postsList,
         ),

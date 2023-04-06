@@ -23,6 +23,8 @@ class _RegisterPageState extends State<RegisterPage> {
   String _loginUsername = "";
   String _loginPassword = "";
 
+  late AnalyticsController analyticsController;
+
   @override
   void initState() {
     super.initState();
@@ -37,9 +39,23 @@ class _RegisterPageState extends State<RegisterPage> {
         AuthInherited.of(context)?.analyticsController;
 
     theAnalyticsController?.logScreenView('Register');
+    if (theAnalyticsController != null) {
+      analyticsController = theAnalyticsController;
+    }
+
+
   }
 
-  void _setUsername(String newUsername) {
+  Future<void> _setUsername(String newUsername) async {
+    if(newUsername.length == 1) {
+      await analyticsController.sendAnalyticsEvent('registration-username', {'event': "started_typing"});
+    }
+
+    if(!(_loginUsername.isEmpty ||
+        _loginPassword.isEmpty)) {
+      await analyticsController.sendAnalyticsEvent('registration-form-enabled', {'username': _loginUsername});
+    }
+
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -50,7 +66,14 @@ class _RegisterPageState extends State<RegisterPage> {
     });
   }
 
-  void _setPassword(String newPassword) {
+  void _setPassword(String newPassword) async  {
+    if(newPassword.length == 1) {
+      await analyticsController.sendAnalyticsEvent('RegistrationPasswordField', {'event': "started_typing"});
+    }
+    if(!(_loginUsername.isEmpty ||
+        _loginPassword.isEmpty)) {
+      await analyticsController.sendAnalyticsEvent('registration-form-enabled', {'username': _loginUsername});
+    }
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -77,6 +100,8 @@ class _RegisterPageState extends State<RegisterPage> {
       // if (kDebugMode) {
       //   print(myAppUser);
       // }
+      await analyticsController.logSignUp("email");
+
       setState(() {
         isLoading = true;
       });
@@ -157,7 +182,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       final regex = RegExp(pattern);
 
                                       return value!.isNotEmpty &&
-                                          !regex.hasMatch(value)
+                                              !regex.hasMatch(value)
                                           ? 'Enter a valid email address'
                                           : null;
                                     },

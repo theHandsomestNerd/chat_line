@@ -57,9 +57,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
             isProfileLoading = false;
           });
         });
-        setState(() {
-
-        });
+        setState(() {});
       }
 
       if (isExtProfileLoading != true) {
@@ -148,12 +146,13 @@ class _HomePageState extends State<HomePage> with RouteAware {
     super.dispose();
   }
 
-  late ChatController chatController;
+  late ChatController? chatController=null;
+  late AnalyticsController? analyticsController=null;
 
   @override
   didChangeDependencies() async {
     super.didChangeDependencies();
-      startHomeScreenTimers();
+    startHomeScreenTimers();
 
     routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
 
@@ -164,8 +163,11 @@ class _HomePageState extends State<HomePage> with RouteAware {
         AuthInherited.of(context)?.analyticsController;
 
     theAnalyticsController?.logScreenView('Home');
+    if (analyticsController == null && theAnalyticsController != null) {
+      analyticsController = theAnalyticsController;
+    }
 
-    if (theChatController != null) {
+    if (chatController == null && theChatController != null) {
       chatController = theChatController;
     }
     isUserLoggedIn = theAuthController?.isLoggedIn ?? false;
@@ -174,7 +176,10 @@ class _HomePageState extends State<HomePage> with RouteAware {
         isPostLoading = true;
       });
 
-      await thePostController?.fetchHighlightedPost().then((thePost) {
+      await thePostController?.fetchHighlightedPost().then((thePost) async {
+        await analyticsController
+            ?.sendAnalyticsEvent('highlighted-post', {"post_id": thePost?.id});
+
         if (thePost != null) {
           highlightedPost = thePost;
         }
@@ -187,7 +192,12 @@ class _HomePageState extends State<HomePage> with RouteAware {
       setState(() {
         isProfileLoading = true;
       });
-      await theChatController?.fetchHighlightedProfile().then((theProfile) {
+      await theChatController
+          ?.fetchHighlightedProfile()
+          .then((theProfile) async {
+        await analyticsController?.sendAnalyticsEvent(
+            'highlighted-profile', {"user_id": theProfile?.userId});
+
         setState(() {
           highlightedProfile = theProfile;
           isProfileLoading = false;
@@ -318,15 +328,23 @@ class _HomePageState extends State<HomePage> with RouteAware {
                       action1Text:
                           "${highlightedProfile?.displayName?.toUpperCase()[0]}${highlightedProfile?.displayName?.substring(1).toLowerCase()}",
                       action2Text: 'All Profiles',
-                      action1OnPressed: () {
+                      action1OnPressed: () async {
                         if (highlightedProfile?.userId != null) {
+                          await analyticsController?.sendAnalyticsEvent(
+                              'view-profile-while-highlighted-pressed', {
+                            "highlightedUserId": highlightedProfile?.userId
+                          });
                           cancelHomeScreenTimers();
 
                           Navigator.pushNamed(context, '/profile',
                               arguments: {"id": highlightedProfile?.userId});
                         }
                       },
-                      action2OnPressed: () {
+                      action2OnPressed: () async {
+                        await analyticsController?.sendAnalyticsEvent(
+                            'view-all-profiles-pressed',
+                            {"highlightedUserId": highlightedProfile?.userId});
+
                         cancelHomeScreenTimers();
 
                         Navigator.pushNamed(context, '/profilesPage');
@@ -338,7 +356,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          !isPostLoading && chatController.profileList.isEmpty
+                          !isPostLoading && (chatController?.profileList.isEmpty ?? false)
                               ? const Text("No Profiles with images")
                               : CircularProgressIndicator(),
                         ],
@@ -366,14 +384,21 @@ class _HomePageState extends State<HomePage> with RouteAware {
                             ).image,
                       action1Text: highlightedPost?.author?.displayName,
                       action2Text: 'All Posts',
-                      action1OnPressed: () {
+                      action1OnPressed: () async {
+                        await analyticsController?.sendAnalyticsEvent(
+                            'view-post-while-highlighted-pressed',
+                            {"highlightedPostId": highlightedPost?.id});
+
                         if (highlightedPost?.id != null) {
                           cancelHomeScreenTimers();
                           Navigator.pushNamed(context, '/post',
                               arguments: {"id": highlightedPost?.id});
                         }
                       },
-                      action2OnPressed: () {
+                      action2OnPressed: () async {
+                        await analyticsController?.sendAnalyticsEvent(
+                            'view-all-posts-while-highlighted-pressed',
+                            {"highlightedPostId": highlightedPost?.id});
                         cancelHomeScreenTimers();
                         Navigator.pushNamed(context, '/postsPage');
                       },

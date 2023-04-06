@@ -72,7 +72,7 @@ class ApiClient {
     String theApiStatus = "";
     if (processedResponse['status'] != null &&
         processedResponse['status'] != "null") {
-      if(processedResponse['status'] == "200"){
+      if (processedResponse['status'] == "200") {
         theApiStatus = "UP";
       } else {
         theApiStatus = "DOWN";
@@ -328,19 +328,21 @@ class ApiClient {
           Uri.parse(
               "${DefaultConfig.theAuthBaseUrl}/get-profile-likes/$userId"),
           headers: {"Authorization": ("Bearer $token")});
+      try {
+        var processedResponse = jsonDecode(response.body);
+        if (processedResponse['profileLikes'] != null) {
+          ChatApiGetProfileLikesResponse responseModel =
+              ChatApiGetProfileLikesResponse.fromJson(processedResponse);
+          if (kDebugMode) {
+            print("get profile likes api response ${responseModel.list}");
+          }
 
-      var processedResponse = jsonDecode(response.body);
-
-      if (processedResponse['profileLikes'] != null) {
-        ChatApiGetProfileLikesResponse responseModel =
-            ChatApiGetProfileLikesResponse.fromJson(processedResponse);
-        if (kDebugMode) {
-          print("get profile likes api response ${responseModel.list}");
+          return responseModel;
+        } else {
+          return ChatApiGetProfileLikesResponse(list: [], amIInThisList: null);
         }
-
-        return responseModel;
-      } else {
-        return ChatApiGetProfileLikesResponse(list: [], amIInThisList: null);
+      } catch (e) {
+        print(e);
       }
     }
     return ChatApiGetProfileLikesResponse(list: [], amIInThisList: null);
@@ -489,20 +491,22 @@ class ApiClient {
           Uri.parse(
               "${DefaultConfig.theAuthBaseUrl}/get-profile-comments/$userId"),
           headers: {"Authorization": ("Bearer $token")});
+      try {
+        var processedResponse = jsonDecode(response.body);
+        if (processedResponse['profileComments'] != null) {
+          ChatApiGetProfileCommentsResponse responseModel =
+              ChatApiGetProfileCommentsResponse.fromJson(
+                  processedResponse['profileComments']);
+          if (kDebugMode) {
+            print("get profile comments api response ${responseModel.list}");
+          }
 
-      var processedResponse = jsonDecode(response.body);
-
-      if (processedResponse['profileComments'] != null) {
-        ChatApiGetProfileCommentsResponse responseModel =
-            ChatApiGetProfileCommentsResponse.fromJson(
-                processedResponse['profileComments']);
-        if (kDebugMode) {
-          print("get profile comments api response ${responseModel.list}");
+          return responseModel.list;
+        } else {
+          return [];
         }
-
-        return responseModel.list;
-      } else {
-        return [];
+      } catch (e) {
+        print(e);
       }
     }
     return [];
@@ -583,27 +587,31 @@ class ApiClient {
           Uri.parse(
               "${DefaultConfig.theAuthBaseUrl}/get-profile-follows/$userId"),
           headers: {"Authorization": ("Bearer $token")});
-
-      var processedResponse = jsonDecode(response.body);
-
-      if (processedResponse['profileFollows'] != null) {
-        ChatApiGetProfileFollowsResponse responseModel =
-            ChatApiGetProfileFollowsResponse.fromJson(processedResponse);
-        if (kDebugMode) {
-          print("get profile follows api response ${responseModel.list}");
-        }
-
-        for (var element in responseModel.list) {
+      var processedResponse;
+      try {
+        processedResponse = jsonDecode(response.body);
+        if (processedResponse['profileFollows'] != null) {
+          ChatApiGetProfileFollowsResponse responseModel =
+              ChatApiGetProfileFollowsResponse.fromJson(processedResponse);
           if (kDebugMode) {
-            print(element);
+            print("get profile follows api response ${responseModel.list}");
           }
-        }
 
-        return responseModel;
-      } else {
-        return ChatApiGetProfileFollowsResponse(list: []);
+          // for (var element in responseModel.list) {
+          //   if (kDebugMode) {
+          //     print(element);
+          //   }
+          // }
+
+          return responseModel;
+        } else {
+          return ChatApiGetProfileFollowsResponse(list: []);
+        }
+      } catch (e) {
+        print("ERROR: ${e}");
       }
     }
+
     return ChatApiGetProfileFollowsResponse(list: []);
   }
 

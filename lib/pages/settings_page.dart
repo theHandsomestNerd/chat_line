@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../config/default_config.dart';
 import '../models/block.dart';
 import '../models/controllers/analytics_controller.dart';
+import '../models/controllers/auth_controller.dart';
 import '../models/controllers/auth_inherited.dart';
 import '../shared_components/logo.dart';
 
@@ -26,7 +27,9 @@ class _SettingsPageState extends State<SettingsPage> {
   int _selectedIndex = 0;
   String myUserId = "";
   late ChatController? chatController = null;
+  late AuthController? authController = null;
   late List<Block>? myBlockedProfiles = [];
+  late AnalyticsController? analyticsController = null;
 
   @override
   void initState() {
@@ -38,16 +41,32 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   didChangeDependencies() async {
     super.didChangeDependencies();
-    var theChatController = AuthInherited.of(context)?.chatController;
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
-    theAnalyticsController?.logScreenView('Settings');
+    theAnalyticsController?.logScreenView('settings');
+    if (analyticsController == null && theAnalyticsController != null) {
+      analyticsController = theAnalyticsController;
+    }
+    var theChatController;
+    if (chatController == null) {
+      theChatController = AuthInherited.of(context)?.chatController;
+      chatController = theChatController;
+    }
 
-    chatController = theChatController;
-    myUserId =
-        AuthInherited.of(context)?.authController?.myAppUser?.userId ?? "";
-    myBlockedProfiles = await chatController?.updateMyBlocks();
+    if (theChatController != null) {
+      myBlockedProfiles = await theChatController.updateMyBlocks();
+    }
+
+    var theAuthController;
+    if (authController == null) {
+      theAuthController = AuthInherited.of(context)?.authController;
+      authController = theAuthController;
+    }
+
+    if (myUserId == null || myUserId == "") {
+      myUserId = theAuthController?.myAppUser?.userId ?? "";
+    }
     setState(() {});
     // if (kDebugMode) {
     //   print("dependencies changed $myUserId");
@@ -56,11 +75,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _widgetOptions(selectedIndex) {
     var theOptions = <Widget>[
-      EditProfileTab(),
+      EditProfileTab(analyticsController: analyticsController),
       TimelineEventsTab(
           timelineEvents: chatController?.timelineOfEvents,
-          id: AuthInherited.of(context)?.authController?.myAppUser?.userId ??
-              ""),
+          id: authController?.myAppUser?.userId ?? ""),
       BlocksTab(
         blocks: myBlockedProfiles ?? [],
         unblockProfile: (context) async {
@@ -73,7 +91,19 @@ class _SettingsPageState extends State<SettingsPage> {
     return theOptions.elementAt(selectedIndex);
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) async {
+    switch (index) {
+      case 0:
+        await analyticsController?.logScreenView('settings-edit-profile-tab');
+        break;
+      case 1:
+        await analyticsController?.logScreenView('timeline-events-tab');
+        break;
+      case 2:
+        await analyticsController?.logScreenView('blocks-tab');
+        break;
+    }
+
     setState(() {
       _selectedIndex = index;
     });

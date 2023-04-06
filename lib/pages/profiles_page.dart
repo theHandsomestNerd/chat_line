@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../models/block.dart';
 import '../models/controllers/analytics_controller.dart';
+import '../models/controllers/auth_controller.dart';
 import '../models/controllers/auth_inherited.dart';
 import '../shared_components/logo.dart';
 
@@ -23,6 +24,9 @@ class ProfilesPage extends StatefulWidget {
 class _ProfilesPageState extends State<ProfilesPage> {
   int _selectedIndex = 0;
   String myUserId = "";
+  late AnalyticsController? analyticsController=null;
+
+  late AuthController? authController = null;
   late ChatController? chatController = null;
   late List<Block>? myBlockedProfiles = [];
 
@@ -35,11 +39,17 @@ class _ProfilesPageState extends State<ProfilesPage> {
   didChangeDependencies() async {
     super.didChangeDependencies();
     var theChatController = AuthInherited.of(context)?.chatController;
+    var theAuthController = AuthInherited.of(context)?.authController;
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
-    theAnalyticsController?.logScreenView('Profiles');
-
+    if(analyticsController == null && theAnalyticsController != null) {
+    await theAnalyticsController.logScreenView('profiles-page');
+      analyticsController = theAnalyticsController;
+    }
+    if(authController == null && theAuthController != null) {
+      authController = authController;
+    }
     chatController = theChatController;
     myUserId =
         AuthInherited.of(context)?.authController?.myAppUser?.userId ?? "";
@@ -55,7 +65,7 @@ class _ProfilesPageState extends State<ProfilesPage> {
       ProfileListTab(),
       TimelineEventsTab(
           timelineEvents: chatController?.timelineOfEvents,
-          id: AuthInherited.of(context)?.authController?.myAppUser?.userId ??
+          id: authController?.myAppUser?.userId ??
               ""),
       const Text(
         'Index 3: Likes and Follows',
@@ -64,6 +74,8 @@ class _ProfilesPageState extends State<ProfilesPage> {
       BlocksTab(
         blocks: myBlockedProfiles ?? [],
         unblockProfile: (context) async {
+          await analyticsController?.sendAnalyticsEvent('profile-unblock',{"unblocker": authController?.myAppUser?.userId});
+
           myBlockedProfiles = await chatController?.updateMyBlocks();
           setState(() {});
         },
@@ -78,7 +90,24 @@ class _ProfilesPageState extends State<ProfilesPage> {
     return theOptions.elementAt(selectedIndex);
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index)async {
+    switch (index) {
+      case 0:
+        await analyticsController?.logScreenView('profiles-tab');
+        break;
+      case 1:
+        await analyticsController?.logScreenView('timeline-events-tab');
+        break;
+      case 3:
+        await analyticsController?.logScreenView('blocks-tab');
+        break;
+      case 5:
+        await analyticsController?.logScreenView('posts-tab');
+        break;
+      default:
+        await analyticsController?.sendAnalyticsEvent('no-such-tab',{'tabIndex':index});
+
+    }
     setState(() {
       _selectedIndex = index;
     });

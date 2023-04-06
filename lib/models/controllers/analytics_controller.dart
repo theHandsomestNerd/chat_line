@@ -5,9 +5,7 @@ class AnalyticsController {
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
 
-  AnalyticsController.init() {
-
-  }
+  AnalyticsController.init() {}
 
   // Future<void> _setDefaultEventParameters() async {
   //   if (kIsWeb) {
@@ -27,27 +25,32 @@ class AnalyticsController {
   //   }
   // }
 
-  Future<void> _sendAnalyticsEvent() async {
+  Future<void> sendAnalyticsEvent(String eventName, Map<String, dynamic> event) async {
     // Only strings and numbers (longs & doubles for android, ints and doubles for iOS) are supported for GA custom event parameters:
     // https://firebase.google.com/docs/reference/ios/firebaseanalytics/api/reference/Classes/FIRAnalytics#+logeventwithname:parameters:
     // https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics#public-void-logevent-string-name,-bundle-params
-    await analytics.logEvent(
-      name: 'test_event',
-      parameters: <String, dynamic>{
-        'string': 'string',
-        'int': 42,
-        'long': 12345678910,
-        'double': 42.0,
-        // Only strings and numbers (ints & doubles) are supported for GA custom event parameters:
-        // https://developers.google.com/analytics/devguides/collection/analyticsjs/custom-dims-mets#overview
-        'bool': true.toString(),
-      },
-    );
+    try {
+      await analytics.logEvent(
+        name: eventName,
+        parameters: {...event},
+        // <String, dynamic>{
+        //   'string': 'string',
+        //   'int': 42,
+        //   'long': 12345678910,
+        //   'double': 42.0,
+        //   // Only strings and numbers (ints & doubles) are supported for GA custom event parameters:
+        //   // https://developers.google.com/analytics/devguides/collection/analyticsjs/custom-dims-mets#overview
+        //   'bool': true.toString(),
+        // },
+      );
+    }catch(e){
+      print("Analytics error $e");
+    }
 
     print('logEvent succeeded');
   }
 
-  Future<void> _testSetUserId(String userId) async {
+  Future<void> setUserId(String userId) async {
     await analytics.setUserId(id: userId);
     print('setUserId succeeded');
   }
@@ -61,14 +64,14 @@ class AnalyticsController {
   }
 
   // Future<void> _testSetAnalyticsCollectionEnabled() async {
-    // await analytics.setAnalyticsCollectionEnabled(false);
-    // await analytics.setAnalyticsCollectionEnabled(true);
-    // print('setAnalyticsCollectionEnabled succeeded');
+  // await analytics.setAnalyticsCollectionEnabled(false);
+  // await analytics.setAnalyticsCollectionEnabled(true);
+  // print('setAnalyticsCollectionEnabled succeeded');
   // }
 
   Future<void> _setSessionTimeoutDuration(int duration) async {
     return analytics
-        .setSessionTimeoutDuration( Duration(milliseconds: duration ));
+        .setSessionTimeoutDuration(Duration(milliseconds: duration));
     print('setSessionTimeoutDuration succeeded');
   }
 
@@ -128,19 +131,19 @@ class AnalyticsController {
     );
   }
 
-  // Future<void> _testAllEventTypes() async {
-    // await analytics.logCampaignDetails(
-    //   source: 'source',
-    //   medium: 'medium',
-    //   campaign: 'campaign',
-    //   term: 'term',
-    //   content: 'content',
-    //   aclid: 'aclid',
-    //   cp1: 'cp1',
-    // );
+// Future<void> _testAllEventTypes() async {
+// await analytics.logCampaignDetails(
+//   source: 'source',
+//   medium: 'medium',
+//   campaign: 'campaign',
+//   term: 'term',
+//   content: 'content',
+//   aclid: 'aclid',
+//   cp1: 'cp1',
+// );
 
-    // await analytics.logTutorialBegin();
-    // await analytics.logTutorialComplete();
-    // await analytics.logUnlockAchievement(id: 'all Firebase API covered');
-  // }
+// await analytics.logTutorialBegin();
+// await analytics.logTutorialComplete();
+// await analytics.logUnlockAchievement(id: 'all Firebase API covered');
+// }
 }

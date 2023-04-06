@@ -81,6 +81,20 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    analyticsController.logOpenApp();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) async {
+      if (user == null) {
+        if (kDebugMode) {
+          print('postController: User is currently signed out!');
+        }
+      } else {
+        if (kDebugMode) {
+          print('postController: User is signed in!');
+        }
+        analyticsController.logLogin();
+        analyticsController.setUserId(user.uid);
+      }
+    });
   }
 
   String id = "";
@@ -108,6 +122,7 @@ class _MyAppState extends State<MyApp> {
     //   print("appName: ${DefaultConfig.appName}");
     //   print("packageName: ${DefaultConfig.packageName}");
     // }
+
     setState(() {});
   }
 

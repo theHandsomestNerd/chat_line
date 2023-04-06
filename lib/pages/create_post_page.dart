@@ -34,6 +34,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
   late ImageUploader? imageUploader;
   AuthController? authController;
   PostController? postController;
+  AnalyticsController? analyticsController = null;
 
   String? _postBody;
   bool? _isPosting;
@@ -57,21 +58,29 @@ class _CreatePostPageState extends State<CreatePostPage> {
         AuthInherited.of(context)?.postController;
     postController = thePostController;
 
+
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
     theAnalyticsController?.logScreenView('Create Post');
 
+    analyticsController = theAnalyticsController;
+
+    if(!((_postBody?.length ?? -1) <= 0) && (_postBody?.length ?? 0) < 5) {
+      await analyticsController?.sendAnalyticsEvent('post-form-enabled', {"body": _postBody});
+    }
     setState(() {});
   }
 
-  void _setPostBody(String newPostBody) {
+  void _setPostBody(String newPostBody)async  {
+
     setState(() {
       _postBody = newPostBody;
     });
   }
 
   _makePost(context) async {
+    await analyticsController?.sendAnalyticsEvent('create-post', {"body": _postBody});
     setState(() {
       _isPosting = true;
     });

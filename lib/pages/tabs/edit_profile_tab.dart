@@ -1,14 +1,5 @@
-import 'package:cookout/config/default_config.dart';
+import 'package:cookout/models/controllers/analytics_controller.dart';
 import 'package:cookout/models/controllers/auth_controller.dart';
-import 'package:cookout/wrappers/text_field_wrapped.dart';
-import 'package:cookout/wrappers/text_field_wrapped.dart';
-import 'package:cookout/wrappers/text_field_wrapped.dart';
-import 'package:cookout/wrappers/text_field_wrapped.dart';
-import 'package:cookout/wrappers/text_field_wrapped.dart';
-import 'package:cookout/wrappers/text_field_wrapped.dart';
-import 'package:cookout/wrappers/text_field_wrapped.dart';
-import 'package:cookout/wrappers/text_field_wrapped.dart';
-import 'package:cookout/wrappers/text_field_wrapped.dart';
 import 'package:cookout/wrappers/text_field_wrapped.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -33,8 +24,10 @@ import '../../wrappers/loading_button.dart';
 class EditProfileTab extends StatefulWidget {
   const EditProfileTab({
     Key? key,
+     this.analyticsController,
   }) : super(key: key);
 
+  final AnalyticsController? analyticsController;
   @override
   State<EditProfileTab> createState() => _EditProfileTabState();
 }
@@ -133,7 +126,8 @@ class _EditProfileTabState extends State<EditProfileTab> {
     ).image;
   }
 
-  void _setUsername(String newUsername) {
+  void _setUsername(String newUsername) async {
+    await widget.analyticsController?.logScreenView('set-username-field-edit-profile');
     setState(() {
       _loginUsername = newUsername;
     });
@@ -329,6 +323,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
                     initialValue: _myAppUser?.displayName,
                     setField: (e) {
                       _setDisplayName(e);
+
                     },
                     labelText: 'Display Name',
                   ),

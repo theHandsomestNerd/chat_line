@@ -6,12 +6,10 @@ import '../models/controllers/analytics_controller.dart';
 import '../models/controllers/auth_inherited.dart';
 import '../shared_components/logo.dart';
 
-
 class PostsThreadPage extends StatefulWidget {
-  const PostsThreadPage({super.key,    
-
+  const PostsThreadPage({
+    super.key,
   });
-  
 
   @override
   State<PostsThreadPage> createState() => _PostsThreadPageState();
@@ -19,6 +17,7 @@ class PostsThreadPage extends StatefulWidget {
 
 class _PostsThreadPageState extends State<PostsThreadPage> {
   int _selectedIndex = 0;
+  late AnalyticsController analyticsController;
 
   @override
   void initState() {
@@ -31,16 +30,18 @@ class _PostsThreadPageState extends State<PostsThreadPage> {
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
-    theAnalyticsController?.logScreenView('Posts Thread');
+    theAnalyticsController?.logScreenView('posts-thread');
+    if (analyticsController == null && theAnalyticsController != null) {
+      analyticsController = theAnalyticsController;
+    }
   }
-
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   Widget _widgetOptions(selectedIndex) {
     var theOptions = <Widget>[
-       ProfileListTab(),
+      ProfileListTab(),
       const Text(
         'Index 2: Timeline',
         style: optionStyle,
@@ -62,7 +63,16 @@ class _PostsThreadPageState extends State<PostsThreadPage> {
     return theOptions.elementAt(selectedIndex);
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) async {
+    switch (index) {
+      case 0:
+        await analyticsController
+            .logScreenView('posts-thread-page-profile-list-tab');
+        break;
+      default:
+        await analyticsController
+            .logScreenView('posts-thread-page-${index}-tab-press');
+    }
     setState(() {
       _selectedIndex = index;
     });

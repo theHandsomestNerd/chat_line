@@ -1,4 +1,5 @@
 import 'package:cookout/models/clients/api_client.dart';
+import 'package:cookout/models/controllers/analytics_controller.dart';
 import 'package:cookout/models/controllers/chat_controller.dart';
 import 'package:cookout/models/extended_profile.dart';
 import 'package:cookout/shared_components/tool_button.dart';
@@ -61,13 +62,18 @@ class _BioTabState extends State<BioTab> {
 
   late ApiClient? profileClient = null;
   late ChatController? chatController = null;
+  late AnalyticsController? analyticsController=null;
 
   @override
   initState() {
     super.initState();
-    if (widget.id == "") {
-      Navigator.popAndPushNamed(context, '/profilesPage');
-    }
+    analyticsController?.logScreenView('profile-bio-tab').then((x)async {
+      if (widget.id == "") {
+        await analyticsController?.sendAnalyticsEvent('bio-tab-redirect',{"message": "no-id"});
+
+        Navigator.popAndPushNamed(context, '/profilesPage');
+      }
+    });
     // if (widget.id != null) {
     //   print("NOT NULL !!!!!!!!!!!!!!!!!");
     //   extProfile = widget.chatController.myExtProfile;
@@ -82,14 +88,20 @@ class _BioTabState extends State<BioTab> {
   didChangeDependencies() async {
     super.didChangeDependencies();
     var theChatController = AuthInherited.of(context)?.chatController;
+    var theAnalyticsController = AuthInherited.of(context)?.analyticsController;
     extProfile =
         await theChatController?.profileClient.getExtendedProfile(widget.id);
     profileClient = theChatController?.profileClient;
     chatController = theChatController;
+    if(theAnalyticsController != null) {
+      analyticsController = theAnalyticsController;
+    }
     setState(() {});
   }
 
   _likeThisProfile(context) async {
+    await analyticsController?.sendAnalyticsEvent('profile-like-press',{"liked": widget.id});
+
     setState(() {
       _isLiking = true;
     });
@@ -113,6 +125,8 @@ class _BioTabState extends State<BioTab> {
   }
 
   _followThisProfile(context) async {
+    await analyticsController?.sendAnalyticsEvent('profile-follow-press',{"followed": widget.id});
+
     setState(() {
       _isFollowing = true;
     });
@@ -137,6 +151,8 @@ class _BioTabState extends State<BioTab> {
   }
 
   _blockThisProfile(context) async {
+    await analyticsController?.sendAnalyticsEvent('profile-block-press', {"blocked": widget.id,});
+
     setState(() {
       _isBlocking = true;
     });

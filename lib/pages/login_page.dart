@@ -29,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   String _loginUsername = "";
   String _loginPassword = "";
   late AuthController authController;
+  late AnalyticsController analyticsControllerController;
   final AlertSnackbar _alertSnackbar = AlertSnackbar();
   bool isLoading = false;
   late String sanityDB;
@@ -41,8 +42,6 @@ class _LoginPageState extends State<LoginPage> {
 
     _loginPassword = '';
     _loginUsername = '';
-
-
   }
 
   @override
@@ -56,6 +55,9 @@ class _LoginPageState extends State<LoginPage> {
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
+    if (theAnalyticsController != null) {
+      analyticsControllerController = theAnalyticsController;
+    }
     theAnalyticsController?.logScreenView('Login');
     apiVersion = DefaultConfig.apiVersion ?? "no version";
     sanityApiDB = DefaultConfig.apiSanityDB ?? "no api env";
@@ -65,7 +67,15 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _setUsername(String newUsername) {
+  void _setUsername(String newUsername) async  {
+    if(newUsername.length == 1) {
+      await analyticsControllerController.sendAnalyticsEvent('login-username', {'event': "started_typing"});
+    }
+
+    if(!(_loginUsername.isEmpty ||
+        _loginPassword.isEmpty)) {
+      await analyticsControllerController.sendAnalyticsEvent('login-form-enabled', {'username': _loginUsername});
+    }
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -76,7 +86,14 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _setPassword(String newPassword) {
+  void _setPassword(String newPassword) async {
+    if(newPassword.length == 1) {
+      await analyticsControllerController.sendAnalyticsEvent('login-password-field', {'event': "started_typing"});
+    }
+    if(!(_loginUsername.isEmpty ||
+        _loginPassword.isEmpty)) {
+      await analyticsControllerController.sendAnalyticsEvent('login-form-enabled', {'username': _loginUsername});
+    }
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -222,13 +239,13 @@ class _LoginPageState extends State<LoginPage> {
                                           obscureText: true,
                                           enableSuggestions: false,
                                           autocorrect: false,
-                                          setField: (e){
+                                          setField: (e) {
                                             _setPassword(e);
                                           },
                                           initialValue: _loginPassword,
                                           labelText: "Password",
-                                          ),
                                         ),
+                                      ),
                                       const SizedBox(
                                         height: 16,
                                       ),
@@ -237,7 +254,9 @@ class _LoginPageState extends State<LoginPage> {
                                         child: LoadingButton(
                                           isDisabled: _loginUsername.isEmpty ||
                                               _loginPassword.isEmpty,
-                                          action: () {
+                                          isLoading: isLoading,
+                                          action: () async {
+                                            await analyticsControllerController.sendAnalyticsEvent('login-button-pressed', {"username":_loginUsername});
                                             _loginUser(context);
                                           },
                                           text: "Login",
@@ -254,8 +273,8 @@ class _LoginPageState extends State<LoginPage> {
                                       Flexible(
                                         flex: 1,
                                         child: LoadingButton(
-                                          isLoading: isLoading,
-                                          action: () {
+                                          action: () async {
+                                            await analyticsControllerController.sendAnalyticsEvent('login-register-button-pressed', {"username":_loginUsername});
                                             Navigator.popAndPushNamed(
                                                 context, '/register');
                                           },
@@ -275,8 +294,8 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 32.0),
                             child: Column(
                               children: [
+                                Text("${DefaultConfig.appName}"),
                                 Text(
-                                    "${DefaultConfig.appName}"),Text(
                                     "ui v${DefaultConfig.version}.${DefaultConfig.buildNumber} - ${DefaultConfig.sanityDB}"),
                                 Text("api - ${DefaultConfig.apiStatus}"),
                                 Text("v${apiVersion} -${sanityApiDB}"),

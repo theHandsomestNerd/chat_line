@@ -20,12 +20,14 @@ import '../shared_components/logo.dart';
 import '../shared_components/menus/app_menu.dart';
 
 class SoloProfilePage extends StatefulWidget {
-  const SoloProfilePage({super.key,  required this.id, required this.thisProfile,    
+  const SoloProfilePage({
+    super.key,
+    required this.id,
+    required this.thisProfile,
   });
 
   final String id;
   final thisProfile;
-  
 
   @override
   State<SoloProfilePage> createState() => _SoloProfilePageState();
@@ -43,7 +45,7 @@ class _SoloProfilePageState extends State<SoloProfilePage> {
   late List<Follow>? _profileFollows = [];
 
   final AlertSnackbar _alertSnackbar = AlertSnackbar();
-
+  AnalyticsController? analyticsController=null;
   ApiClient? profileClient = null;
   AuthController? authController = null;
   ChatController? chatController = null;
@@ -62,10 +64,14 @@ class _SoloProfilePageState extends State<SoloProfilePage> {
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
+    theAnalyticsController
+        ?.logScreenView(_isThisMe ? 'My Profile Page' : 'Profile Page');
 
-    theAnalyticsController?.logScreenView(_isThisMe ? 'My Profile Page': 'Profile Page');
-
-    var theFollows = await theChatController?.profileClient.getProfileFollows(widget.id) as ChatApiGetProfileFollowsResponse;
+    if (analyticsController==null && theAnalyticsController != null) {
+      analyticsController = theAnalyticsController;
+    }
+    var theFollows = await theChatController?.profileClient
+        .getProfileFollows(widget.id) as ChatApiGetProfileFollowsResponse;
     var theLikes = await theChatController?.profileClient
         .getProfileLikes(widget.id) as ChatApiGetProfileLikesResponse;
     var theComments =
@@ -158,12 +164,16 @@ class _SoloProfilePageState extends State<SoloProfilePage> {
         id: widget.id,
         updateBlocks: (innercontext, String blockResponse) async {
           // List<Block> theBlocks = await _getProfileBlocks();
-          await chatController?.updateMyBlocks();
 
           if (blockResponse != "SUCCESS") {
             _alertSnackbar.showErrorAlert(
                 "That block didnt register. Try Again.", innercontext);
           } else {
+            await analyticsController?.sendAnalyticsEvent('profile-blocked', {
+              "blocked": widget.id,
+              "blocker": authController?.myAppUser?.userId,
+            });
+            await chatController?.updateMyBlocks();
             _alertSnackbar.showSuccessAlert(
                 "You blocked this user. Ew!", innercontext);
 
@@ -173,6 +183,12 @@ class _SoloProfilePageState extends State<SoloProfilePage> {
         profileFollows: _profileFollows,
         updateLikes: (innerContext, String likeResponse, bool isUnlike) async {
           ChatApiGetProfileLikesResponse? theLikes = await _getProfileLikes();
+
+          await analyticsController?.sendAnalyticsEvent('profile-liked', {
+            "likee": widget.id ??"",
+            "liker": authController?.myAppUser?.userId ?? "",
+            "isUnlike": isUnlike.toString()
+          });
 
           setState(() {
             _profileLikes = theLikes?.list;
@@ -191,20 +207,23 @@ class _SoloProfilePageState extends State<SoloProfilePage> {
         },
         updateFollows:
             (innerContext, String followResponse, bool isUnfollow) async {
-          ChatApiGetProfileFollowsResponse theFollows =
-              await _getProfileFollows();
-          Follow? isFollowdResponse = theFollows.amIInThisList;
-
-          setState(() {
-            _profileFollows = theFollows.list;
-            _profileFollowedByMe = isFollowdResponse;
-          });
-
           if (followResponse != "SUCCESS") {
             _alertSnackbar.showErrorAlert(
                 "That ${isUnfollow == true ? "Unfollow" : "Follow"} didnt register. Try Again.",
                 innerContext);
           } else {
+            await analyticsController?.sendAnalyticsEvent('profile-follow', {
+              "followed": widget.id ??"",
+              "follower": authController?.myAppUser?.userId??"",
+              "isUnfollow": isUnfollow.toString()
+            });
+            ChatApiGetProfileFollowsResponse theFollows =
+                await _getProfileFollows();
+            Follow? isFollowdResponse = theFollows.amIInThisList;
+            setState(() {
+              _profileFollows = theFollows.list;
+              _profileFollowedByMe = isFollowdResponse;
+            });
             _alertSnackbar.showSuccessAlert(
                 "You ${isUnfollow == true ? "Unfollowed" : "Followed"} the user.",
                 innerContext);
@@ -214,18 +233,21 @@ class _SoloProfilePageState extends State<SoloProfilePage> {
         profileComments: _profileComments,
         updateComments:
             (innerContext, String commentResponse, bool isUncomment) async {
-          List<Comment> theComments = await _getProfileComments();
-
-          setState(() {
-            // _isCommenting = false;
-            _profileComments = theComments;
-          });
-
           if (commentResponse != "SUCCESS") {
             _alertSnackbar.showErrorAlert(
                 "That ${isUncomment == true ? "Uncomment" : "Comment"} didnt register. Try Again.",
                 innerContext);
           } else {
+            await analyticsController?.sendAnalyticsEvent('comment-made', {
+              "commentee": widget.id,
+              "commented": authController?.myAppUser?.userId
+            });
+            List<Comment> theComments = await _getProfileComments();
+
+            setState(() {
+              // _isCommenting = false;
+              _profileComments = theComments;
+            });
             _alertSnackbar.showSuccessAlert(
                 "That ${isUncomment == true ? "Uncomment" : "Comment"} ",
                 innerContext);
@@ -240,16 +262,16 @@ class _SoloProfilePageState extends State<SoloProfilePage> {
         profileComments: _profileComments,
         thisProfile: widget.thisProfile,
         updateComments: (innerContext, String updateCommentResponse) async {
-          List<Comment> theComments =
-              await profileClient?.getProfileComments(widget.id) ?? [];
-          setState(() {
-            _profileComments = theComments;
-          });
 
           if (updateCommentResponse != "SUCCESS") {
             _alertSnackbar.showErrorAlert(
                 "That like didnt register. Try Again.", innerContext);
           } else {
+            List<Comment> theComments =
+              await profileClient?.getProfileComments(widget.id) ?? [];
+          setState(() {
+            _profileComments = theComments;
+          });
             _alertSnackbar.showSuccessAlert("Comment Posted.", innerContext);
           }
         },
