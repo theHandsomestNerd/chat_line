@@ -1,5 +1,15 @@
 import 'package:cookout/config/default_config.dart';
 import 'package:cookout/models/controllers/auth_controller.dart';
+import 'package:cookout/wrappers/text_field_wrapped.dart';
+import 'package:cookout/wrappers/text_field_wrapped.dart';
+import 'package:cookout/wrappers/text_field_wrapped.dart';
+import 'package:cookout/wrappers/text_field_wrapped.dart';
+import 'package:cookout/wrappers/text_field_wrapped.dart';
+import 'package:cookout/wrappers/text_field_wrapped.dart';
+import 'package:cookout/wrappers/text_field_wrapped.dart';
+import 'package:cookout/wrappers/text_field_wrapped.dart';
+import 'package:cookout/wrappers/text_field_wrapped.dart';
+import 'package:cookout/wrappers/text_field_wrapped.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -85,11 +95,11 @@ class _EditProfileTabState extends State<EditProfileTab> {
     profileImage = theUser?.profileImage;
     imageToBeUploaded = await _getMyProfileImage(null);
 
-    if (theAuthController?.myAppUser?.userId != null) {
-      theChatController
-          ?.updateExtProfile((theAuthController?.myAppUser?.userId)!);
+    print("about to get extended profile for ${theUser?.userId}");
+    if (theUser?.userId != null) {
+      theChatController?.updateExtProfile((theUser?.userId)!);
       extProfile = await theChatController?.profileClient
-          .getExtendedProfile((theAuthController?.myAppUser?.userId)!);
+          .getExtendedProfile((theUser?.userId)!);
     }
     setState(() {});
   }
@@ -302,31 +312,25 @@ class _EditProfileTabState extends State<EditProfileTab> {
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey(_myAppUser?.email ?? "-mail"),
                     initialValue: _myAppUser?.email,
                     enabled: false,
-                    onChanged: (e) {
+                    setField: (e) {
                       _setUsername(e);
                     },
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Username',
-                    ),
+                    labelText: 'Username',
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey(
                         "${_myAppUser?.displayName ?? ""}-display-name"),
                     initialValue: _myAppUser?.displayName,
-                    onChanged: (e) {
+                    setField: (e) {
                       _setDisplayName(e);
                     },
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Display Name',
-                    ),
+                    labelText: 'Display Name',
                   ),
                 ),
                 ListTile(
@@ -369,159 +373,131 @@ class _EditProfileTabState extends State<EditProfileTab> {
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey("${extProfile?.shortBio}-short-bio"),
                     initialValue: extProfile?.shortBio,
-                    onChanged: (e) {
+                    setField: (e) {
                       _setShortBio(e);
                     },
+                    labelText: "Short Bio",
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Short Bio',
-                    ),
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey("${extProfile?.longBio}-long-bio"),
                     initialValue: extProfile?.longBio ?? "",
-                    onChanged: (e) {
+                    setField: (e) {
                       _setLongBio(e);
                     },
+                    labelText: "Long Bio",
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Long Bio',
-                    ),
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey("${extProfile?.iAm}-i-am"),
                     initialValue: extProfile?.iAm ?? "",
-                    onChanged: (e) {
+                    setField: (e) {
                       _setIAm(e);
                     },
+                    labelText: "I am",
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'I am:',
-                    ),
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey("${extProfile?.imInto}-im-into"),
                     initialValue: extProfile?.imInto ?? "",
-                    onChanged: (e) {
+                    setField: (e) {
                       _setImInto(e);
                     },
+                    labelText: "I'm Into",
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: "I'm Into",
-                    ),
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey("${extProfile?.imOpenTo}-im-open-to"),
                     initialValue: extProfile?.imOpenTo ?? "",
-                    onChanged: (e) {
+                    setField: (e) {
                       _setImOpenTo(e);
                     },
+                    labelText: "I'm open to",
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: "I'm Open to",
-                    ),
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey("${extProfile?.whatIDo}-what-i-do"),
                     initialValue: extProfile?.whatIDo ?? "",
-                    onChanged: (e) {
+                    setField: (e) {
                       _setWhatIDo(e);
                     },
+                    labelText: "What I Do?",
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'What I do:',
-                    ),
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey(
                         "${extProfile?.whatImLookingFor}-what-im-looking-for"),
                     // controller: _longBioController,
                     initialValue: extProfile?.whatImLookingFor ?? "",
-                    onChanged: (e) {
+                    setField: (e) {
                       _setWhatImLookingFor(e);
                     },
+                    labelText: "What Im Looking for",
+
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: "What I'm Looking for:",
-                    ),
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey(
                         "${extProfile?.whatInterestsMe}-what-interests-me"),
                     // controller: _longBioController,
                     initialValue: extProfile?.whatInterestsMe ?? "",
-                    onChanged: (e) {
+                    setField: (e) {
                       _setWhatInterestsMe(e);
                     },
+                    labelText: "What interests Me",
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'What Interests me:',
-                    ),
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey("${extProfile?.whereILive}-where-i-live"),
                     // controller: _longBioController,
                     initialValue: extProfile?.whereILive ?? "",
-                    onChanged: (e) {
+                    setField: (e) {
                       _setWhereILive(e);
                     },
+                    labelText: "Where I Live",
+
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Where I Live:',
-                    ),
                   ),
                 ),
                 ListTile(
-                  title: TextFormField(
+                  title: TextFieldWrapped(
                     key: ObjectKey(
                         "${extProfile?.sexPreferences}-sex-preferences"),
                     initialValue: extProfile?.sexPreferences ?? "",
-                    onChanged: (e) {
+                    setField: (e) {
                       _setSexPreferences(e);
                     },
+                    labelText: "Sex Preferences",
                     minLines: 2,
                     maxLines: 4,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Sex Preferences:',
-                    ),
                   ),
                 ),
                 ListTile(

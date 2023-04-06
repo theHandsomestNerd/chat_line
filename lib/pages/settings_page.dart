@@ -12,10 +12,9 @@ import '../models/controllers/auth_inherited.dart';
 import '../shared_components/logo.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage(
-      {super.key,    
-      });
-  
+  const SettingsPage({
+    super.key,
+  });
 
   // final AuthController authController;
 
@@ -46,7 +45,8 @@ class _SettingsPageState extends State<SettingsPage> {
     theAnalyticsController?.logScreenView('Settings');
 
     chatController = theChatController;
-    myUserId = AuthInherited.of(context)?.authController?.myAppUser?.userId ?? "";
+    myUserId =
+        AuthInherited.of(context)?.authController?.myAppUser?.userId ?? "";
     myBlockedProfiles = await chatController?.updateMyBlocks();
     setState(() {});
     // if (kDebugMode) {
@@ -54,10 +54,9 @@ class _SettingsPageState extends State<SettingsPage> {
     // }
   }
 
-
   Widget _widgetOptions(selectedIndex) {
     var theOptions = <Widget>[
-       EditProfileTab(),
+      EditProfileTab(),
       TimelineEventsTab(
           timelineEvents: chatController?.timelineOfEvents,
           id: AuthInherited.of(context)?.authController?.myAppUser?.userId ??
@@ -90,20 +89,31 @@ class _SettingsPageState extends State<SettingsPage> {
     // than having to individually change instances of widgets.
 
     return Scaffold(
-      floatingActionButton: SettingsPageMenu(
-        updateMenu: _onItemTapped,
-      ),
-      appBar: AppBar(
-        backgroundColor: Colors.white.withOpacity(0.5),
-        // Here we take the value from the LoginPage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Logo(),
-      ),
-      body: ConstrainedBox(
-          key: Key(_selectedIndex.toString()),
-          constraints: const BoxConstraints(),
-          child: _widgetOptions(
-              _selectedIndex)), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        floatingActionButton: SettingsPageMenu(
+          updateMenu: _onItemTapped,
+        ),
+        appBar: AppBar(
+          backgroundColor: Colors.white.withOpacity(0.5),
+          // Here we take the value from the LoginPage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Logo(),
+        ),
+        body: Stack(children: [
+          Positioned.fill(
+            child: Opacity(
+              opacity: .1,
+              child: Image.asset(
+                'assets/img.png',
+                repeat: ImageRepeat.repeat,
+              ),
+            ),
+          ),
+          ConstrainedBox(
+            key: Key(_selectedIndex.toString()),
+            constraints: const BoxConstraints(),
+            child: _widgetOptions(
+                _selectedIndex), // This trailing comma makes auto-formatting nicer for build methods.
+          ),
+        ]));
   }
 }

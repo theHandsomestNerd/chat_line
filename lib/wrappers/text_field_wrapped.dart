@@ -13,8 +13,10 @@ class TextFieldWrapped extends StatefulWidget {
     this.autocorrect,
     this.autoCorrect,
     this.obscureText,
+    this.minLines,
     this.enableSuggestions,
     this.icon,
+    this.enabled,
   }) : super(key: key);
 
   final String? initialValue;
@@ -25,10 +27,12 @@ class TextFieldWrapped extends StatefulWidget {
   final bool? autocorrect;
   final bool? autofocus;
   final bool? autoCorrect;
+  final bool? enabled;
   final setField;
   final IconData? icon;
   final validator;
   final int? maxLines;
+  final int? minLines;
 
   @override
   State<TextFieldWrapped> createState() => _TextFieldWrappedState();
@@ -47,7 +51,9 @@ class _TextFieldWrappedState extends State<TextFieldWrapped> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: widget.enabled ?? true,
       maxLines: widget.maxLines ?? 1,
+      minLines: widget.minLines ?? 1,
       autofocus: widget.autofocus ?? false,
       obscureText: widget.obscureText ?? false,
       enableSuggestions: widget.enableSuggestions ?? false,
