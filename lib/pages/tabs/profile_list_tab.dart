@@ -7,39 +7,17 @@ import '../../models/app_user.dart';
 import '../../models/controllers/auth_inherited.dart';
 import '../../shared_components/profile/profile_grid.dart';
 
-class ProfileListTab extends StatefulWidget {
+class ProfileListTab extends StatelessWidget {
   const ProfileListTab({
     super.key,
   });
 
-  @override
-  State<ProfileListTab> createState() => _ProfileListTabState();
-}
-
-class _ProfileListTabState extends State<ProfileListTab> {
-  late List<AppUser> profileList = [];
-  late ChatController? chatController = null;
-
-  @override
-  didChangeDependencies() async {
-    super.didChangeDependencies();
-    var theChatController = AuthInherited.of(context)?.chatController;
-    chatController = theChatController;
-    var theProfiles = await chatController?.updateProfiles();
-    profileList = theProfiles;
-    setState(() {});
-    if (kDebugMode) {
-      print("dependencies changed profile list ${profileList.length}");
-    }
-  }
-
+  // late List<AppUser> profileList = [];
   @override
   Widget build(BuildContext context) {
-    return SearchAndList(
+    return const SearchAndList(
       isSearchEnabled: true,
-      listChild: ProfileGrid(
-        profiles: profileList,
-      ),
+      listChild: ProfileGrid(),
     );
   }
 }

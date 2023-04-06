@@ -38,6 +38,7 @@ class ApiClient {
     } else {
       print("Retrieving Id Token");
       String? theToken = await FirebaseAuth.instance.currentUser?.getIdToken();
+      print("Got token in client $theToken");
       if (theToken != null) {
         token = theToken;
         return theToken;
@@ -103,7 +104,37 @@ class ApiClient {
           headers: {"Authorization": ("Bearer $token")});
 
       var processedResponse = jsonDecode(response.body);
-      print("Profiles retrieved ${processedResponse}");
+      // print("Profiles retrieved ${processedResponse}");
+      if (processedResponse['profiles'] != null &&
+          processedResponse['profiles'] != "null") {
+        AuthApiProfileListResponse responseModelList =
+            AuthApiProfileListResponse.fromJson(processedResponse['profiles']);
+
+        return responseModelList.list;
+      }
+    }
+    return <AppUser>[];
+  }
+Future<List<AppUser>> fetchProfilesPaginated(String? lastId, int pageSize) async {
+    if (kDebugMode) {
+      print("Retrieving paginated Profiles");
+    }
+    String? token = await getIdToken();
+    print("token $token");
+    print("url ${DefaultConfig.theAuthBaseUrl}");
+    if (DefaultConfig.theAuthBaseUrl == "") {
+      print(
+          "Retrieving paginated Profiles authBaseUrl empty ${DefaultConfig.theAuthBaseUrl}");
+      return <AppUser>[];
+    }
+
+    if (token != null && DefaultConfig.theAuthBaseUrl != "") {
+      final response = await http.get(
+          Uri.parse("${DefaultConfig.theAuthBaseUrl}/get-all-profiles-paginated/$pageSize${lastId != null ? "/${lastId}":""}"),
+          headers: {"Authorization": ("Bearer $token")});
+
+      var processedResponse = jsonDecode(response.body);
+      // print("Profiles retrieved ${processedResponse}");
       if (processedResponse['profiles'] != null &&
           processedResponse['profiles'] != "null") {
         AuthApiProfileListResponse responseModelList =
@@ -132,7 +163,7 @@ class ApiClient {
             ChatApiGetTimelineEventsResponse.fromJson(
                 processedResponse['profileTimelineEvents']);
         if (kDebugMode) {
-          print("get timeline events api response ${responseModel.list}");
+          print("get timeline events api response ${responseModel.list.length}");
         }
 
         // for (var element in responseModel.list) {
