@@ -181,33 +181,33 @@ class ExtendedProfile {
     return data;
   }
 
-  @override
-  String toString() {
-    return '\n__________Extended Profile_______________\n'
-        '\nage:$age '
-        '\nweight:$weight '
-        '\nheight:${height?.feet} ${height?.inches} '
-        '\nshortBio:$shortBio '
-        '\nlongBio:$longBio '
-        '\nuserId:$userId '
-        '\ngender:$gender '
-        '\nfacebook:$facebook '
-        '\ntwitter:$twitter '
-        '\ninstagram:$instagram '
-        '\npartnerStatus:$partnerStatus '
-        '\nethnicity:$ethnicity '
-        '\nIam:$iAm '
-        '\nIminto:$imInto '
-        '\nimopento:$imOpenTo '
-        '\nwhatIdo:$whatIDo '
-        '\nwhatimlookingfor:$whatImLookingFor '
-        '\nwhatinterestsme:$whatInterestsMe '
-        '\nsexPreferences:$sexPreferences '
-        '\nwhereIlive:$whereILive '
-        '\nisTraveling:$isTraveling '
-        '\nlasttested:$lastTested '
-        '\npronouns:$pronouns '
-        '\nhashtags:$hashtags '
-        '\n-----------------------------\n';
-  }
+  // @override
+  // String toString() {
+  //   return '\n__________Extended Profile_______________\n'
+  //       '\nage:$age '
+  //       '\nweight:$weight '
+  //       '\nheight:${height?.feet} ${height?.inches} '
+  //       '\nshortBio:$shortBio '
+  //       '\nlongBio:$longBio '
+  //       '\nuserId:$userId '
+  //       '\ngender:$gender '
+  //       '\nfacebook:$facebook '
+  //       '\ntwitter:$twitter '
+  //       '\ninstagram:$instagram '
+  //       '\npartnerStatus:$partnerStatus '
+  //       '\nethnicity:$ethnicity '
+  //       '\nIam:$iAm '
+  //       '\nIminto:$imInto '
+  //       '\nimopento:$imOpenTo '
+  //       '\nwhatIdo:$whatIDo '
+  //       '\nwhatimlookingfor:$whatImLookingFor '
+  //       '\nwhatinterestsme:$whatInterestsMe '
+  //       '\nsexPreferences:$sexPreferences '
+  //       '\nwhereIlive:$whereILive '
+  //       '\nisTraveling:$isTraveling '
+  //       '\nlasttested:$lastTested '
+  //       '\npronouns:$pronouns '
+  //       '\nhashtags:$hashtags '
+  //       '\n-----------------------------\n';
+  // }
 }
