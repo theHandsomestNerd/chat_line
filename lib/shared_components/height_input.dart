@@ -1,3 +1,4 @@
+import 'package:cookout/wrappers/text_field_wrapped.dart';
 import 'package:flutter/material.dart';
 
 import '../models/submodels/height.dart';
@@ -45,35 +46,29 @@ class _HeightInputState extends State<HeightInput> {
     return Row(
       children: [
         Flexible(
-          child: TextFormField(
+          child: TextFieldWrapped(
             key: ObjectKey(
                 "${widget.initialValue?.feet.toString() ?? ""}-height-feet"),
             initialValue: widget.initialValue?.feet.toString() ?? "",
-            onChanged: (e) {
+            setField: (e) {
               if (e != "null") {
                 _setFeet(int.parse(e));
               }
             },
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              labelText: 'Height Feet',
-            ),
+            labelText: 'Height Feet',
           ),
         ),
         Flexible(
-          child: TextFormField(
+          child: TextFieldWrapped(
             key: ObjectKey(
                 "${widget.initialValue?.inches.toString() ?? ""}-height-inches"),
             initialValue: widget.initialValue?.inches.toString() ?? "",
-            onChanged: (e) {
+            setField: (e) {
               if (e != "null") {
                 _setInches(int.parse(e));
               }
             },
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              labelText: 'Height Inches',
-            ),
+            labelText: 'Height Inches',
           ),
         ),
       ],

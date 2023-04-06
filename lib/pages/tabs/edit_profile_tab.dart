@@ -337,39 +337,44 @@ class _EditProfileTabState extends State<EditProfileTab> {
                   title: Row(
                     children: [
                       Flexible(
-                        child: TextFormField(
+                        flex: 1,
+                        child: TextFieldWrapped(
                           key: ObjectKey(
                               "${extProfile?.age.toString() ?? ""}-age"),
                           initialValue: extProfile?.age.toString() ?? "",
-                          onChanged: (e) {
+                          setField: (e) {
                             _setAge(int.parse(e));
                           },
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Age',
-                          ),
+                          labelText: "Age",
                         ),
                       ),
+                      SizedBox(width: 16,),
                       Flexible(
-                        child: TextFormField(
+                        flex: 2,
+                        child: TextFieldWrapped(
                           key: ObjectKey(
                               "${extProfile?.weight.toString() ?? ""}-weight"),
                           initialValue: extProfile?.weight.toString(),
-                          onChanged: (e) {
+                          setField: (e) {
                             _setWeight(int.parse(e));
                           },
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Weight',
-                          ),
+                          labelText: 'Weight',
                         ),
                       ),
-                      Flexible(
-                          child: HeightInput(
+                    ],
+                  ),
+                ),
+                ListTile(
+                  title: Flex(
+                    direction: Axis.horizontal,
+                    children: [
+                    Flexible(
+                      child: HeightInput(
                         initialValue: extProfile?.height,
                         updateHeight: _updateHeight,
-                      )),
-                    ],
+                      ),
+                    ),
+                  ]
                   ),
                 ),
                 ListTile(
