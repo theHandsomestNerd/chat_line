@@ -31,10 +31,7 @@ class BioTab extends StatefulWidget {
       required this.profileLikedByMe,
       required this.profileFollowedByMe,
       required this.profileFollows,
-        
-
-        required this.goToCommentsTab});
-  
+      required this.goToCommentsTab});
 
   final String id;
   final updateBlocks;
@@ -62,14 +59,15 @@ class _BioTabState extends State<BioTab> {
 
   late ApiClient? profileClient = null;
   late ChatController? chatController = null;
-  late AnalyticsController? analyticsController=null;
+  late AnalyticsController? analyticsController = null;
 
   @override
   initState() {
     super.initState();
-    analyticsController?.logScreenView('profile-bio-tab').then((x)async {
+    analyticsController?.logScreenView('profile-bio-tab').then((x) async {
       if (widget.id == "") {
-        await analyticsController?.sendAnalyticsEvent('bio-tab-redirect',{"message": "no-id"});
+        await analyticsController
+            ?.sendAnalyticsEvent('bio-tab-redirect', {"message": "no-id"});
 
         Navigator.popAndPushNamed(context, '/profilesPage');
       }
@@ -93,14 +91,15 @@ class _BioTabState extends State<BioTab> {
         await theChatController?.profileClient.getExtendedProfile(widget.id);
     profileClient = theChatController?.profileClient;
     chatController = theChatController;
-    if(theAnalyticsController != null) {
+    if (theAnalyticsController != null) {
       analyticsController = theAnalyticsController;
     }
     setState(() {});
   }
 
   _likeThisProfile(context) async {
-    await analyticsController?.sendAnalyticsEvent('profile-like-press',{"liked": widget.id});
+    await analyticsController
+        ?.sendAnalyticsEvent('profile-like-press', {"liked": widget.id});
 
     setState(() {
       _isLiking = true;
@@ -125,7 +124,8 @@ class _BioTabState extends State<BioTab> {
   }
 
   _followThisProfile(context) async {
-    await analyticsController?.sendAnalyticsEvent('profile-follow-press',{"followed": widget.id});
+    await analyticsController
+        ?.sendAnalyticsEvent('profile-follow-press', {"followed": widget.id});
 
     setState(() {
       _isFollowing = true;
@@ -151,7 +151,9 @@ class _BioTabState extends State<BioTab> {
   }
 
   _blockThisProfile(context) async {
-    await analyticsController?.sendAnalyticsEvent('profile-block-press', {"blocked": widget.id,});
+    await analyticsController?.sendAnalyticsEvent('profile-block-press', {
+      "blocked": widget.id,
+    });
 
     setState(() {
       _isBlocking = true;
@@ -200,13 +202,217 @@ class _BioTabState extends State<BioTab> {
                                       child: CardWithBackground(
                                         width: 350,
                                         height: 350,
-                                        image: NetworkImage(MyImageBuilder()
-                                            .urlFor(widget
-                                                .thisProfile?.profileImage!, 350,350)!
-                                            .url()),
-                                        child: const SizedBox(
-                                          height: 350.0,
-                                          width: 350.0,
+                                        image:
+                                            widget.thisProfile?.profileImage !=
+                                                        null &&
+                                                    widget.thisProfile
+                                                            ?.profileImage !=
+                                                        ""
+                                                ? NetworkImage(MyImageBuilder()
+                                                    .urlFor(
+                                                        widget.thisProfile
+                                                            ?.profileImage!,
+                                                        350,
+                                                        350)!
+                                                    .url())
+                                                : const Image(
+                                                    image: AssetImage(
+                                                        'assets/blankProfileImage.png'),
+                                                  ).image,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            ConstrainedBox(
+                                              constraints:
+                                                  BoxConstraints(maxWidth: 320),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Flex(
+                                                      direction:
+                                                          Axis.horizontal,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    8,
+                                                                    24,
+                                                                    0,
+                                                                    8),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                ToolButton(
+                                                                  isDisabled:
+                                                                      (widget.isThisMe ==
+                                                                          true),
+                                                                  // key: ObjectKey(
+                                                                  //     chatController?.myBlockedProfiles),
+                                                                  action:
+                                                                      _blockThisProfile,
+                                                                  iconData: Icons
+                                                                      .block,
+                                                                  color: Colors
+                                                                      .red,
+                                                                  isLoading:
+                                                                      _isBlocking,
+                                                                  // text: "Block",
+                                                                  isHideLabel:
+                                                                      true,
+                                                                  label:
+                                                                      'Block',
+                                                                  isActive: chatController
+                                                                      ?.isProfileBlockedByMe(
+                                                                          widget
+                                                                              .id),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              color:
+                                                  Colors.black.withOpacity(.5),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        10, 10, 10, 10),
+                                                child: Flex(
+                                                  key: ObjectKey((widget
+                                                          .profileLikes
+                                                          .toString()) +
+                                                      (widget.profileFollows
+                                                          .toString()) +
+                                                      (widget.profileComments
+                                                          .toString())),
+                                                  direction: Axis.horizontal,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    Flexible(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          ToolButton(
+                                                            defaultColor:
+                                                                Colors.white,
+                                                            isDisabled: (widget
+                                                                    .isThisMe ==
+                                                                true),
+                                                            action:
+                                                                _likeThisProfile,
+                                                            iconData:
+                                                                Icons.thumb_up,
+                                                            color: Colors.green,
+                                                            isLoading:
+                                                                _isLiking,
+                                                            text: widget
+                                                                .profileLikes
+                                                                ?.length
+                                                                .toString(),
+                                                            label: 'Like',
+                                                            isActive: widget
+                                                                    .profileLikedByMe !=
+                                                                null,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Flexible(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          ToolButton(
+                                                              defaultColor:
+                                                                  Colors.white,
+                                                              isDisabled: (widget
+                                                                      .isThisMe ==
+                                                                  true),
+                                                              action:
+                                                                  _followThisProfile,
+                                                              text: widget
+                                                                  .profileFollows
+                                                                  ?.length
+                                                                  .toString(),
+                                                              isActive: widget
+                                                                      .profileFollowedByMe !=
+                                                                  null,
+                                                              iconData: Icons
+                                                                  .favorite,
+                                                              isLoading:
+                                                                  _isFollowing,
+                                                              color:
+                                                                  Colors.blue,
+                                                              label: 'Follow'),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // const Divider(
+                                                    //   color: Colors.black12,
+                                                    //   thickness: 2,
+                                                    // ),
+                                                    Flexible(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          ToolButton(
+                                                              defaultColor:
+                                                                  Colors.white,
+                                                              isDisabled: (widget
+                                                                      .isThisMe ==
+                                                                  true),
+                                                              // key: ObjectKey(
+                                                              //     "${widget.profileComments?.length}-comments"),
+                                                              text: widget
+                                                                  .profileComments
+                                                                  ?.length
+                                                                  .toString(),
+                                                              action:
+                                                                  (context) {
+                                                                widget
+                                                                    .goToCommentsTab();
+                                                              },
+                                                              iconData:
+                                                                  Icons.comment,
+                                                              color:
+                                                                  Colors.yellow,
+                                                              label: 'Comment'),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // const Divider(
+                                                    //   color: Colors.black12,
+                                                    //   thickness: 2,
+                                                    // ),
+
+                                                    // const Divider(
+                                                    //   color: Colors.black12,
+                                                    //   thickness: 2,
+                                                    // ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -221,91 +427,91 @@ class _BioTabState extends State<BioTab> {
                                   widget.thisProfile?.profileImage.toString() ??
                                       ""),
                             ),
-                      SizedBox(
-                        width: 150,
-                        key: ObjectKey((widget.profileLikes.toString()) +
-                            (widget.profileFollows.toString()) +
-                            (widget.profileComments.toString())),
-                        child: Column(
-                          children: [
-                            const Divider(
-                              color: Colors.black12,
-                              thickness: 2,
-                            ),
-                            ListTile(
-                              title: ToolButton(
-                                isDisabled: (widget.isThisMe == true),
-                                action: _likeThisProfile,
-                                iconData: Icons.thumb_up,
-                                color: Colors.green,
-                                isLoading: _isLiking,
-                                text: widget.profileLikes?.length.toString(),
-                                label: 'Like',
-                                isActive: widget.profileLikedByMe != null,
-                              ),
-                            ),
-                            const Divider(
-                              color: Colors.black12,
-                              thickness: 2,
-                            ),
-                            ListTile(
-                              // key:
-                              // ObjectKey("${widget.profileFollows}-follows"),
-                              title: ToolButton(
-                                  isDisabled: (widget.isThisMe == true),
-                                  action: _followThisProfile,
-                                  text:
-                                      widget.profileFollows?.length.toString(),
-                                  isActive: widget.profileFollowedByMe != null,
-                                  iconData: Icons.favorite,
-                                  isLoading: _isFollowing,
-                                  color: Colors.blue,
-                                  label: 'Follow'),
-                            ),
-                            const Divider(
-                              color: Colors.black12,
-                              thickness: 2,
-                            ),
-                            ListTile(
-                              title: ToolButton(
-                                  isDisabled: (widget.isThisMe == true),
-                                  // key: ObjectKey(
-                                  //     "${widget.profileComments?.length}-comments"),
-                                  text:
-                                      widget.profileComments?.length.toString(),
-                                  action: (context) {
-                                    widget.goToCommentsTab();
-                                  },
-                                  iconData: Icons.comment,
-                                  color: Colors.yellow,
-                                  label: 'Comment'),
-                            ),
-                            const Divider(
-                              color: Colors.black12,
-                              thickness: 2,
-                            ),
-                            ListTile(
-                              title: ToolButton(
-                                isDisabled: (widget.isThisMe == true),
-                                // key: ObjectKey(
-                                //     chatController?.myBlockedProfiles),
-                                action: _blockThisProfile,
-                                iconData: Icons.block,
-                                color: Colors.red,
-                                isLoading: _isBlocking,
-                                text: "Block",
-                                label: 'Block',
-                                isActive: chatController
-                                    ?.isProfileBlockedByMe(widget.id),
-                              ),
-                            ),
-                            const Divider(
-                              color: Colors.black12,
-                              thickness: 2,
-                            ),
-                          ],
-                        ),
-                      ),
+                      // SizedBox(
+                      //   width: 150,
+                      //   key: ObjectKey((widget.profileLikes.toString()) +
+                      //       (widget.profileFollows.toString()) +
+                      //       (widget.profileComments.toString())),
+                      //   child: Column(
+                      //     children: [
+                      //       const Divider(
+                      //         color: Colors.black12,
+                      //         thickness: 2,
+                      //       ),
+                      //       ListTile(
+                      //         title: ToolButton(
+                      //           isDisabled: (widget.isThisMe == true),
+                      //           action: _likeThisProfile,
+                      //           iconData: Icons.thumb_up,
+                      //           color: Colors.green,
+                      //           isLoading: _isLiking,
+                      //           text: widget.profileLikes?.length.toString(),
+                      //           label: 'Like',
+                      //           isActive: widget.profileLikedByMe != null,
+                      //         ),
+                      //       ),
+                      //       const Divider(
+                      //         color: Colors.black12,
+                      //         thickness: 2,
+                      //       ),
+                      //       ListTile(
+                      //         // key:
+                      //         // ObjectKey("${widget.profileFollows}-follows"),
+                      //         title: ToolButton(
+                      //             isDisabled: (widget.isThisMe == true),
+                      //             action: _followThisProfile,
+                      //             text:
+                      //                 widget.profileFollows?.length.toString(),
+                      //             isActive: widget.profileFollowedByMe != null,
+                      //             iconData: Icons.favorite,
+                      //             isLoading: _isFollowing,
+                      //             color: Colors.blue,
+                      //             label: 'Follow'),
+                      //       ),
+                      //       const Divider(
+                      //         color: Colors.black12,
+                      //         thickness: 2,
+                      //       ),
+                      //       ListTile(
+                      //         title: ToolButton(
+                      //             isDisabled: (widget.isThisMe == true),
+                      //             // key: ObjectKey(
+                      //             //     "${widget.profileComments?.length}-comments"),
+                      //             text:
+                      //                 widget.profileComments?.length.toString(),
+                      //             action: (context) {
+                      //               widget.goToCommentsTab();
+                      //             },
+                      //             iconData: Icons.comment,
+                      //             color: Colors.yellow,
+                      //             label: 'Comment'),
+                      //       ),
+                      //       const Divider(
+                      //         color: Colors.black12,
+                      //         thickness: 2,
+                      //       ),
+                      //       ListTile(
+                      //         title: ToolButton(
+                      //           isDisabled: (widget.isThisMe == true),
+                      //           // key: ObjectKey(
+                      //           //     chatController?.myBlockedProfiles),
+                      //           action: _blockThisProfile,
+                      //           iconData: Icons.block,
+                      //           color: Colors.red,
+                      //           isLoading: _isBlocking,
+                      //           text: "Block",
+                      //           label: 'Block',
+                      //           isActive: chatController
+                      //               ?.isProfileBlockedByMe(widget.id),
+                      //         ),
+                      //       ),
+                      //       const Divider(
+                      //         color: Colors.black12,
+                      //         thickness: 2,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

@@ -14,7 +14,8 @@ class CardWithBackground extends StatelessWidget {
   final Widget child;
   final double? width;
   final double? height;
-  final ImageProvider image;
+  final ImageProvider? image;
+
 
   // "https://placeimg.com/640/480/any"
   @override
@@ -24,13 +25,16 @@ class CardWithBackground extends StatelessWidget {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: shape ??
           const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderRadius: BorderRadius.all(Radius.circular(0)),
             //set border radius more than 50% of height and width to make circle
           ),
       child: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: image,
+            image: image ?? const Image(
+              image: AssetImage(
+                  'assets/blankProfileImage.png'),
+            ).image,
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
           )),

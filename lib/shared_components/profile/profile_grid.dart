@@ -6,7 +6,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../models/app_user.dart';
 import '../../models/controllers/auth_inherited.dart';
-import '../../models/controllers/chat_controller.dart';
 
 class ProfileGrid extends StatefulWidget {
   const ProfileGrid({
@@ -18,7 +17,7 @@ class ProfileGrid extends StatefulWidget {
 }
 
 class _ProfileGridState extends State<ProfileGrid> {
-  static const _pageSize = 20;
+  static const _pageSize = 40;
   AuthController? authController = null;
   late ApiClient client;
 
@@ -95,25 +94,24 @@ class _ProfileGridState extends State<ProfileGrid> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 900,
-      height: 900,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+
+      maxWidth: 380,
+      ),
       child: PagedGridView<String, AppUser>(
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           mainAxisExtent: 100,
+          mainAxisSpacing: 0,
+          crossAxisSpacing: 0,
           crossAxisCount: 4,
           childAspectRatio: 0.5,
         ),
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<AppUser>(
-          itemBuilder: (context, item, index) => Flex(
-            direction: Axis.horizontal,
-            children: [Flexible(
-              child: ProfileSolo(
-                profile: item,
-              ),
-            ),]
+          itemBuilder: (context, item, index) => ProfileSolo(
+            profile: item,
           ),
         ),
       ),
