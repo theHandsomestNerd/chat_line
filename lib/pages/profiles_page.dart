@@ -1,6 +1,5 @@
 import 'package:cookout/models/controllers/chat_controller.dart';
 import 'package:cookout/pages/tabs/blocks_tab.dart';
-import 'package:cookout/pages/tabs/posts_tab.dart';
 import 'package:cookout/pages/tabs/profile_list_tab.dart';
 import 'package:cookout/pages/tabs/timeline_events_tab.dart';
 import 'package:cookout/shared_components/menus/profile_page_menu.dart';
@@ -84,7 +83,6 @@ class _ProfilesPageState extends State<ProfilesPage> {
         'Index 4: Albums',
         style: optionStyle,
       ),
-      const PostsTab(),
     ];
 
     return theOptions.elementAt(selectedIndex);

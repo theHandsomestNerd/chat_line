@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cookout/models/responses/chat_api_get_profile_posts_response.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import '../comment.dart';
 import '../extended_profile.dart';
 import '../follow.dart';
 import '../like.dart';
+import '../post.dart';
 import '../responses/auth_api_profile_list_response.dart';
 import '../responses/chat_api_get_profile_block_response.dart';
 import '../responses/chat_api_get_profile_comments_response.dart';
@@ -144,6 +146,36 @@ Future<List<AppUser>> fetchProfilesPaginated(String? lastId, int pageSize) async
       }
     }
     return <AppUser>[];
+  }
+Future<List<Post>> fetchPostsPaginated(String? lastId, int pageSize) async {
+    if (kDebugMode) {
+      print("Retrieving paginated Posts with lastid ${lastId} and pagesize ${pageSize}");
+    }
+    String? token = await getIdToken();
+    print("token $token");
+    print("url ${DefaultConfig.theAuthBaseUrl}");
+    if (DefaultConfig.theAuthBaseUrl == "") {
+      print(
+          "Retrieving paginated Profiles authBaseUrl empty ${DefaultConfig.theAuthBaseUrl}");
+      return <Post>[];
+    }
+
+    if (token != null && DefaultConfig.theAuthBaseUrl != "") {
+      final response = await http.get(
+          Uri.parse("${DefaultConfig.theAuthBaseUrl}/get-all-posts-paginated/$pageSize${lastId != null ? "/${lastId}":""}"),
+          headers: {"Authorization": ("Bearer $token")});
+
+      var processedResponse = jsonDecode(response.body);
+      // print("Profiles retrieved ${processedResponse}");
+      if (processedResponse['posts'] != null &&
+          processedResponse['posts'] != "null") {
+        ChatApiGetProfilePostsResponse responseModelList =
+            ChatApiGetProfilePostsResponse.fromJson(processedResponse['posts']);
+
+        return responseModelList.list;
+      }
+    }
+    return <Post>[];
   }
 
   Future<List<TimelineEvent>> retrieveTimelineEvents() async {
