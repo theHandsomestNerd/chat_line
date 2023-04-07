@@ -117,7 +117,7 @@ class ApiClient {
   }
 Future<List<AppUser>> fetchProfilesPaginated(String? lastId, int pageSize) async {
     if (kDebugMode) {
-      print("Retrieving paginated Profiles");
+      print("Retrieving paginated Profiles with lastid ${lastId} and pagesize ${pageSize}");
     }
     String? token = await getIdToken();
     print("token $token");

@@ -1,3 +1,4 @@
+import 'package:cookout/models/clients/api_client.dart';
 import 'package:cookout/models/controllers/auth_controller.dart';
 import 'package:cookout/shared_components/profile/profile_solo.dart';
 import 'package:flutter/material.dart';
@@ -21,18 +22,20 @@ class ProfileGrid extends StatefulWidget {
 
 class _ProfileGridState extends State<ProfileGrid> {
   static const _pageSize = 20;
-  static String? thePageKey = null;
-  List<AppUser> profiles = [];
-  AuthController? authController;
-  ChatController? chatController;
+  AuthController? authController = null;
+  late ApiClient client;
 
   @override
   didChangeDependencies() async {
     super.didChangeDependencies();
-    var theChatController = AuthInherited.of(context)?.chatController;
+
+    // var theChatController = AuthInherited.of(context)?.chatController;
     var theAuthController = AuthInherited.of(context)?.authController;
-    var theAAuthClient =
-        AuthInherited.of(context)?.chatController?.profileClient;
+    var theClient = AuthInherited.of(context)?.chatController?.profileClient;
+    if (theClient != null) {
+      client = theClient;
+    }
+
     // AnalyticsController? theAnalyticsController =
     //     AuthInherited.of(context)?.analyticsController;
 
@@ -43,7 +46,6 @@ class _ProfileGridState extends State<ProfileGrid> {
     if (authController == null && theAuthController != null) {
       authController = authController;
     }
-    chatController = theChatController;
     // myUserId =
     //     AuthInherited.of(context)?.authController?.myAppUser?.userId ?? "";
     // if((widget.profiles?.length??-1) > 0){
@@ -62,16 +64,17 @@ class _ProfileGridState extends State<ProfileGrid> {
       PagingController(firstPageKey: "");
 
   Future<void> _fetchPage(String pageKey) async {
+    print("Retrieving page with pagekey $pageKey  and size $_pageSize $client");
     try {
       List<AppUser>? newItems;
-      newItems = await chatController?.profileClient
-          .fetchProfilesPaginated(pageKey, _pageSize);
+      newItems = await client.fetchProfilesPaginated(pageKey, _pageSize);
 
-      final isLastPage = (newItems?.length ?? 0) < _pageSize;
+      print("Got more items ${newItems.length}");
+      final isLastPage = (newItems.length ?? 0) < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems ?? []);
       } else {
-        final nextPageKey = newItems?.last.userId;
+        final nextPageKey = newItems.last.userId;
         if (nextPageKey != null) {
           _pagingController.appendPage(newItems ?? [], nextPageKey);
         }
@@ -87,6 +90,8 @@ class _ProfileGridState extends State<ProfileGrid> {
       return _fetchPage(theLastId);
     });
 
+    _pagingController.refresh();
+
     super.initState();
   }
 
@@ -96,23 +101,25 @@ class _ProfileGridState extends State<ProfileGrid> {
     return SizedBox(
       width: 900,
       height: 900,
-      child: PagedListView<String, AppUser>(
-        scrollDirection: Axis.horizontal,
+      child: PagedGridView<String, AppUser>(
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          mainAxisExtent: 100,
+          crossAxisCount: 4,
+          childAspectRatio: 0.5,
+        ),
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<AppUser>(
-          itemBuilder: (context, item, index) => ProfileSolo(
-            profile: item,
+          itemBuilder: (context, item, index) => Flex(
+            direction: Axis.horizontal,
+            children: [Flexible(
+              child: ProfileSolo(
+                profile: item,
+              ),
+            ),]
           ),
         ),
       ),
-      // child: SingleChildScrollView(
-      //   child: Wrap(
-      //       children: (widget.profiles ?? []).map((profile) {
-      //     return ProfileSolo(
-      //       profile: profile,
-      //     );
-      //   }).toList()),
-      // ),
     );
   }
 
