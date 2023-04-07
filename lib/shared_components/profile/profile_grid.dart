@@ -11,10 +11,7 @@ import '../../models/controllers/chat_controller.dart';
 class ProfileGrid extends StatefulWidget {
   const ProfileGrid({
     super.key,
-    this.profiles,
   });
-
-  final List<AppUser>? profiles;
 
   @override
   State<ProfileGrid> createState() => _ProfileGridState();
