@@ -18,41 +18,17 @@ class ProfileGrid extends StatefulWidget {
 
 class _ProfileGridState extends State<ProfileGrid> {
   static const _pageSize = 40;
-  AuthController? authController = null;
   late ApiClient client;
 
   @override
   didChangeDependencies() async {
     super.didChangeDependencies();
 
-    // var theChatController = AuthInherited.of(context)?.chatController;
-    var theAuthController = AuthInherited.of(context)?.authController;
     var theClient = AuthInherited.of(context)?.chatController?.profileClient;
     if (theClient != null) {
       client = theClient;
     }
 
-    // AnalyticsController? theAnalyticsController =
-    //     AuthInherited.of(context)?.analyticsController;
-
-    // if(analyticsController == null && theAnalyticsController != null) {
-    //   await theAnalyticsController.logScreenView('profiles-page');
-    //   analyticsController = theAnalyticsController;
-    // }
-    if (authController == null && theAuthController != null) {
-      authController = authController;
-    }
-    // myUserId =
-    //     AuthInherited.of(context)?.authController?.myAppUser?.userId ?? "";
-    // if((widget.profiles?.length??-1) > 0){
-    //
-    // // profiles = theAuthController;
-    //
-    // } else {
-    //   profiles = await chatController?.updateProfiles();
-    // }
-
-    // profiles = await chatController?.updateProfiles();
     setState(() {});
   }
 
@@ -85,8 +61,6 @@ class _ProfileGridState extends State<ProfileGrid> {
     _pagingController.addPageRequestListener((theLastId) async {
       return _fetchPage(theLastId);
     });
-
-    _pagingController.refresh();
 
     super.initState();
   }

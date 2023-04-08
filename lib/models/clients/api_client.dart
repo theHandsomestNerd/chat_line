@@ -117,9 +117,12 @@ class ApiClient {
     }
     return <AppUser>[];
   }
-Future<List<AppUser>> fetchProfilesPaginated(String? lastId, int pageSize) async {
+
+  Future<List<AppUser>> fetchProfilesPaginated(
+      String? lastId, int pageSize) async {
     if (kDebugMode) {
-      print("Retrieving paginated Profiles with lastid ${lastId} and pagesize ${pageSize}");
+      print(
+          "Retrieving paginated Profiles with lastid ${lastId} and pagesize ${pageSize}");
     }
     String? token = await getIdToken();
     print("token $token");
@@ -132,7 +135,8 @@ Future<List<AppUser>> fetchProfilesPaginated(String? lastId, int pageSize) async
 
     if (token != null && DefaultConfig.theAuthBaseUrl != "") {
       final response = await http.get(
-          Uri.parse("${DefaultConfig.theAuthBaseUrl}/get-all-profiles-paginated/$pageSize${lastId != null ? "/${lastId}":""}"),
+          Uri.parse(
+              "${DefaultConfig.theAuthBaseUrl}/get-all-profiles-paginated/$pageSize${lastId != null ? "/${lastId}" : ""}"),
           headers: {"Authorization": ("Bearer $token")});
 
       var processedResponse = jsonDecode(response.body);
@@ -147,9 +151,11 @@ Future<List<AppUser>> fetchProfilesPaginated(String? lastId, int pageSize) async
     }
     return <AppUser>[];
   }
-Future<List<Post>> fetchPostsPaginated(String? lastId, int pageSize) async {
+
+  Future<List<Post>> fetchPostsPaginated(String? lastId, int pageSize) async {
     if (kDebugMode) {
-      print("Retrieving paginated Posts with lastid ${lastId} and pagesize ${pageSize}");
+      print(
+          "Retrieving paginated Posts with lastid ${lastId} and pagesize ${pageSize}");
     }
     String? token = await getIdToken();
     print("token $token");
@@ -162,7 +168,8 @@ Future<List<Post>> fetchPostsPaginated(String? lastId, int pageSize) async {
 
     if (token != null && DefaultConfig.theAuthBaseUrl != "") {
       final response = await http.get(
-          Uri.parse("${DefaultConfig.theAuthBaseUrl}/get-all-posts-paginated/$pageSize${lastId != null ? "/${lastId}":""}"),
+          Uri.parse(
+              "${DefaultConfig.theAuthBaseUrl}/get-all-posts-paginated/$pageSize${lastId != null ? "/${lastId}" : ""}"),
           headers: {"Authorization": ("Bearer $token")});
 
       var processedResponse = jsonDecode(response.body);
@@ -195,7 +202,8 @@ Future<List<Post>> fetchPostsPaginated(String? lastId, int pageSize) async {
             ChatApiGetTimelineEventsResponse.fromJson(
                 processedResponse['profileTimelineEvents']);
         if (kDebugMode) {
-          print("get timeline events api response ${responseModel.list.length}");
+          print(
+              "get timeline events api response ${responseModel.list.length}");
         }
 
         // for (var element in responseModel.list) {
@@ -397,7 +405,7 @@ Future<List<Post>> fetchPostsPaginated(String? lastId, int pageSize) async {
           ChatApiGetProfileLikesResponse responseModel =
               ChatApiGetProfileLikesResponse.fromJson(processedResponse);
           if (kDebugMode) {
-            print("get profile likes api response ${responseModel.list}");
+            print("get profile likes api response ${responseModel.list.length}");
           }
 
           return responseModel;
@@ -575,9 +583,10 @@ Future<List<Post>> fetchPostsPaginated(String? lastId, int pageSize) async {
     return [];
   }
 
-  Future<String> unlikeProfile(String userId, Like currentLike) async {
+  Future<String> unlike(
+      String likeeId, Like currentLike, String likeType) async {
     var message =
-        "UnLike Profile $userId by ${FirebaseAuth.instance.currentUser?.uid}";
+        "UnLike ${likeType} $likeeId by ${FirebaseAuth.instance.currentUser?.uid}";
     if (kDebugMode) {
       print(message);
     }
@@ -585,8 +594,8 @@ Future<List<Post>> fetchPostsPaginated(String? lastId, int pageSize) async {
     String? token = await getIdToken();
     if (token != null && DefaultConfig.theAuthBaseUrl != "") {
       final response = await http.post(
-          Uri.parse("${DefaultConfig.theAuthBaseUrl}/unlike-profile"),
-          body: {"likeId": currentLike.id},
+          Uri.parse("${DefaultConfig.theAuthBaseUrl}/unlike"),
+          body: {"likeId": currentLike.id, "likeType": likeType},
           headers: {"Authorization": ("Bearer $token")});
 
       var processedResponse = jsonDecode(response.body);
@@ -678,9 +687,9 @@ Future<List<Post>> fetchPostsPaginated(String? lastId, int pageSize) async {
     return ChatApiGetProfileFollowsResponse(list: []);
   }
 
-  Future<String> likeProfile(String userId) async {
+  Future<String> likeProfile(String likeeId, String likeType) async {
     var message =
-        "Like Profile $userId by ${FirebaseAuth.instance.currentUser?.uid}";
+        "Like $likeType $likeeId by ${FirebaseAuth.instance.currentUser?.uid}";
     if (kDebugMode) {
       print(message);
     }
@@ -688,8 +697,8 @@ Future<List<Post>> fetchPostsPaginated(String? lastId, int pageSize) async {
     String? token = await getIdToken();
     if (token != null && DefaultConfig.theAuthBaseUrl != "") {
       final response = await http.post(
-          Uri.parse("${DefaultConfig.theAuthBaseUrl}/like-profile"),
-          body: {"userId": userId},
+          Uri.parse("${DefaultConfig.theAuthBaseUrl}/like"),
+          body: {"likeeId": likeeId, "likeType": likeType},
           headers: {"Authorization": ("Bearer $token")});
 
       var processedResponse = jsonDecode(response.body);

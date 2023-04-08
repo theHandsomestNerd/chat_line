@@ -108,12 +108,12 @@ class _BioTabState extends State<BioTab> {
     bool isUnlike = false;
 
     if (widget.profileLikedByMe == null) {
-      likeResponse = await profileClient?.likeProfile(widget.id);
+      likeResponse = await profileClient?.likeProfile(widget.id, 'profile-like');
     } else {
       if (widget.profileLikedByMe != null) {
         isUnlike = true;
-        likeResponse = await profileClient?.unlikeProfile(
-            widget.id, widget.profileLikedByMe!);
+        likeResponse = await profileClient?.unlike(
+            widget.id, widget.profileLikedByMe!, 'profile-like');
       }
     }
 
@@ -368,7 +368,7 @@ class _BioTabState extends State<BioTab> {
                                                     //   color: Colors.black12,
                                                     //   thickness: 2,
                                                     // ),
-                                                    Flexible(
+                                                    Expanded(
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment

@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
             foundExtProfile = element;
           }
         }
-        if (foundExtProfile == null && !isExtProfileLoading ) {
+        if (profileIndex < (_profilePagingController.itemList?.length ?? 0) && foundExtProfile == null && !isExtProfileLoading ) {
           setState(() {
 
           isExtProfileLoading = true;

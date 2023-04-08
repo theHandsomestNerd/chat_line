@@ -39,53 +39,55 @@ class _ToolButtonState extends State<ToolButton> {
               widget.action(context);
             }
           : null,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          widget.isLoading != true
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Icon(
-                      widget.iconData,
-                      color: widget.isActive == true
-                          ? widget.color
-                          : widget.defaultColor ?? Colors.black,
-                      size: 20,
-                      semanticLabel: widget.label,
-                    ),
-                  ],
-                )
-              : Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
-                  child: SizedBox(
-                    height: 12,
-                    width: 12,
-                    child: CircularProgressIndicator(
-                      color:
-                          widget.isActive == true ? widget.color : Colors.white,
-                    ),
-                  ),
-                ),
-          if (widget.isHideLabel != true)
-            const SizedBox(
-              width: 16,
-            ),
-          if (widget.isHideLabel != true)
-            Text(
-              key: Key(widget.text ?? "0"),
-              widget.text ?? "0",
-              style: Theme.of(context).textTheme.labelLarge?.merge(
-                    TextStyle(
-                      // fontSize: ((widget.text?.length ?? 0) > 4) ? 16 : 16,
-                      color: widget.isActive == true
-                          ? widget.color
-                          : widget.defaultColor ?? Colors.black,
+      child: InkWell(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            widget.isLoading != true
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(
+                        widget.iconData,
+                        color: widget.isActive == true
+                            ? widget.color
+                            : widget.defaultColor ?? Colors.black,
+                        size: 20,
+                        semanticLabel: widget.label,
+                      ),
+                    ],
+                  )
+                : Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
+                    child: SizedBox(
+                      height: 12,
+                      width: 12,
+                      child: CircularProgressIndicator(
+                        color:
+                            widget.isActive == true ? widget.color : Colors.white,
+                      ),
                     ),
                   ),
-            ),
-        ],
+            if (widget.isHideLabel != true)
+              const SizedBox(
+                width: 16,
+              ),
+            if (widget.isHideLabel != true)
+              Text(
+                key: Key(widget.text ?? "0"),
+                widget.text ?? "0",
+                style: Theme.of(context).textTheme.labelLarge?.merge(
+                      TextStyle(
+                        // fontSize: ((widget.text?.length ?? 0) > 4) ? 16 : 16,
+                        color: widget.isActive == true
+                            ? widget.color
+                            : widget.defaultColor ?? Colors.black,
+                      ),
+                    ),
+              ),
+          ],
+        ),
       ),
     );
   }
