@@ -49,7 +49,12 @@ class UserBlockText extends StatelessWidget {
                 Navigator.pushNamed(context, '/profile',
                     arguments: {"id": user?.userId});
               },
-              child: Text(user?.displayName ?? ""),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(user?.displayName ?? ""),
+                ],
+              ),
             ),
           ),
         ],

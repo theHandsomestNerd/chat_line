@@ -8,6 +8,7 @@ import 'package:cookout/models/post.dart';
 import 'package:cookout/sanity/image_url_builder.dart';
 import 'package:cookout/shared_components/menus/home_page_menu.dart';
 import 'package:cookout/wrappers/card_with_actions.dart';
+import 'package:cookout/wrappers/circular_progress_indicator_with_message.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -125,11 +126,9 @@ class _HomePageState extends State<HomePage> with RouteAware {
     });
 
     _profilePageController.addListener(() {
-      if(_profilePagingController.itemList != null){
+      if (_profilePagingController.itemList != null) {
         isProfileLoading = false;
-        setState(() {
-
-        });
+        setState(() {});
       }
       var profileIndex = _profilePageController.page?.round() ?? 0;
       if (_profilePagingController.itemList != null &&
@@ -267,7 +266,6 @@ class _HomePageState extends State<HomePage> with RouteAware {
     //   });
     // }
 
-
     // if (isExtProfileLoading != true && highlightedExtProfile == null) {
     //   setState(() {
     //     isExtProfileLoading = true;
@@ -313,40 +311,39 @@ class _HomePageState extends State<HomePage> with RouteAware {
         children: [
           Expanded(
             child: PageView.custom(
-                    controller: _profilePageController,
-                    // pagingController: _pagingController,
-                    // shrinkWrap: true,
-                    // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //   mainAxisExtent: 450,
-                    //   crossAxisCount: 1,
-                    //   childAspectRatio: 1,
-                    // ),
-                    childrenDelegate: SliverChildBuilderDelegate(
-                      (build, thePageIndex) {
-                        var theItem = _profilePagingController
-                                    .itemList?.isNotEmpty ??
-                                false
-                            ? _profilePagingController.itemList![thePageIndex]
-                            : null;
+              controller: _profilePageController,
+              // pagingController: _pagingController,
+              // shrinkWrap: true,
+              // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //   mainAxisExtent: 450,
+              //   crossAxisCount: 1,
+              //   childAspectRatio: 1,
+              // ),
+              childrenDelegate: SliverChildBuilderDelegate(
+                (build, thePageIndex) {
+                  var theItem =
+                      _profilePagingController.itemList?.isNotEmpty ?? false
+                          ? _profilePagingController.itemList![thePageIndex]
+                          : null;
 
-                        if (thePageIndex >=
-                            (_profilePagingController.itemList?.length ?? 0) -
-                                3) {
-                          _profilePagingController.notifyPageRequestListeners(
-                              _profilePagingController.nextPageKey ?? "");
-                        }
+                  if (thePageIndex >=
+                      (_profilePagingController.itemList?.length ?? 0) - 3) {
+                    _profilePagingController.notifyPageRequestListeners(
+                        _profilePagingController.nextPageKey ?? "");
+                  }
 
-                        var thisExtProfile;
-                        extProfiles.forEach((element) {
-                          if (element.userId ==
-                              _profilePagingController
-                                  .itemList![thePageIndex].userId) {
-                            thisExtProfile = element;
-                          }
-                        });
+                  var thisExtProfile;
+                  extProfiles.forEach((element) {
+                    if (element.userId ==
+                        _profilePagingController
+                            .itemList![thePageIndex].userId) {
+                      thisExtProfile = element;
+                    }
+                  });
 
-                        //get the extended profile for this user
-                        return CardWithActions(
+                  //get the extended profile for this user
+                  return theItem != null
+                      ? CardWithActions(
                           locationRow: Flex(
                             direction: Axis.horizontal,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -418,52 +415,53 @@ class _HomePageState extends State<HomePage> with RouteAware {
                               ),
                             ],
                           ),
-                          image: theItem?.profileImage != null
+                          image: theItem.profileImage != null
                               ? NetworkImage(MyImageBuilder()
-                                  .urlFor(theItem?.profileImage!, null, null)!
+                                  .urlFor(theItem.profileImage!, null, null)!
                                   .url())
                               : Image(
                                   image: AssetImage(
                                       'assets/blankProfileImage.png'),
                                 ).image,
                           action1Text:
-                              "${theItem?.displayName?.toUpperCase()[0]}${theItem?.displayName?.substring(1).toLowerCase()}",
+                              "${theItem.displayName?.toUpperCase()[0]}${theItem.displayName?.substring(1).toLowerCase()}",
                           action2Text: 'All Profiles',
                           action1OnPressed: () async {
-                            if (theItem?.userId != null) {
+                            if (theItem.userId != null) {
                               await analyticsController?.sendAnalyticsEvent(
                                   'view-profile-while-highlighted-pressed',
-                                  {"highlightedUserId": theItem?.userId});
+                                  {"highlightedUserId": theItem.userId});
                               cancelHomeScreenTimers();
 
                               Navigator.pushNamed(context, '/profile',
-                                  arguments: {"id": theItem?.userId});
+                                  arguments: {"id": theItem.userId});
                             }
                           },
                           action2OnPressed: () async {
                             await analyticsController?.sendAnalyticsEvent(
                                 'view-all-profiles-pressed',
-                                {"highlightedUserId": theItem?.userId});
+                                {"highlightedUserId": theItem.userId});
 
                             cancelHomeScreenTimers();
 
                             Navigator.pushNamed(context, '/profilesPage');
                           },
+                        )
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              !isProfileLoading && (theItem != null)
+                                  ? const Text("No Profiles with images")
+                                  : CircularProgressIndicatorWithMessage(
+                                      message: "Loading Profile Previews",
+                                    ),
+                            ],
+                          ),
                         );
-                      },
-                    ),
-                  )
-                // : Center(
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       !isPostLoading &&
-                //               (chatController?.profileList.isEmpty ?? false)
-                //           ? const Text("No Profiles with images")
-                //           : CircularProgressIndicator(),
-                //     ],
-                //   ),
-                // ),
+                },
+              ),
+            ),
           ),
           Expanded(
             child: PageView.custom(
@@ -475,58 +473,75 @@ class _HomePageState extends State<HomePage> with RouteAware {
               //   crossAxisCount: 1,
               //   childAspectRatio: 1,
               // ),
-              childrenDelegate:
-                  SliverChildBuilderDelegate((build, thePageIndex) {
-                var theItem =
-                    _postPagingController.itemList?.isNotEmpty ?? false
-                        ? _postPagingController.itemList![thePageIndex]
-                        : null;
 
-                if (thePageIndex >=
-                    (_postPagingController.itemList?.length ?? 0) - 3) {
-                  _postPagingController.notifyPageRequestListeners(
-                      _postPagingController.nextPageKey ?? "");
-                }
+              childrenDelegate: SliverChildBuilderDelegate(
+                (build, thePageIndex) {
+                  var theItem =
+                      _postPagingController.itemList?.isNotEmpty ?? false
+                          ? _postPagingController.itemList![thePageIndex]
+                          : null;
 
-                //get the extended profile for this user
-                return CardWithActions(
-                  author: theItem?.author,
-                  authorImageUrl: MyImageBuilder()
-                          .urlFor(theItem?.author?.profileImage, null, null)
-                          ?.url() ??
-                      "",
-                  when: theItem?.publishedAt,
-                  locationRow: null,
-                  caption: "${theItem?.body}",
-                  image: theItem?.mainImage != null
-                      ? NetworkImage(MyImageBuilder()
-                          .urlFor(theItem?.mainImage!, null, null)!
-                          .url())
-                      : Image(
-                          image: AssetImage('assets/blankProfileImage.png'),
-                        ).image,
-                  action1Text: theItem?.author?.displayName,
-                  action2Text: 'All Posts',
-                  action1OnPressed: () async {
-                    await analyticsController?.sendAnalyticsEvent(
-                        'view-post-while-highlighted-pressed',
-                        {"highlightedPostId": theItem?.id});
+                  if (thePageIndex >=
+                      (_postPagingController.itemList?.length ?? 0) - 3) {
+                    _postPagingController.notifyPageRequestListeners(
+                        _postPagingController.nextPageKey ?? "");
+                  }
 
-                    if (theItem?.id != null) {
-                      cancelHomeScreenTimers();
-                      Navigator.pushNamed(context, '/post',
-                          arguments: {"id": theItem?.id});
-                    }
-                  },
-                  action2OnPressed: () async {
-                    await analyticsController?.sendAnalyticsEvent(
-                        'view-all-posts-while-highlighted-pressed',
-                        {"highlightedPostId": theItem?.id});
-                    cancelHomeScreenTimers();
-                    Navigator.pushNamed(context, '/postsPage');
-                  },
-                );
-              }),
+                  //get the extended profile for this user
+                  return theItem != null
+                      ? CardWithActions(
+                          author: theItem.author,
+                          authorImageUrl: MyImageBuilder()
+                                  .urlFor(
+                                      theItem.author?.profileImage, null, null)
+                                  ?.url() ??
+                              "",
+                          when: theItem.publishedAt,
+                          locationRow: null,
+                          caption: "${theItem.body}",
+                          image: theItem.mainImage != null
+                              ? NetworkImage(MyImageBuilder()
+                                  .urlFor(theItem.mainImage!, null, null)!
+                                  .url())
+                              : Image(
+                                  image: AssetImage(
+                                      'assets/blankProfileImage.png'),
+                                ).image,
+                          action1Text: theItem.author?.displayName,
+                          action2Text: 'All Posts',
+                          action1OnPressed: () async {
+                            await analyticsController?.sendAnalyticsEvent(
+                                'view-post-while-highlighted-pressed',
+                                {"highlightedPostId": theItem.id});
+
+                            if (theItem.id != null) {
+                              cancelHomeScreenTimers();
+                              Navigator.pushNamed(context, '/post',
+                                  arguments: {"id": theItem.id});
+                            }
+                          },
+                          action2OnPressed: () async {
+                            await analyticsController?.sendAnalyticsEvent(
+                                'view-all-posts-while-highlighted-pressed',
+                                {"highlightedPostId": theItem.id});
+                            cancelHomeScreenTimers();
+                            Navigator.pushNamed(context, '/postsPage');
+                          },
+                        )
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              !isPostLoading && (theItem == null)
+                                  ? const Text("No Posts with images")
+                                  : CircularProgressIndicatorWithMessage(
+                                      message: "Loading Post Previews",
+                                    ),
+                            ],
+                          ),
+                        );
+                },
+              ),
             ),
           ),
         ],
