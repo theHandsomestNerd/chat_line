@@ -21,6 +21,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:meta_seo/meta_seo.dart';
 import 'package:package_info_plus_web/package_info_plus_web.dart';
 
 import 'config/firebase_options.dart';
@@ -35,6 +36,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
   // Ideal time to initialize
+  if (kIsWeb) {
+    MetaSEO().config();
+  }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -151,7 +155,30 @@ class _MyAppState extends State<MyApp> {
           '/postsPage': (context) => BugReporter(child: PostsPage()),
           '/createPostsPage': (context) => BugReporter(child: CreatePostPage()),
           '/register': (context) => BugReporter(child: RegisterPage()),
-          '/': (context) => BugReporter(child: LoginPage()),
+          '/': (context) {
+            if (kIsWeb) {
+              // Define MetaSEO object
+              MetaSEO meta = MetaSEO();
+              // add meta seo data for web app as you want
+              var title = 'Cookout-The Invite Only Social Media Network';
+              var image =
+                  "https://cdn.sanity.io/images/dhhk6mar/production/ae5b21a6e5982153e74ca8a815b90f92368ac9fa-3125x1875.png";
+              var description =
+                  'Cookout is the next invite only social media app. Invite only means real users unless they are admitted by someone already at the Cookout. You will be able to link to other Social media to enable cross posting for those not invited. Want the invite? tweet @Cookoutinvitee';
+              meta.ogTitle(ogTitle: title);
+              meta.description(description: description);
+              meta.keywords(keywords: 'social media, black twitter, memes');
+              meta.twitterCard(twitterCard: TwitterCard.summaryLargeImage);
+              meta.author(author: "The Handsomest Nerd");
+              meta.twitterDescription(twitterDescription: description);
+              meta.twitterImage(twitterImage: image);
+              meta.twitterTitle(twitterTitle: title);
+              meta.ogImage(ogImage: image);
+            }
+            return BugReporter(
+              child: LoginPage(),
+            );
+          },
           // '/editProfile': (context) => const EditProfilePage(),
           '/logout': (context) => BugReporter(child: LogoutPage()),
           '/profilesPage': (context) => BugReporter(child: ProfilesPage()),

@@ -456,6 +456,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
+  meta_seo:
+    dependency: "direct main"
+    description:
+      name: meta_seo
+      sha256: e8dcda6a0dc8730a2d86b6c2a8257f88f7507c3911281d438ee2a82edbf72b21
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.5"
   mime:
     dependency: transitive
     description:
