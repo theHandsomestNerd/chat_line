@@ -1,5 +1,6 @@
 import 'package:cookout/models/app_user.dart';
 import 'package:cookout/shared_components/user_block_text.dart';
+import 'package:cookout/wrappers/author_and_text.dart';
 import 'package:cookout/wrappers/card_with_background.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -13,17 +14,13 @@ class CardWithActions extends StatelessWidget {
 
   final action1OnPressed;
   final ImageProvider image;
-  final ImageProvider? authorImage;
 
   final String? action2Text;
 
   final action2OnPressed;
   final infoCard;
   final DateTime? when;
-  final authorId;
   final AppUser? author;
-  
-
 
   const CardWithActions(
       {super.key,
@@ -35,11 +32,7 @@ class CardWithActions extends StatelessWidget {
       this.action2OnPressed,
       this.locationRow,
       this.infoCard,
-        
-
-        required this.image,
-      this.authorImage,
-      this.authorId,
+      required this.image,
       this.author});
 
   @override
@@ -62,8 +55,7 @@ class CardWithActions extends StatelessWidget {
               children: [
                 if (locationRow != null)
                   Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: locationRow!),
+                      padding: const EdgeInsets.all(8.0), child: locationRow!),
                 if (infoCard != null)
                   Row(
                     children: [
@@ -85,18 +77,17 @@ class CardWithActions extends StatelessWidget {
                           color: Colors.black.withOpacity(.5),
                           onPressed: action1OnPressed,
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20,20,20,20.0),
+                            padding:
+                                const EdgeInsets.fromLTRB(20, 20, 20, 20.0),
                             child: Text(
                               action1Text!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.merge(
-                                const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              style:
+                                  Theme.of(context).textTheme.bodyLarge?.merge(
+                                        const TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                             ),
                           ),
                         ),
@@ -116,15 +107,13 @@ class CardWithActions extends StatelessWidget {
                             padding: const EdgeInsets.all(20.0),
                             child: Text(
                               action2Text!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.merge(
-                                const TextStyle(
-                                  color: Colors.white,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
+                              style:
+                                  Theme.of(context).textTheme.bodyLarge?.merge(
+                                        const TextStyle(
+                                          color: Colors.white,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
                             ),
                           ),
                         ),
@@ -140,99 +129,14 @@ class CardWithActions extends StatelessWidget {
                 Flex(
                   direction: Axis.horizontal,
                   children: [
-                    Expanded(
-                      child: Stack(
-                        alignment: Alignment.topLeft,
-                        children: [
-                          Card(
-                            margin: EdgeInsets.all(0),
-                            elevation: 0,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(0),
-                                topRight: Radius.circular(0),
-                              ),
-                              //set border radius more than 50% of height and width to make circle
-                            ),
-                            color: Colors.white.withOpacity(.8),
-                            child: Flex(
-                              direction: Axis.horizontal,
-                              children: [
-                                if (authorImage != null)
-                                  Flexible(
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          68, 0,0,0),
-                                      child: Column(
-                                        children: [
-                                          if (when != null)
-                                            Flex(
-                                              direction: Axis.horizontal,
-                                              children: [
-                                                Expanded(
-                                                    child: author != null
-                                                        ? UserBlockText(
-                                                        hideImage: true,
-                                                        user: author)
-                                                        : Text("")),
-                                                Expanded(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                      children: [
-                                                        Text(timeago
-                                                            .format(when!)),
-                                                      ],
-                                                    )),
-                                              ],
-                                            ),
-                                          Flex(
-                                            direction: Axis.horizontal,
-                                            children: [
-                                              Expanded(
-                                                child: Padding(
-                                                  padding:
-                                                  EdgeInsets.fromLTRB(
-                                                      12, 8.0, 8, 12),
-                                                  child: Text(
-                                                    caption!,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                          if (authorImage != null)
-                            ConstrainedBox(
-                              constraints: BoxConstraints(minHeight: 68),
-                              child: Flex(
-                                direction: Axis.horizontal,
-                                children: [
-                                  Flexible(
-                                    flex: 2,
-                                    child: CardWithBackground(
-                                        height: 68,
-                                        width: 68,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(0)),
-                                          //set border radius more than 50% of height and width to make circle
-                                        ),
-                                        image: authorImage,
-                                        child: const SizedBox(
-                                            height: 68, width: 68)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
+                    Flexible(
+                      child: author != null
+                          ? AuthorAndText(
+                              author: author!,
+                              when: when,
+                              body: caption,
+                            )
+                          : Container(),
                     ),
                   ],
                 ),

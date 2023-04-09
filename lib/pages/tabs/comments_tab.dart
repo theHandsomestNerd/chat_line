@@ -1,6 +1,7 @@
 import 'package:cookout/layout/list_and_small_form.dart';
 import 'package:cookout/models/controllers/chat_controller.dart';
 import 'package:cookout/shared_components/comments/comment_thread.dart';
+import 'package:cookout/wrappers/analytics_loading_button.dart';
 import 'package:cookout/wrappers/loading_button.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +51,6 @@ class _CommentsTabState extends State<CommentsTab> {
     chatController = theChatController;
 
     setState(() {});
-
   }
 
   void _setCommentBody(String newCommentBody) {
@@ -95,11 +95,13 @@ class _CommentsTabState extends State<CommentsTab> {
               labelText: 'Comment:',
             ),
           ),
-          LoadingButton(
-            action: () {
-              _commentThisProfile(context);
+          AnalyticsLoadingButton(
+            isDisabled: isCommenting,
+            analyticsEventName: 'create-comment',
+            analyticsEventData: {'author': widget.id, "body":_commentBody},
+            action: () async {
+              await _commentThisProfile(context);
             },
-            isLoading: isCommenting,
             text: "Comment",
           )
         ],

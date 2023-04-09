@@ -3,7 +3,7 @@ import 'package:cookout/models/controllers/analytics_controller.dart';
 import 'package:cookout/shared_components/logo.dart';
 import 'package:cookout/shared_components/menus/login_menu.dart';
 import 'package:cookout/wrappers/alerts_snackbar.dart';
-import 'package:cookout/wrappers/loading_button.dart';
+import 'package:cookout/wrappers/analytics_loading_button.dart';
 import 'package:cookout/wrappers/text_field_wrapped.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -31,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
   late AuthController authController;
   late AnalyticsController analyticsControllerController;
   final AlertSnackbar _alertSnackbar = AlertSnackbar();
-  bool isLoading = false;
   late String sanityDB;
   late String apiVersion;
   late String sanityApiDB;
@@ -67,14 +66,15 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _setUsername(String newUsername) async  {
-    if(newUsername.length == 1) {
-      await analyticsControllerController.sendAnalyticsEvent('login-username', {'event': "started_typing"});
+  void _setUsername(String newUsername) async {
+    if (newUsername.length == 1) {
+      await analyticsControllerController
+          .sendAnalyticsEvent('login-username', {'event': "started_typing"});
     }
 
-    if(!(_loginUsername.isEmpty ||
-        _loginPassword.isEmpty)) {
-      await analyticsControllerController.sendAnalyticsEvent('login-form-enabled', {'username': _loginUsername});
+    if (!(_loginUsername.isEmpty || _loginPassword.isEmpty)) {
+      await analyticsControllerController.sendAnalyticsEvent(
+          'login-form-enabled', {'username': _loginUsername});
     }
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -87,12 +87,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _setPassword(String newPassword) async {
-    if(newPassword.length == 1) {
-      await analyticsControllerController.sendAnalyticsEvent('login-password-field', {'event': "started_typing"});
+    if (newPassword.length == 1) {
+      await analyticsControllerController.sendAnalyticsEvent(
+          'login-password-field', {'event': "started_typing"});
     }
-    if(!(_loginUsername.isEmpty ||
-        _loginPassword.isEmpty)) {
-      await analyticsControllerController.sendAnalyticsEvent('login-form-enabled', {'username': _loginUsername});
+    if (!(_loginUsername.isEmpty || _loginPassword.isEmpty)) {
+      await analyticsControllerController.sendAnalyticsEvent(
+          'login-form-enabled', {'username': _loginUsername});
     }
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -105,9 +106,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _loginUser(context) async {
-    setState(() {
-      isLoading = true;
-    });
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _loginUsername,
@@ -140,9 +138,6 @@ class _LoginPageState extends State<LoginPage> {
         // Navigator.pushNamed(context, '/');
       }
     }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   String? errorText = null;
@@ -251,13 +246,16 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                       Flexible(
                                         flex: 1,
-                                        child: LoadingButton(
+                                        child: AnalyticsLoadingButton(
+                                          analyticsEventName:
+                                              'login-button-pressed',
+                                          analyticsEventData: {
+                                            "username": _loginUsername
+                                          },
                                           isDisabled: _loginUsername.isEmpty ||
                                               _loginPassword.isEmpty,
-                                          isLoading: isLoading,
-                                          action: () async {
-                                            await analyticsControllerController.sendAnalyticsEvent('login-button-pressed', {"username":_loginUsername});
-                                            _loginUser(context);
+                                          action: (innerContext) async {
+                                             _loginUser(innerContext);
                                           },
                                           text: "Login",
                                         ),
@@ -265,18 +263,22 @@ class _LoginPageState extends State<LoginPage> {
                                       const SizedBox(
                                         height: 32,
                                       ),
-                                      Flexible(
+                                      const Flexible(
                                         flex: 1,
-                                        child: const Text(
+                                        child: Text(
                                             "If you do not have an account..."),
                                       ),
                                       Flexible(
                                         flex: 1,
-                                        child: LoadingButton(
-                                          action: () async {
-                                            await analyticsControllerController.sendAnalyticsEvent('login-register-button-pressed', {"username":_loginUsername});
-                                            Navigator.popAndPushNamed(
-                                                context, '/register');
+                                        child: AnalyticsLoadingButton(
+                                          analyticsEventName:
+                                              'login-register-button-pressed',
+                                          analyticsEventData: {
+                                            "username": _loginUsername
+                                          },
+                                          action: (innerContext) async {
+                                            Navigator.pushNamed(
+                                                innerContext, '/register');
                                           },
                                           text: "Register",
                                         ),

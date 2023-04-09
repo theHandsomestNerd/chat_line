@@ -1,5 +1,5 @@
 import 'package:cookout/sanity/sanity_image_builder.dart';
-import 'package:cookout/shared_components/user_block_text.dart';
+import 'package:cookout/wrappers/author_and_text.dart';
 import 'package:cookout/wrappers/card_with_background.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -25,11 +25,19 @@ class PostSolo extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UserBlockText(user: post.author),
+            if (post.author != null)
+              AuthorAndText(
+                author: post.author!,
+              ),
             ConstrainedBox(
               constraints: const BoxConstraints(),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(38, 0, 0, 0),
+                padding: const EdgeInsets.fromLTRB(
+                  38,
+                  0,
+                  0,
+                  0,
+                ),
                 child: Column(
                   children: [
                     if (post.mainImage != null)

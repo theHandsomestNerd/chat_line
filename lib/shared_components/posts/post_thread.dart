@@ -1,11 +1,12 @@
+import 'package:cookout/models/clients/api_client.dart';
 import 'package:cookout/models/controllers/analytics_controller.dart';
+import 'package:cookout/models/controllers/auth_controller.dart';
 import 'package:cookout/models/post.dart';
 import 'package:cookout/shared_components/posts/post_solo.dart';
+import 'package:cookout/wrappers/analytics_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../models/clients/api_client.dart';
-import '../../models/controllers/auth_controller.dart';
 import '../../models/controllers/auth_inherited.dart';
 import '../../wrappers/loading_button.dart';
 
@@ -113,16 +114,15 @@ class _PostThreadState extends State<PostThread> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("There are no posts yet."),
-                        SizedBox(
+                        const Text("There are no posts yet."),
+                        const SizedBox(
                           height: 16,
                         ),
-                        LoadingButton(
+                        AnalyticsLoadingButton(
+                          analyticsEventData: {'frequency_of_event': "once_in_app_history"},
+                          analyticsEventName: 'add-the-very-first-post',
                           text: "Add a Post",
-                          action: () async {
-                            await analyticsController?.sendAnalyticsEvent(
-                                'add-the-very-first-post',
-                                {'frequency_of_event': "once_in_app_history"});
+                          action: (context) async {
                             Navigator.pushNamed(
                               context,
                               '/createPost',

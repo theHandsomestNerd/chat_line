@@ -1,5 +1,5 @@
 import 'package:cookout/sanity/sanity_client.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_sanity_image_url/flutter_sanity_image_url.dart';
 
 class SanityImageBuilder {

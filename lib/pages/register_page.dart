@@ -1,4 +1,5 @@
 import 'package:cookout/wrappers/alerts_snackbar.dart';
+import 'package:cookout/wrappers/analytics_loading_button.dart';
 import 'package:cookout/wrappers/text_field_wrapped.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -42,18 +43,17 @@ class _RegisterPageState extends State<RegisterPage> {
     if (theAnalyticsController != null) {
       analyticsController = theAnalyticsController;
     }
-
-
   }
 
   Future<void> _setUsername(String newUsername) async {
-    if(newUsername.length == 1) {
-      await analyticsController.sendAnalyticsEvent('registration-username', {'event': "started_typing"});
+    if (newUsername.length == 1) {
+      await analyticsController.sendAnalyticsEvent(
+          'registration-username', {'event': "started_typing"});
     }
 
-    if(!(_loginUsername.isEmpty ||
-        _loginPassword.isEmpty)) {
-      await analyticsController.sendAnalyticsEvent('registration-form-enabled', {'username': _loginUsername});
+    if (!(_loginUsername.isEmpty || _loginPassword.isEmpty)) {
+      await analyticsController.sendAnalyticsEvent(
+          'registration-form-enabled', {'username': _loginUsername});
     }
 
     setState(() {
@@ -66,13 +66,14 @@ class _RegisterPageState extends State<RegisterPage> {
     });
   }
 
-  void _setPassword(String newPassword) async  {
-    if(newPassword.length == 1) {
-      await analyticsController.sendAnalyticsEvent('RegistrationPasswordField', {'event': "started_typing"});
+  void _setPassword(String newPassword) async {
+    if (newPassword.length == 1) {
+      await analyticsController.sendAnalyticsEvent(
+          'RegistrationPasswordField', {'event': "started_typing"});
     }
-    if(!(_loginUsername.isEmpty ||
-        _loginPassword.isEmpty)) {
-      await analyticsController.sendAnalyticsEvent('registration-form-enabled', {'username': _loginUsername});
+    if (!(_loginUsername.isEmpty || _loginPassword.isEmpty)) {
+      await analyticsController.sendAnalyticsEvent(
+          'registration-form-enabled', {'username': _loginUsername});
     }
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -210,12 +211,15 @@ class _RegisterPageState extends State<RegisterPage> {
                                   const SizedBox(
                                     height: 16,
                                   ),
-                                  LoadingButton(
+                                  AnalyticsLoadingButton(
+                                    analyticsEventName: 'register-account',
+                                    analyticsEventData: {
+                                      'username': _loginUsername
+                                    },
                                     isDisabled: _loginUsername.isEmpty ||
                                         _loginPassword.isEmpty,
-                                    isLoading: isLoading,
-                                    action: () {
-                                      _registerUser(context);
+                                    action: (innerContext) {
+                                      _registerUser(innerContext);
                                     },
                                     text: "Register",
                                   ),

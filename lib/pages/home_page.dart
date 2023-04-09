@@ -51,8 +51,8 @@ class _HomePageState extends State<HomePage> with RouteAware {
     initialPage: 0,
   );
 
-  Timer? profileTimer;
-  Timer? postTimer;
+  Timer? _profileTimer;
+  Timer? _postTimer;
 
   Future<void> _fetchProfilesPage(String pageKey) async {
     print("Retrieving page with pagekey $pageKey  and size $_pageSize $client");
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
   }
 
   startHomeScreenTimers() async {
-    profileTimer ??= Timer.periodic(Duration(seconds: 6), (timer) async {
+    _profileTimer ??= Timer.periodic(Duration(seconds: 6), (timer) async {
       print("Timer went off $timer");
 
       print(
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
       _profilePageController.nextPage(
           duration: Duration(milliseconds: 500), curve: ElasticInCurve());
     });
-    postTimer ??= Timer.periodic(Duration(seconds: 18), (timer) async {
+    _postTimer ??= Timer.periodic(Duration(seconds: 18), (timer) async {
       print("Timer went off $timer");
 
       _postPageController.nextPage(
@@ -192,8 +192,8 @@ class _HomePageState extends State<HomePage> with RouteAware {
   }
 
   cancelHomeScreenTimers() {
-    postTimer?.cancel();
-    profileTimer?.cancel();
+    _postTimer?.cancel();
+    _profileTimer?.cancel();
   }
 
   @override
@@ -241,6 +241,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
     }
 
     theAnalyticsController?.logScreenView('Home');
+
     if (analyticsController == null && theAnalyticsController != null) {
       analyticsController = theAnalyticsController;
     }
@@ -485,18 +486,15 @@ class _HomePageState extends State<HomePage> with RouteAware {
                   return theItem != null
                       ? CardWithActions(
                           author: theItem.author,
-                          authorImage: SanityImageBuilder.imageProviderFor(
-                                  sanityImage: theItem.author?.profileImage)
-                              .image,
                           when: theItem.publishedAt,
                           locationRow: null,
-                          caption: "${theItem.body}",
+                          caption: theItem.body,
                           image: SanityImageBuilder.imageProviderFor(
                                   sanityImage: theItem.mainImage,
                                   showDefaultImage: true)
                               .image,
-                          action1Text: theItem.author?.displayName,
-                          action2Text: 'All Posts',
+                          action2Text: 'Go to post',
+                          action1Text: 'All Posts',
                           action1OnPressed: () async {
                             await analyticsController?.sendAnalyticsEvent(
                                 'view-post-while-highlighted-pressed',

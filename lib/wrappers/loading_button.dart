@@ -14,7 +14,7 @@ class LoadingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
@@ -22,7 +22,7 @@ class LoadingButton extends StatelessWidget {
       color: Theme.of(context).colorScheme.secondary,
       disabledColor: Colors.black12,
       textColor: Colors.white,
-      onPressed: isDisabled == true ? null : action,
+      onPressed: isDisabled == true ? null : ()=>action(context),
       child: SizedBox(
         key: Key(isLoading.toString()),
         height: 48,

@@ -2,6 +2,7 @@ import 'package:cookout/layout/full_page_layout.dart';
 import 'package:cookout/models/controllers/auth_inherited.dart';
 import 'package:cookout/shared_components/menus/posts_page_menu.dart';
 import 'package:cookout/wrappers/alerts_snackbar.dart';
+import 'package:cookout/wrappers/analytics_loading_button.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
         AuthInherited.of(context)?.postController;
     postController = thePostController;
 
-
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
@@ -66,21 +66,20 @@ class _CreatePostPageState extends State<CreatePostPage> {
 
     analyticsController = theAnalyticsController;
 
-    if(!((_postBody?.length ?? -1) <= 0) && (_postBody?.length ?? 0) < 5) {
-      await analyticsController?.sendAnalyticsEvent('post-form-enabled', {"body": _postBody});
+    if (!((_postBody?.length ?? -1) <= 0) && (_postBody?.length ?? 0) < 5) {
+      await analyticsController
+          ?.sendAnalyticsEvent('post-form-enabled', {"body": _postBody});
     }
     setState(() {});
   }
 
-  void _setPostBody(String newPostBody)async  {
-
+  void _setPostBody(String newPostBody) async {
     setState(() {
       _postBody = newPostBody;
     });
   }
 
   _makePost(context) async {
-    await analyticsController?.sendAnalyticsEvent('create-post', {"body": _postBody});
     setState(() {
       _isPosting = true;
     });
@@ -165,18 +164,19 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 labelText: 'Post:',
               ),
             ),
-            LoadingButton(
+            AnalyticsLoadingButton(
+              analyticsEventName: 'create-post',
+              analyticsEventData: {"body": _postBody, "author": ""},
               isDisabled: ((_postBody?.length ?? -1) <= 0),
               action: () async {
                 var status = await _makePost(context);
-                print("statusssssssssss $status");
+                
                 if (status == "SUCCESS") {
                   await _sendSuccess();
                 } else if (status == "FAIL") {
                   await _sendError();
                 }
               },
-              isLoading: _isPosting,
               text: "Post",
             )
           ],

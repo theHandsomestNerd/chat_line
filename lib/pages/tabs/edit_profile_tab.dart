@@ -1,5 +1,6 @@
 import 'package:cookout/models/controllers/analytics_controller.dart';
 import 'package:cookout/models/controllers/auth_controller.dart';
+import 'package:cookout/wrappers/analytics_loading_button.dart';
 import 'package:cookout/wrappers/text_field_wrapped.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -20,7 +21,6 @@ import '../../sanity/sanity_image_builder.dart';
 import '../../shared_components/app_image_uploader.dart';
 import '../../shared_components/height_input.dart';
 import '../../wrappers/alerts_snackbar.dart';
-import '../../wrappers/loading_button.dart';
 
 class EditProfileTab extends StatefulWidget {
   const EditProfileTab({
@@ -494,10 +494,25 @@ class _EditProfileTabState extends State<EditProfileTab> {
                   ),
                 ),
                 ListTile(
-                  title: LoadingButton(
-                    isLoading: isUpdating,
+                  title: AnalyticsLoadingButton(
+                    analyticsEventData: {
+                      'username': _myAppUser?.email,
+                      'sex_preferences': (extProfile?.sexPreferences?.length ?? 0) > 0,
+                      'height': (extProfile?.height != null),
+                      'weight': (extProfile?.weight != null),
+                      'age': (extProfile?.age != null),
+                      'where_i_live': (extProfile?.whereILive?.length ?? 0) > 0,
+                      'what_interests_me': (extProfile?.whatInterestsMe?.length ?? 0) > 0,
+                      'what_im_looking_for': (extProfile?.whatImLookingFor?.length ?? 0) > 0,
+                      'what_i_do': (extProfile?.whatIDo?.length ?? 0) > 0,
+                      'im_open_to': (extProfile?.imOpenTo?.length ?? 0) > 0,
+                      'i_am': (extProfile?.iAm?.length ?? 0) > 0,
+                      'short_bio': (extProfile?.shortBio?.length ?? 0) > 0,
+                      'long_bio': (extProfile?.longBio?.length ?? 0) > 0,
+                    },
+                    analyticsEventName: 'settings-save-profile',
                     isDisabled: isUpdating,
-                    action: () async {
+                    action: (innerContext) async {
                       await _updateProfile(context);
                     },
                     text: "Save Profile",
