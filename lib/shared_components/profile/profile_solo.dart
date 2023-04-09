@@ -1,11 +1,12 @@
 import 'package:cookout/models/controllers/analytics_controller.dart';
+import 'package:cookout/sanity/sanity_image_builder.dart';
 import 'package:cookout/wrappers/card_with_background.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/default_config.dart';
 import '../../models/app_user.dart';
 import '../../models/controllers/auth_inherited.dart';
-import '../../sanity/image_url_builder.dart';
+
 
 class ProfileSolo extends StatefulWidget {
   const ProfileSolo({
@@ -55,9 +56,7 @@ class _ProfileSoloState extends State<ProfileSolo> {
                 child: Hero(
                   tag: widget.profile.userId ?? "",
                   child: CardWithBackground(
-                    image: NetworkImage(MyImageBuilder()
-                        .urlFor(widget.profile.profileImage, 110, 110)!
-                        .url()),
+                    image: SanityImageBuilder.imageProviderFor(sanityImage: widget.profile.profileImage,width:110,height:110).image,
                     child: Padding(
                       padding: const EdgeInsets.all(0),
                       child: Text("${widget.profile.displayName}"),

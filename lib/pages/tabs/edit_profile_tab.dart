@@ -15,7 +15,8 @@ import '../../platform_dependent/image_uploader.dart'
     if (dart.library.io) '../../platform_dependent/image_uploader_io.dart'
     if (dart.library.html) '../../platform_dependent/image_uploader_html.dart';
 import '../../platform_dependent/image_uploader_abstract.dart';
-import '../../sanity/image_url_builder.dart';
+
+import '../../sanity/sanity_image_builder.dart';
 import '../../shared_components/app_image_uploader.dart';
 import '../../shared_components/height_input.dart';
 import '../../wrappers/alerts_snackbar.dart';
@@ -24,10 +25,11 @@ import '../../wrappers/loading_button.dart';
 class EditProfileTab extends StatefulWidget {
   const EditProfileTab({
     Key? key,
-     this.analyticsController,
+    this.analyticsController,
   }) : super(key: key);
 
   final AnalyticsController? analyticsController;
+
   @override
   State<EditProfileTab> createState() => _EditProfileTabState();
 }
@@ -110,24 +112,17 @@ class _EditProfileTabState extends State<EditProfileTab> {
       print("profile image $profileImage");
     }
 
-    if (profileImage != null) {
-      if (kDebugMode) {
-        print("profile image is froom db");
-      }
-      return NetworkImage(
-          MyImageBuilder().urlFor(profileImage, 350, 350)!.url());
-    }
-
     if (kDebugMode) {
-      print("profile image is default");
+      print("profile image is froom db");
     }
-    return Image(
-      image: AssetImage('assets/blankProfileImage.png'),
-    ).image;
+    return SanityImageBuilder.imageProviderFor(
+            sanityImage: profileImage, showDefaultImage: true)
+        .image;
   }
 
   void _setUsername(String newUsername) async {
-    await widget.analyticsController?.logScreenView('set-username-field-edit-profile');
+    await widget.analyticsController
+        ?.logScreenView('set-username-field-edit-profile');
     setState(() {
       _loginUsername = newUsername;
     });
@@ -323,7 +318,6 @@ class _EditProfileTabState extends State<EditProfileTab> {
                     initialValue: _myAppUser?.displayName,
                     setField: (e) {
                       _setDisplayName(e);
-
                     },
                     labelText: 'Display Name',
                   ),
@@ -343,7 +337,9 @@ class _EditProfileTabState extends State<EditProfileTab> {
                           labelText: "Age",
                         ),
                       ),
-                      SizedBox(width: 16,),
+                      SizedBox(
+                        width: 16,
+                      ),
                       Flexible(
                         flex: 2,
                         child: TextFieldWrapped(
@@ -360,17 +356,14 @@ class _EditProfileTabState extends State<EditProfileTab> {
                   ),
                 ),
                 ListTile(
-                  title: Flex(
-                    direction: Axis.horizontal,
-                    children: [
+                  title: Flex(direction: Axis.horizontal, children: [
                     Flexible(
                       child: HeightInput(
                         initialValue: extProfile?.height,
                         updateHeight: _updateHeight,
                       ),
                     ),
-                  ]
-                  ),
+                  ]),
                 ),
                 ListTile(
                   title: TextFieldWrapped(

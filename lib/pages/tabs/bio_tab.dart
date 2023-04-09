@@ -2,6 +2,7 @@ import 'package:cookout/models/clients/api_client.dart';
 import 'package:cookout/models/controllers/analytics_controller.dart';
 import 'package:cookout/models/controllers/chat_controller.dart';
 import 'package:cookout/models/extended_profile.dart';
+import 'package:cookout/sanity/sanity_image_builder.dart';
 import 'package:cookout/shared_components/tool_button.dart';
 import 'package:cookout/wrappers/card_with_background.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ import '../../models/comment.dart';
 import '../../models/controllers/auth_inherited.dart';
 import '../../models/follow.dart';
 import '../../models/like.dart';
-import '../../sanity/image_url_builder.dart';
 
 const PROFILE_IMAGE_SQUARE_SIZE = 200;
 
@@ -202,23 +202,7 @@ class _BioTabState extends State<BioTab> {
                                       child: CardWithBackground(
                                         width: 350,
                                         height: 350,
-                                        image:
-                                            widget.thisProfile?.profileImage !=
-                                                        null &&
-                                                    widget.thisProfile
-                                                            ?.profileImage !=
-                                                        ""
-                                                ? NetworkImage(MyImageBuilder()
-                                                    .urlFor(
-                                                        widget.thisProfile
-                                                            ?.profileImage!,
-                                                        350,
-                                                        350)!
-                                                    .url())
-                                                : const Image(
-                                                    image: AssetImage(
-                                                        'assets/blankProfileImage.png'),
-                                                  ).image,
+                                        image: SanityImageBuilder.imageProviderFor(sanityImage: widget.thisProfile?.profileImage,showDefaultImage: true).image,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

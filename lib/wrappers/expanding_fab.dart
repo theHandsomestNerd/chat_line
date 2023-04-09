@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 
+import 'package:cookout/sanity/sanity_image_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sanity_image_url/flutter_sanity_image_url.dart';
 
 import '../config/default_config.dart';
 import '../models/controllers/auth_inherited.dart';
-import '../sanity/image_url_builder.dart';
 
 //
 // void main() {
@@ -165,11 +165,7 @@ class _ExpandableFabState extends State<ExpandableFab>
             onPressed: _toggle,
             child: profileImage != null
                 ? CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      MyImageBuilder()
-                              .urlFor(profileImage,100,100)!
-                              .url(),
-                    ),
+                    backgroundImage: SanityImageBuilder.imageProviderFor(sanityImage: profileImage).image,
                   )
                 : const Icon(Icons.add),
           ),

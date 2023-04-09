@@ -1,8 +1,8 @@
+import 'package:cookout/sanity/sanity_image_builder.dart';
 import 'package:flutter/material.dart';
 
-import '../../config/default_config.dart';
 import '../../models/controllers/auth_inherited.dart';
-import '../../sanity/image_url_builder.dart';
+
 import '../../wrappers/expanding_fab.dart';
 
 class HomePageMenu extends StatefulWidget {
@@ -91,15 +91,9 @@ class _HomePageMenuState extends State<HomePageMenu> {
           onPressed: () {
             Navigator.pushNamed(context, '/myProfile');
           },
-          icon: profileImage != null
-              ? CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    MyImageBuilder()
-                        .urlFor(profileImage,100,100)!
-                        .url(),
-                  ),
-                )
-              : CircleAvatar(),
+          icon: CircleAvatar(
+                  backgroundImage: SanityImageBuilder.imageProviderFor(sanityImage: profileImage,showDefaultImage: true).image,
+                ),
         ),
       ],
     );

@@ -1,10 +1,10 @@
+import 'package:cookout/sanity/sanity_image_builder.dart';
 import 'package:cookout/shared_components/user_block_text.dart';
 import 'package:cookout/wrappers/card_with_background.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../models/post.dart';
-import '../../sanity/image_url_builder.dart';
 
 const POST_IMAGE_SQUARE_SIZE = 400;
 
@@ -37,11 +37,10 @@ class PostSolo extends StatelessWidget {
                         height: POST_IMAGE_SQUARE_SIZE as double,
                         width: POST_IMAGE_SQUARE_SIZE as double,
                         child: CardWithBackground(
-                          image: NetworkImage(
-                            MyImageBuilder()
-                                .urlFor(post.mainImage, POST_IMAGE_SQUARE_SIZE, POST_IMAGE_SQUARE_SIZE)!
-                                .url(),
-                          ),
+                          image: SanityImageBuilder.imageProviderFor(
+                                  sanityImage: post.mainImage,
+                                  showDefaultImage: true)
+                              .image,
                           child: const Text(""),
                         ),
                       ),

@@ -1,8 +1,11 @@
+import 'package:cookout/models/controllers/auth_controller.dart';
+import 'package:cookout/sanity/sanity_image_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sanity_image_url/flutter_sanity_image_url.dart';
 
 import '../../config/default_config.dart';
 import '../../models/controllers/auth_inherited.dart';
-import '../../sanity/image_url_builder.dart';
+
 import '../../wrappers/expanding_fab.dart';
 
 class ProfilePageMenu extends StatefulWidget {
@@ -22,6 +25,17 @@ class ProfilePageMenu extends StatefulWidget {
 enum ProfileMenuOptions { PROFILELIST, TIMELINE, INBOX, BLOCKS, ALBUMS, POSTS }
 
 class _ProfilePageMenuState extends State<ProfilePageMenu> {
+  late SanityImage? profileImage;
+  late AuthController authControlller;
+
+  @override
+  didChangeDependencies() async {
+    super.didChangeDependencies();
+    var theAuthController = AuthInherited.of(context)?.authController;
+    profileImage = theAuthController?.myAppUser?.profileImage;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return ExpandableFab(
@@ -70,18 +84,10 @@ class _ProfilePageMenuState extends State<ProfilePageMenu> {
             Navigator.pushNamed(context, '/myProfile');
           },
           icon: CircleAvatar(
-            backgroundImage: NetworkImage(
-              MyImageBuilder()
-                      .urlFor(
-                          AuthInherited.of(context)
-                              ?.authController
-                              ?.myAppUser
-                              ?.profileImage,
-                          100,
-                          100)
-                      ?.url() ??
-                  "",
-            ),
+            backgroundImage: SanityImageBuilder.imageProviderFor(
+                    sanityImage: profileImage,
+                    showDefaultImage: true)
+                .image,
           ),
         ),
         ActionButton(

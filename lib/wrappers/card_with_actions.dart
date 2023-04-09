@@ -13,7 +13,7 @@ class CardWithActions extends StatelessWidget {
 
   final action1OnPressed;
   final ImageProvider image;
-  final String? authorImageUrl;
+  final ImageProvider? authorImage;
 
   final String? action2Text;
 
@@ -38,7 +38,7 @@ class CardWithActions extends StatelessWidget {
         
 
         required this.image,
-      this.authorImageUrl,
+      this.authorImage,
       this.authorId,
       this.author});
 
@@ -158,7 +158,7 @@ class CardWithActions extends StatelessWidget {
                             child: Flex(
                               direction: Axis.horizontal,
                               children: [
-                                if (authorImageUrl != null)
+                                if (authorImage != null)
                                   Flexible(
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
@@ -208,8 +208,7 @@ class CardWithActions extends StatelessWidget {
                               ],
                             ),
                           ),
-                          if (authorImageUrl != null &&
-                              (authorImageUrl?.length ?? -1) > 0)
+                          if (authorImage != null)
                             ConstrainedBox(
                               constraints: BoxConstraints(minHeight: 68),
                               child: Flex(
@@ -225,7 +224,7 @@ class CardWithActions extends StatelessWidget {
                                               topLeft: Radius.circular(0)),
                                           //set border radius more than 50% of height and width to make circle
                                         ),
-                                        image: NetworkImage(authorImageUrl!),
+                                        image: authorImage,
                                         child: const SizedBox(
                                             height: 68, width: 68)),
                                   ),

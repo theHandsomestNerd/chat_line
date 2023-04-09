@@ -5,7 +5,7 @@ import 'package:cookout/models/clients/api_client.dart';
 import 'package:cookout/models/controllers/chat_controller.dart';
 import 'package:cookout/models/extended_profile.dart';
 import 'package:cookout/models/post.dart';
-import 'package:cookout/sanity/image_url_builder.dart';
+import 'package:cookout/sanity/sanity_image_builder.dart';
 import 'package:cookout/shared_components/menus/home_page_menu.dart';
 import 'package:cookout/wrappers/card_with_actions.dart';
 import 'package:cookout/wrappers/circular_progress_indicator_with_message.dart';
@@ -15,6 +15,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../models/app_user.dart';
 import '../models/controllers/analytics_controller.dart';
 import '../models/controllers/auth_inherited.dart';
+import '../sanity/sanity_image_builder.dart';
 import '../shared_components/logo.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
@@ -415,14 +416,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
                               ),
                             ],
                           ),
-                          image: theItem.profileImage != null
-                              ? NetworkImage(MyImageBuilder()
-                                  .urlFor(theItem.profileImage!, null, null)!
-                                  .url())
-                              : Image(
-                                  image: AssetImage(
-                                      'assets/blankProfileImage.png'),
-                                ).image,
+                          image: SanityImageBuilder.imageProviderFor(sanityImage: theItem.profileImage,showDefaultImage: true).image,
                           action1Text:
                               "${theItem.displayName?.toUpperCase()[0]}${theItem.displayName?.substring(1).toLowerCase()}",
                           action2Text: 'All Profiles',
@@ -491,22 +485,16 @@ class _HomePageState extends State<HomePage> with RouteAware {
                   return theItem != null
                       ? CardWithActions(
                           author: theItem.author,
-                          authorImageUrl: MyImageBuilder()
-                                  .urlFor(
-                                      theItem.author?.profileImage, null, null)
-                                  ?.url() ??
-                              "",
+                          authorImage: SanityImageBuilder.imageProviderFor(
+                                  sanityImage: theItem.author?.profileImage)
+                              .image,
                           when: theItem.publishedAt,
                           locationRow: null,
                           caption: "${theItem.body}",
-                          image: theItem.mainImage != null
-                              ? NetworkImage(MyImageBuilder()
-                                  .urlFor(theItem.mainImage!, null, null)!
-                                  .url())
-                              : Image(
-                                  image: AssetImage(
-                                      'assets/blankProfileImage.png'),
-                                ).image,
+                          image: SanityImageBuilder.imageProviderFor(
+                                  sanityImage: theItem.mainImage,
+                                  showDefaultImage: true)
+                              .image,
                           action1Text: theItem.author?.displayName,
                           action2Text: 'All Posts',
                           action1OnPressed: () async {

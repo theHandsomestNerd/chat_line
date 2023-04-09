@@ -1,9 +1,9 @@
 import 'package:cookout/models/app_user.dart';
+import 'package:cookout/sanity/sanity_image_builder.dart';
+import 'package:cookout/wrappers/card_with_background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../config/default_config.dart';
-import '../sanity/image_url_builder.dart';
 
 class UserBlockMini extends StatelessWidget {
   const UserBlockMini({
@@ -44,22 +44,7 @@ class UserBlockMini extends StatelessWidget {
                         children: [
                           Expanded(
                             flex: 1,
-                            child: user?.profileImage != null
-                                ? Image.network(
-                                    MyImageBuilder()
-                                            .urlFor(user?.profileImage, 60,60)!
-                                            .url(),
-                                    height: 80,
-                                    width: 80,
-                                  )
-                                : SizedBox(
-                                    height: 80,
-                                    width: 80,
-                                    child: Image.asset(
-                                        height: 80,
-                                        width: 80,
-                                        'assets/blankProfileImage.png'),
-                                  ),
+                            child: CardWithBackground(image: SanityImageBuilder.imageProviderFor(sanityImage: user?.profileImage,width: 80,height: 80).image, child: SizedBox(width:80,height: 80),),
                           ),
                           Flexible(
                             flex: 3,

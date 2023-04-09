@@ -1,8 +1,7 @@
 import 'package:cookout/models/app_user.dart';
+import 'package:cookout/sanity/sanity_image_builder.dart';
 import 'package:flutter/material.dart';
 
-import '../config/default_config.dart';
-import '../sanity/image_url_builder.dart';
 
 class UserBlockText extends StatelessWidget {
   const UserBlockText({
@@ -30,17 +29,9 @@ class UserBlockText extends StatelessWidget {
               child: SizedBox(
                 height: 30,
                 width: 30,
-                child: user?.profileImage != null
-                    ? Image.network(
-                        MyImageBuilder()
-                                .urlFor(user!.profileImage, 50, 50)!
-                                .url() ??
-                            "",
-                        height: 30,
-                        width: 30,
-                      )
-                    : Image.asset(
-                        height: 30, width: 30, 'assets/blankProfileImage.png'),
+                child: Image(
+                  image: SanityImageBuilder.imageProviderFor(sanityImage:  user?.profileImage,width: 30,height: 30).image,
+                ),
               ),
             ),
           Flexible(
