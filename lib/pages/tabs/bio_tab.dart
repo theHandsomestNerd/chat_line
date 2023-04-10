@@ -108,12 +108,12 @@ class _BioTabState extends State<BioTab> {
     bool isUnlike = false;
 
     if (widget.profileLikedByMe == null) {
-      likeResponse = await profileClient?.likeProfile(widget.id, 'profile-like');
+      likeResponse = await profileClient?.like(widget.id, 'profile-like');
     } else {
       if (widget.profileLikedByMe != null) {
         isUnlike = true;
         likeResponse = await profileClient?.unlike(
-            widget.id, widget.profileLikedByMe!, 'profile-like');
+            widget.id, widget.profileLikedByMe!);
       }
     }
 

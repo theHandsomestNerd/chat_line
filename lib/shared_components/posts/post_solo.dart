@@ -1,14 +1,17 @@
+import 'package:cookout/models/clients/api_client.dart';
+import 'package:cookout/models/controllers/auth_controller.dart';
+import 'package:cookout/models/like.dart';
 import 'package:cookout/sanity/sanity_image_builder.dart';
 import 'package:cookout/wrappers/author_and_text.dart';
-import 'package:cookout/wrappers/card_with_background.dart';
+import 'package:cookout/wrappers/card_with_actions.dart';
 import 'package:flutter/material.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
+import '../../models/controllers/auth_inherited.dart';
 import '../../models/post.dart';
 
 const POST_IMAGE_SQUARE_SIZE = 400;
 
-class PostSolo extends StatelessWidget {
+class PostSolo extends StatefulWidget {
   const PostSolo({
     super.key,
     required this.post,
@@ -16,53 +19,140 @@ class PostSolo extends StatelessWidget {
 
   final Post post;
 
+  @override
+  State<PostSolo> createState() => _PostSoloState();
+}
+
+class _PostSoloState extends State<PostSolo> {
+  late AuthController? authController = null;
+  late ApiClient? profileClient = null;
+  late List<Like> likes = <Like>[];
+  late Like? isPostLikedByMe = null;
+  bool isLiking = false;
+
+  @override
+  didChangeDependencies() async {
+    super.didChangeDependencies();
+    var theClient = AuthInherited.of(context)?.chatController?.profileClient;
+    var theAuthController = AuthInherited.of(context)?.authController;
+    // AnalyticsController? theAnalyticsController =
+    //     AuthInherited.of(context)?.analyticsController;
+    //
+    // if(analyticsController == null && theAnalyticsController != null) {
+    //   await theAnalyticsController.logScreenView('profiles-page');
+    //   analyticsController = theAnalyticsController;
+    // }
+
+    if (authController == null && theAuthController != null) {
+      authController = theAuthController;
+    }
+    if (profileClient == null && theClient != null) {
+      profileClient = theClient;
+    }
+
+    if (widget.post.id != null && theClient != null) {
+      await updateLikes();
+    }
+
+    // myUserId =
+    //     AuthInherited.of(context)?.authController?.myAppUser?.userId ?? "";
+    // myBlockedProfiles = await chatController?.updateMyBlocks();
+    setState(() {});
+  }
+
+  updateLikes() async {
+    var theLikes = await profileClient?.getProfileLikes(widget.post.id!);
+    likes = theLikes?.list ?? [];
+    if (theLikes?.list != null) {
+      try {
+        var myLike = theLikes?.list.firstWhere((element) {
+          return element.liker?.userId ==
+              authController?.myAppUser?.userId;
+        });
+        isPostLikedByMe = myLike;
+      } catch (e) {
+        print(e);
+        isPostLikedByMe = null;
+      }
+    }
+
+  }
+
+  likeThisPost(String postId) async {
+    await profileClient?.like(postId, 'post-like');
+  }
+  unlikeThisPost(String postId) async {
+    if(isPostLikedByMe != null && widget.post.id != null) {
+      await profileClient?.unlike(widget.post.id!, isPostLikedByMe!);
+    }
+  }
+
+  commentThisPost(String? postId) {}
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(),
-      child: ListTile(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (post.author != null)
-              AuthorAndText(
-                author: post.author!,
-              ),
-            ConstrainedBox(
-              constraints: const BoxConstraints(),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  38,
-                  0,
-                  0,
-                  0,
-                ),
-                child: Column(
-                  children: [
-                    if (post.mainImage != null)
-                      SizedBox(
-                        height: POST_IMAGE_SQUARE_SIZE as double,
-                        width: POST_IMAGE_SQUARE_SIZE as double,
-                        child: CardWithBackground(
-                          image: SanityImageBuilder.imageProviderFor(
-                                  sanityImage: post.mainImage,
-                                  showDefaultImage: true)
-                              .image,
-                          child: const Text(""),
-                        ),
-                      ),
-                    Text("${post.body}"),
-                    Text((post.publishedAt != null
-                        ? timeago.format(post.publishedAt!)
-                        : "Forever and a day ago")),
-                  ],
-                ),
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.post.author != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: AuthorAndText(
+              backgroundColor: Colors.white,
+              body: widget.post.body,
+              when: widget.post.publishedAt,
+              author: widget.post.author!,
             ),
+          ),
+        Flex(
+          direction: Axis.horizontal,
+          children: [
+            if (widget.post.mainImage != null)
+              Expanded(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                      minHeight: POST_IMAGE_SQUARE_SIZE as double,
+                      minWidth: POST_IMAGE_SQUARE_SIZE as double),
+                  child: CardWithActions(
+                    isAction1Active: isPostLikedByMe != null,
+                    action1Text: "${likes.length} likes",
+                    action1Icon: Icons.thumb_up,
+                    action2Icon: Icons.comment,
+                    action2Text: "comments",
+                    isAction1Loading: isLiking,
+                    action1OnPressed: () async {
+                      setState(() {
+                        isLiking = true;
+                      });
+                      if (widget.post.id != null) {
+                        if(isPostLikedByMe == null) {
+                          await likeThisPost(widget.post.id!);
+                        } else {
+                          await unlikeThisPost(widget.post.id!);
+                        }
+                        var theLikes = await profileClient?.getProfileLikes(widget.post.id!);
+                        likes = theLikes?.list ?? likes;
+                        await updateLikes();
+
+                        setState(() {
+                          isLiking = false;
+                        });
+                      }
+                    },
+                    action2OnPressed: () async {
+                      // await commentOnThisPost(widget.post.id);
+                    },
+                    image: SanityImageBuilder.imageProviderFor(
+                            sanityImage: widget.post.mainImage,
+                            showDefaultImage: true)
+                        .image,
+                  ),
+                ),
+              ),
           ],
         ),
-      ),
+      ],
     );
   }
 }

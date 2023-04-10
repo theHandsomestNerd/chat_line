@@ -584,9 +584,9 @@ class ApiClient {
   }
 
   Future<String> unlike(
-      String likeeId, Like currentLike, String likeType) async {
+      String likeeId, Like currentLike) async {
     var message =
-        "UnLike ${likeType} $likeeId by ${FirebaseAuth.instance.currentUser?.uid}";
+        "UnLike  $likeeId by ${FirebaseAuth.instance.currentUser?.uid}";
     if (kDebugMode) {
       print(message);
     }
@@ -595,7 +595,7 @@ class ApiClient {
     if (token != null && DefaultConfig.theAuthBaseUrl != "") {
       final response = await http.post(
           Uri.parse("${DefaultConfig.theAuthBaseUrl}/unlike"),
-          body: {"likeId": currentLike.id, "likeType": likeType},
+          body: {"likeId": currentLike.id},
           headers: {"Authorization": ("Bearer $token")});
 
       var processedResponse = jsonDecode(response.body);
@@ -687,7 +687,7 @@ class ApiClient {
     return ChatApiGetProfileFollowsResponse(list: []);
   }
 
-  Future<String> likeProfile(String likeeId, String likeType) async {
+  Future<String> like(String likeeId, String likeType) async {
     var message =
         "Like $likeType $likeeId by ${FirebaseAuth.instance.currentUser?.uid}";
     if (kDebugMode) {

@@ -84,7 +84,7 @@ class _AuthorAndTextState extends State<AuthorAndText> {
                                 EdgeInsets.fromLTRB(
                                     12, 8.0, 8, 12),
                                 child: Text(
-                                  widget.body!,
+                                  widget.body??"",
                                 ),
                               ),
                             ),
@@ -99,15 +99,15 @@ class _AuthorAndTextState extends State<AuthorAndText> {
         ),
         if (authorImage != null)
           ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 68),
+            constraints: BoxConstraints(minHeight: 67),
             child: Flex(
               direction: Axis.horizontal,
               children: [
                 Flexible(
                   flex: 2,
                   child: CardWithBackground(
-                      height: 68,
-                      width: 68,
+                      height: 67,
+                      width: 67,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(0)),
@@ -115,7 +115,7 @@ class _AuthorAndTextState extends State<AuthorAndText> {
                       ),
                       image: authorImage,
                       child: const SizedBox(
-                          height: 68, width: 68)),
+                          height: 67, width: 67)),
                 ),
               ],
             ),

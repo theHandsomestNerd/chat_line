@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../models/controllers/auth_inherited.dart';
-import '../../wrappers/loading_button.dart';
 
 class PostThread extends StatefulWidget {
   const PostThread({super.key});
@@ -17,7 +16,8 @@ class PostThread extends StatefulWidget {
   State<PostThread> createState() => _PostThreadState();
 }
 
-class _PostThreadState extends State<PostThread> {
+class _PostThreadState extends State<PostThread>
+    with SingleTickerProviderStateMixin {
   final PagingController<String, Post> _pagingController =
       PagingController(firstPageKey: "");
   AuthController? authController = null;
@@ -47,7 +47,7 @@ class _PostThreadState extends State<PostThread> {
       client = theClient;
     }
 
-    if(theAnalyticsController != null && analyticsController == null){
+    if (theAnalyticsController != null && analyticsController == null) {
       analyticsController = theAnalyticsController;
     }
 
@@ -97,52 +97,70 @@ class _PostThreadState extends State<PostThread> {
     }
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _pagingController.dispose();
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return PagedListView<String, Post>(
-      pagingController: _pagingController,
-      builderDelegate: PagedChildBuilderDelegate<Post>(
-        noItemsFoundIndicatorBuilder: (build){
-          return ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
-            child: Flex(
-              direction: Axis.vertical,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("There are no posts yet."),
-                        const SizedBox(
-                          height: 16,
+    return Stack(children: [
+      Positioned.fill(
+        child: Container(color: Colors.black87),
+      ),
+      PagedListView<String, Post>(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Post>(
+          noItemsFoundIndicatorBuilder: (build) {
+            return Flex(direction: Axis.horizontal, children: [
+              Expanded(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: 500),
+                  child: Flex(
+                    direction: Axis.vertical,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text("There are no posts yet."),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              AnalyticsLoadingButton(
+                                analyticsEventData: {
+                                  'frequency_of_event': "once_in_app_history"
+                                },
+                                analyticsEventName: 'add-the-very-first-post',
+                                text: "Add a Post",
+                                action: (context) async {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/createPost',
+                                  );
+                                },
+                              )
+                            ],
+                          ),
                         ),
-                        AnalyticsLoadingButton(
-                          analyticsEventData: {'frequency_of_event': "once_in_app_history"},
-                          analyticsEventName: 'add-the-very-first-post',
-                          text: "Add a Post",
-                          action: (context) async {
-                            Navigator.pushNamed(
-                              context,
-                              '/createPost',
-                            );
-                          },
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
+            ]);
+          },
+          itemBuilder: (context, item, index) => Container(
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 1),
+            child: PostSolo(
+              post: item,
             ),
-          );
-        },
-        itemBuilder: (context, item, index) => PostSolo(
-          post: item,
+          ),
         ),
       ),
-    );
+    ]);
   }
 }
-
-

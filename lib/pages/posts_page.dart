@@ -38,8 +38,10 @@ class _PostsPageState extends State<PostsPage> {
         // the App.build method, and use it to set our appbar title.
         title: const Logo(),
       ),
-      body: const FullPageLayout(
-        child: PostThread(),
+      body: Container(
+        margin: EdgeInsets.all(0),
+        child: Flex(direction:Axis.horizontal,
+            children:[ Expanded(child: PostThread())]),
       ),
     );
   }
