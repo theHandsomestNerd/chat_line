@@ -44,6 +44,7 @@ class _AnalyticsLoadingButtonState extends State<AnalyticsLoadingButton> {
   Widget build(BuildContext context) {
     return LoadingButton(
       text: widget.text,
+      isLoading: isLoading,
       isDisabled: widget.isDisabled,
       action: (context) async {
         setState(() {

@@ -185,6 +185,40 @@ class ApiClient {
     return <Post>[];
   }
 
+  Future<List<Comment>> fetchCommentThreadPaginatedForPost(
+      String? postId, String? lastId, int pageSize) async {
+    if (kDebugMode) {
+      print(
+          "Retrieving paginated Post's ${postId} comments with lastid ${lastId} and pagesize ${pageSize}");
+    }
+    String? token = await getIdToken();
+
+    if (DefaultConfig.theAuthBaseUrl == "") {
+      print(
+          "Retrieving paginated comments for post $postId authBaseUrl empty ${DefaultConfig.theAuthBaseUrl}");
+      return <Comment>[];
+    }
+
+    if (token != null && DefaultConfig.theAuthBaseUrl != "") {
+      final response = await http.get(
+          Uri.parse(
+              "${DefaultConfig.theAuthBaseUrl}/get-comment-thread-paginated/$postId/$pageSize${lastId != null ? "/${lastId}" : ""}"),
+          headers: {"Authorization": ("Bearer $token")});
+
+      var processedResponse = jsonDecode(response.body);
+      // print("Profiles retrieved ${processedResponse}");
+      if (processedResponse['comments'] != null &&
+          processedResponse['comments'] != "null") {
+        ChatApiGetProfileCommentsResponse responseModelList =
+            ChatApiGetProfileCommentsResponse.fromJson(
+                processedResponse['comments']);
+
+        return responseModelList.list;
+      }
+    }
+    return <Comment>[];
+  }
+
   Future<List<TimelineEvent>> retrieveTimelineEvents() async {
     if (kDebugMode) {
       print("Retrieving Timeline Events");
@@ -354,7 +388,8 @@ class ApiClient {
     return "FAIL";
   }
 
-  Future<String> commentProfile(String userId, String commentBody) async {
+  Future<String> commentProfile(
+      String userId, String commentBody, String? commentType) async {
     var message =
         "Comment Profile $userId by ${FirebaseAuth.instance.currentUser?.uid}";
     if (kDebugMode) {
@@ -368,8 +403,14 @@ class ApiClient {
     if (token != null && DefaultConfig.theAuthBaseUrl != "") {
       final response = await http.post(
           Uri.parse("${DefaultConfig.theAuthBaseUrl}/comment-profile"),
-          body: {"userId": userId, "commentBody": commentBody},
-          headers: {"Authorization": ("Bearer $token")});
+          body: {
+            "userId": userId,
+            "commentBody": commentBody,
+            "commentType": commentType ?? 'profile-comment'
+          },
+          headers: {
+            "Authorization": ("Bearer $token")
+          });
 
       var processedResponse = jsonDecode(response.body);
 
@@ -405,7 +446,8 @@ class ApiClient {
           ChatApiGetProfileLikesResponse responseModel =
               ChatApiGetProfileLikesResponse.fromJson(processedResponse);
           if (kDebugMode) {
-            print("get profile likes api response ${responseModel.list.length}");
+            print(
+                "get profile likes api response ${responseModel.list.length}");
           }
 
           return responseModel;
@@ -583,8 +625,7 @@ class ApiClient {
     return [];
   }
 
-  Future<String> unlike(
-      String likeeId, Like currentLike) async {
+  Future<String> unlike(String likeeId, Like currentLike) async {
     var message =
         "UnLike  $likeeId by ${FirebaseAuth.instance.currentUser?.uid}";
     if (kDebugMode) {

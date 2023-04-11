@@ -1,24 +1,29 @@
 import 'package:cookout/models/clients/api_client.dart';
+import 'package:cookout/models/comment.dart';
 import 'package:cookout/models/controllers/analytics_controller.dart';
 import 'package:cookout/models/controllers/auth_controller.dart';
 import 'package:cookout/models/post.dart';
+import 'package:cookout/shared_components/comments/comment_solo.dart';
 import 'package:cookout/shared_components/posts/post_solo.dart';
 import 'package:cookout/wrappers/analytics_loading_button.dart';
+import 'package:cookout/wrappers/author_and_text.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../models/controllers/auth_inherited.dart';
 
-class PostThread extends StatefulWidget {
-  const PostThread({super.key});
+class PagedCommentThread extends StatefulWidget {
+  const PagedCommentThread({super.key, required this.postId, required this.pagingController});
+
+  final PagingController<String, Comment> pagingController;
+  final String postId;
 
   @override
-  State<PostThread> createState() => _PostThreadState();
+  State<PagedCommentThread> createState() => _PagedCommentThreadState();
 }
 
-class _PostThreadState extends State<PostThread>{
-  final PagingController<String, Post> _pagingController =
-      PagingController(firstPageKey: "");
+class _PagedCommentThreadState extends State<PagedCommentThread> {
+
   AuthController? authController = null;
   late ApiClient client;
   AnalyticsController? analyticsController = null;
@@ -27,9 +32,11 @@ class _PostThreadState extends State<PostThread>{
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((theLastId) async {
+    widget.pagingController.addPageRequestListener((theLastId) async {
       return _fetchPage(theLastId);
     });
+
+    //get the comment Thread from the post Id
 
     super.initState();
   }
@@ -76,30 +83,30 @@ class _PostThreadState extends State<PostThread>{
 
   Future<void> _fetchPage(String pageKey) async {
     print(
-        "Retrieving post page with pagekey $pageKey  and size $_pageSize $client");
+        "Retrieving post comments thread page with pagekey $pageKey and size $_pageSize $client");
     try {
-      List<Post>? newItems;
-      newItems = await client.fetchPostsPaginated(pageKey, _pageSize);
+      List<Comment>? newItems;
+      newItems = await client.fetchCommentThreadPaginatedForPost(widget.postId, pageKey, _pageSize);
 
-      print("Got more items ${newItems.length}");
+      print("Got more comment items ${newItems.length}");
       final isLastPage = (newItems.length ?? 0) < _pageSize;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems ?? []);
+        widget.pagingController.appendLastPage(newItems ?? []);
       } else {
         final nextPageKey = newItems.last.id;
         if (nextPageKey != null) {
-          _pagingController.appendPage(newItems ?? [], nextPageKey);
+          widget.pagingController.appendPage(newItems ?? [], nextPageKey);
         }
       }
     } catch (error) {
-      _pagingController.error = error;
+      widget.pagingController.error = error;
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    _pagingController.dispose();
+    widget.pagingController.dispose();
   }
 
   // This widget is the root of your application.
@@ -109,9 +116,9 @@ class _PostThreadState extends State<PostThread>{
       Positioned.fill(
         child: Container(color: Colors.black87),
       ),
-      PagedListView<String, Post>(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<Post>(
+      PagedListView<String, Comment>(
+        pagingController: widget.pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Comment>(
           noItemsFoundIndicatorBuilder: (build) {
             return Flex(direction: Axis.horizontal, children: [
               Expanded(
@@ -125,23 +132,7 @@ class _PostThreadState extends State<PostThread>{
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text("There are no posts yet."),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              AnalyticsLoadingButton(
-                                analyticsEventData: {
-                                  'frequency_of_event': "once_in_app_history"
-                                },
-                                analyticsEventName: 'add-the-very-first-post',
-                                text: "Add a Post",
-                                action: (context) async {
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/createPost',
-                                  );
-                                },
-                              )
+                              const Text("There are no comments yet."),
                             ],
                           ),
                         ),
@@ -154,8 +145,10 @@ class _PostThreadState extends State<PostThread>{
           },
           itemBuilder: (context, item, index) => Container(
             margin: EdgeInsets.fromLTRB(0, 0, 0, 1),
-            child: PostSolo(
-              post: item,
+            child: AuthorAndText(
+              when: item.publishedAt,
+              author: item.author!,
+              body: item.commentBody,
             ),
           ),
         ),

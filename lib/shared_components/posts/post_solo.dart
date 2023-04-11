@@ -66,8 +66,7 @@ class _PostSoloState extends State<PostSolo> {
     if (theLikes?.list != null) {
       try {
         var myLike = theLikes?.list.firstWhere((element) {
-          return element.liker?.userId ==
-              authController?.myAppUser?.userId;
+          return element.liker?.userId == authController?.myAppUser?.userId;
         });
         isPostLikedByMe = myLike;
       } catch (e) {
@@ -75,19 +74,21 @@ class _PostSoloState extends State<PostSolo> {
         isPostLikedByMe = null;
       }
     }
-
   }
 
   likeThisPost(String postId) async {
     await profileClient?.like(postId, 'post-like');
   }
+
   unlikeThisPost(String postId) async {
-    if(isPostLikedByMe != null && widget.post.id != null) {
+    if (isPostLikedByMe != null && widget.post.id != null) {
       await profileClient?.unlike(widget.post.id!, isPostLikedByMe!);
     }
   }
 
-  commentThisPost(String? postId) {}
+  commentOnThisPost(String? postId) {
+    Navigator.pushNamed(context, '/profile', arguments: {"id": postId});
+  }
 
   // This widget is the root of your application.
   @override
@@ -126,12 +127,13 @@ class _PostSoloState extends State<PostSolo> {
                         isLiking = true;
                       });
                       if (widget.post.id != null) {
-                        if(isPostLikedByMe == null) {
+                        if (isPostLikedByMe == null) {
                           await likeThisPost(widget.post.id!);
                         } else {
                           await unlikeThisPost(widget.post.id!);
                         }
-                        var theLikes = await profileClient?.getProfileLikes(widget.post.id!);
+                        var theLikes = await profileClient
+                            ?.getProfileLikes(widget.post.id!);
                         likes = theLikes?.list ?? likes;
                         await updateLikes();
 
@@ -141,7 +143,8 @@ class _PostSoloState extends State<PostSolo> {
                       }
                     },
                     action2OnPressed: () async {
-                      // await commentOnThisPost(widget.post.id);
+                      Navigator.pushNamed(context, '/post',
+                          arguments: {"id": widget.post.id});
                     },
                     image: SanityImageBuilder.imageProviderFor(
                             sanityImage: widget.post.mainImage,

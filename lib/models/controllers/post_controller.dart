@@ -140,4 +140,44 @@ class PostController {
     }
     return "FAIL";
   }
+
+  Future<Post?> getPost(String postId) async {
+    // if (kDebugMode) {
+    //   print("Retrieving Posts $userId");
+    // }
+    String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
+    if (token != null && authBaseUrl != "" && authBaseUrl != "") {
+      final response = await http.get(Uri.parse("$authBaseUrl/get-post/$postId"),
+          headers: {"Authorization": ("Bearer $token")});
+
+      var processedResponse;
+      try {
+        processedResponse = jsonDecode(response.body);
+      } catch (err) {
+        print(err);
+      }
+
+      // if (kDebugMode) {
+      //   print(processedResponse);
+      // }
+      if (processedResponse['post'] != null) {
+        print("postResponse ${processedResponse['post']}");
+        Post responseModel = Post.fromJson(processedResponse['post']);
+        // if (kDebugMode) {
+        //   print("get posts api response ${responseModel.list}");
+        // }
+
+        // for (var element in responseModel.list) {
+        //   if (kDebugMode) {
+        //     print(element);
+        //   }
+        // }
+
+        return responseModel;
+      } else {
+        return null;
+      }
+    }
+    return null;
+  }
 }

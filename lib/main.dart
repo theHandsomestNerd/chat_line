@@ -13,6 +13,7 @@ import 'package:cookout/pages/posts_page.dart';
 import 'package:cookout/pages/profiles_page.dart';
 import 'package:cookout/pages/register_page.dart';
 import 'package:cookout/pages/settings_page.dart';
+import 'package:cookout/pages/solo_post_page.dart';
 import 'package:cookout/pages/solo_profile_page.dart';
 import 'package:cookout/shared_components/bug_reporter/bug_reporter.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -207,6 +208,27 @@ class _MyAppState extends State<MyApp> {
                 id: theId,
               ),
             );
+          },
+          '/post': (context) {
+            var arguments = (ModalRoute.of(context)?.settings.arguments ??
+                <String, dynamic>{}) as Map;
+
+            var theId;
+            if (arguments['id'] != null) {
+              theId = arguments['id'];
+            }
+
+            // var thisPost;
+            // if (theId != null) {
+            //    postController.getPost(theId).then((value){
+            //     print("Post retrieved before ");
+
+                return SoloPostPage(
+                  thisPostId: theId,
+                );
+
+            // }
+            // return Placeholder();
           },
           '/myProfile': (context) {
             var theId = authController.myAppUser?.userId.toString() ?? "";

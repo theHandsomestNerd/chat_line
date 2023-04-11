@@ -4,6 +4,7 @@ import 'package:cookout/shared_components/logo.dart';
 import 'package:cookout/shared_components/menus/login_menu.dart';
 import 'package:cookout/wrappers/alerts_snackbar.dart';
 import 'package:cookout/wrappers/analytics_loading_button.dart';
+import 'package:cookout/wrappers/app_scaffold_wrapper.dart';
 import 'package:cookout/wrappers/text_field_wrapped.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -151,15 +152,9 @@ class _LoginPageState extends State<LoginPage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-    return Scaffold(
-      floatingActionButton: LoginMenu(),
-      appBar: AppBar(
-        backgroundColor: Colors.white.withOpacity(0.5),
-        // Here we take the value from the LoginPage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Logo(),
-      ),
-      body: Flex(
+    return AppScaffoldWrapper(
+      floatingActionMenu: LoginMenu(),
+      child: Flex(
         direction: Axis.vertical,
         children: [
           Flexible(
@@ -292,17 +287,14 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         Flexible(
                           flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 32.0),
-                            child: Column(
-                              children: [
-                                Text("${DefaultConfig.appName}"),
-                                Text(
-                                    "ui v${DefaultConfig.version}.${DefaultConfig.buildNumber} - ${DefaultConfig.sanityDB}"),
-                                Text("api - ${DefaultConfig.apiStatus}"),
-                                Text("v${apiVersion} -${sanityApiDB}"),
-                              ],
-                            ),
+                          child: Column(
+                            children: [
+                              Text("${DefaultConfig.appName}"),
+                              Text(
+                                  "ui v${DefaultConfig.version}.${DefaultConfig.buildNumber} - ${DefaultConfig.sanityDB}"),
+                              Text("api - ${DefaultConfig.apiStatus}"),
+                              Text("v${apiVersion} -${sanityApiDB}"),
+                            ],
                           ),
                         ),
                       ],

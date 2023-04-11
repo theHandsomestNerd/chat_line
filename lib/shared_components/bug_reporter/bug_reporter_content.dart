@@ -1,3 +1,4 @@
+import 'package:cookout/config/default_config.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/clients/bug_report_client.dart';
@@ -54,7 +55,7 @@ class _BugReporterContentState extends State<BugReporterContent> {
                   _description == INITIAL_DESCRIPTION &&
                   imageUploader?.file?.name == null,
               width: 110,
-              action: () async {
+              action: (x) async {
                 await submitBug();
                 setState(() {});
                 // Navigator.of(context).pop();
@@ -68,7 +69,7 @@ class _BugReporterContentState extends State<BugReporterContent> {
           children: [
             LoadingButton(
               width: 110,
-              action: () {
+              action: (innerContext) {
                 Navigator.of(context).pop();
               },
               text: 'Cancel',
@@ -119,6 +120,13 @@ class _BugReporterContentState extends State<BugReporterContent> {
                         },
                       ),
                     ),
+                  Column(
+                    children: [
+                      Text(
+                          "ui v${DefaultConfig.version}.${DefaultConfig.buildNumber} - ${DefaultConfig.sanityDB}", style: Theme.of(context).textTheme.bodySmall,),
+                      Text("v${DefaultConfig.apiVersion}", style: Theme.of(context).textTheme.bodySmall),
+                    ],
+                  ),
                 ],
               ),
             ),
