@@ -6,6 +6,7 @@ import 'package:cookowt/models/controllers/auth_controller.dart';
 import 'package:cookowt/models/controllers/chat_controller.dart';
 import 'package:cookowt/models/controllers/geolocation_controller.dart';
 import 'package:cookowt/models/controllers/post_controller.dart';
+import 'package:cookowt/pages/hashtag_library_page.dart';
 import 'package:cookowt/pages/hashtag_page.dart';
 import 'package:cookowt/pages/home_page.dart';
 import 'package:cookowt/pages/logout_page.dart';
@@ -144,7 +145,7 @@ class _MyAppState extends State<MyApp> {
       GoRoute(
           path: '/post/:id',
           builder: (BuildContext context, GoRouterState state) => BugReporter(
-              child: SoloPostPage(
+                  child: SoloPostPage(
                 thisPostId: state.params["id"],
               ))),
       GoRoute(
@@ -152,24 +153,28 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context, GoRouterState state) {
             return BugReporter(
                 child: SoloProfilePage(
-                  id: state.params["id"]!,
-                ));
+              id: state.params["id"]!,
+            ));
           }),
-    GoRoute(
+      GoRoute(
           path: '/myProfile',
           builder: (BuildContext context, GoRouterState state) {
             return BugReporter(
                 child: SoloProfilePage(
-                  id: FirebaseAuth.instance.currentUser?.uid ?? "",
-                ));
+              id: FirebaseAuth.instance.currentUser?.uid ?? "",
+            ));
           }),
       GoRoute(
           path: '/hashtag/:id',
           builder: (BuildContext context, GoRouterState state) => BugReporter(
-              child: HashtagPage(
+                  child: HashtagPage(
                 key: Key(state.params["id"]!),
                 thisHashtagId: state.params["id"],
               ))),
+      GoRoute(
+          path: '/hashtagLibrary',
+          builder: (BuildContext context, GoRouterState state) =>
+              BugReporter(child: HashtagLibraryPage())),
     ],
   );
 
@@ -207,8 +212,6 @@ class _MyAppState extends State<MyApp> {
         analyticsController.setUserId(user.uid);
       }
     });
-
-
   }
 
   @override
