@@ -1,4 +1,4 @@
-import 'package:cookowt/models/hash_tag.dart';
+import 'package:kookout/models/hash_tag.dart';
 import 'package:flutter/material.dart';
 import 'package:hashtagable/detector/detector.dart';
 

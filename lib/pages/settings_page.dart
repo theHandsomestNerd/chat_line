@@ -1,9 +1,9 @@
-import 'package:cookowt/models/controllers/chat_controller.dart';
-import 'package:cookowt/pages/tabs/blocks_tab.dart';
-import 'package:cookowt/pages/tabs/edit_profile_tab.dart';
-import 'package:cookowt/pages/tabs/timeline_events_tab.dart';
-import 'package:cookowt/shared_components/menus/settings_menu.dart';
-import 'package:cookowt/wrappers/app_scaffold_wrapper.dart';
+import 'package:kookout/models/controllers/chat_controller.dart';
+import 'package:kookout/pages/tabs/blocks_tab.dart';
+import 'package:kookout/pages/tabs/edit_profile_tab.dart';
+import 'package:kookout/pages/tabs/timeline_events_tab.dart';
+import 'package:kookout/shared_components/menus/settings_menu.dart';
+import 'package:kookout/wrappers/app_scaffold_wrapper.dart';
 import 'package:flutter/material.dart';
 
 import '../models/block.dart';

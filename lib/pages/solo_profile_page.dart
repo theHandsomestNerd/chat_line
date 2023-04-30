@@ -1,14 +1,14 @@
-import 'package:cookowt/models/clients/api_client.dart';
-import 'package:cookowt/models/controllers/auth_controller.dart';
-import 'package:cookowt/models/controllers/chat_controller.dart';
-import 'package:cookowt/models/responses/chat_api_get_profile_follows_response.dart';
-import 'package:cookowt/models/responses/chat_api_get_profile_likes_response.dart';
-import 'package:cookowt/pages/tabs/bio_tab.dart';
-import 'package:cookowt/pages/tabs/comments_tab.dart';
-import 'package:cookowt/pages/tabs/follows_tab.dart';
-import 'package:cookowt/pages/tabs/likes_tab.dart';
-import 'package:cookowt/wrappers/alerts_snackbar.dart';
-import 'package:cookowt/wrappers/app_scaffold_wrapper.dart';
+import 'package:kookout/models/clients/api_client.dart';
+import 'package:kookout/models/controllers/auth_controller.dart';
+import 'package:kookout/models/controllers/chat_controller.dart';
+import 'package:kookout/models/responses/chat_api_get_profile_follows_response.dart';
+import 'package:kookout/models/responses/chat_api_get_profile_likes_response.dart';
+import 'package:kookout/pages/tabs/bio_tab.dart';
+import 'package:kookout/pages/tabs/comments_tab.dart';
+import 'package:kookout/pages/tabs/follows_tab.dart';
+import 'package:kookout/pages/tabs/likes_tab.dart';
+import 'package:kookout/wrappers/alerts_snackbar.dart';
+import 'package:kookout/wrappers/app_scaffold_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

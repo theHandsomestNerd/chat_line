@@ -1,8 +1,8 @@
-import 'package:cookowt/models/clients/api_client.dart';
-import 'package:cookowt/models/comment.dart';
-import 'package:cookowt/models/controllers/analytics_controller.dart';
-import 'package:cookowt/models/controllers/auth_controller.dart';
-import 'package:cookowt/wrappers/author_and_text.dart';
+import 'package:kookout/models/clients/api_client.dart';
+import 'package:kookout/models/comment.dart';
+import 'package:kookout/models/controllers/analytics_controller.dart';
+import 'package:kookout/models/controllers/auth_controller.dart';
+import 'package:kookout/wrappers/author_and_text.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 

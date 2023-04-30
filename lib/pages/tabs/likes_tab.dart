@@ -1,5 +1,5 @@
-import 'package:cookowt/layout/search_and_list.dart';
-import 'package:cookowt/shared_components/likes/likes_thread.dart';
+import 'package:kookout/layout/search_and_list.dart';
+import 'package:kookout/shared_components/likes/likes_thread.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/app_user.dart';

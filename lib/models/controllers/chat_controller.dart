@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:cookowt/config/default_config.dart';
-import 'package:cookowt/models/block.dart';
-import 'package:cookowt/models/extended_profile.dart';
-import 'package:cookowt/models/clients/api_client.dart';
-import 'package:cookowt/models/timeline_event.dart';
+import 'package:kookout/config/default_config.dart';
+import 'package:kookout/models/block.dart';
+import 'package:kookout/models/extended_profile.dart';
+import 'package:kookout/models/clients/api_client.dart';
+import 'package:kookout/models/timeline_event.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 

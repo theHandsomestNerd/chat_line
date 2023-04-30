@@ -1,4 +1,4 @@
-import 'package:cookowt/wrappers/app_scaffold_wrapper.dart';
+import 'package:kookout/wrappers/app_scaffold_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

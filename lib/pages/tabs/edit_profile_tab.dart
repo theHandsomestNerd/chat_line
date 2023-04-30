@@ -1,7 +1,7 @@
-import 'package:cookowt/models/controllers/analytics_controller.dart';
-import 'package:cookowt/models/controllers/auth_controller.dart';
-import 'package:cookowt/wrappers/analytics_loading_button.dart';
-import 'package:cookowt/wrappers/text_field_wrapped.dart';
+import 'package:kookout/models/controllers/analytics_controller.dart';
+import 'package:kookout/models/controllers/auth_controller.dart';
+import 'package:kookout/wrappers/analytics_loading_button.dart';
+import 'package:kookout/wrappers/text_field_wrapped.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sanity_image_url/flutter_sanity_image_url.dart';

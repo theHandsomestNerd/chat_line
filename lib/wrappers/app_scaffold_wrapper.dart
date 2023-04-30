@@ -1,5 +1,5 @@
-import 'package:cookowt/shared_components/bug_reporter/bug_reporter.dart';
-import 'package:cookowt/shared_components/logo.dart';
+import 'package:kookout/shared_components/bug_reporter/bug_reporter.dart';
+import 'package:kookout/shared_components/logo.dart';
 import 'package:flutter/material.dart';
 
 class AppScaffoldWrapper extends StatelessWidget {

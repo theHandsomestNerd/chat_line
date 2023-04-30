@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:cookowt/config/default_config.dart';
-import 'package:cookowt/models/extract_hash_tag_details.dart';
-import 'package:cookowt/models/hash_tag.dart';
-import 'package:cookowt/models/responses/chat_api_get_profile_posts_response.dart';
+import 'package:kookout/config/default_config.dart';
+import 'package:kookout/models/extract_hash_tag_details.dart';
+import 'package:kookout/models/hash_tag.dart';
+import 'package:kookout/models/responses/chat_api_get_profile_posts_response.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
