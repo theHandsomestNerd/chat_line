@@ -19,9 +19,9 @@ class _LoginMenuState extends State<LoginMenu> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     myAppUser = FirebaseAuth.instance.currentUser;
     setState(() {});
+    super.didChangeDependencies();
   }
 
   @override

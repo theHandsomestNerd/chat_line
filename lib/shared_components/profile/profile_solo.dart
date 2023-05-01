@@ -25,7 +25,6 @@ class _ProfileSoloState extends State<ProfileSolo> {
   String? myUserId;
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
@@ -36,6 +35,7 @@ class _ProfileSoloState extends State<ProfileSolo> {
     myUserId =
         AuthInherited.of(context)?.authController?.myAppUser?.userId ?? "";
     setState(() {});
+    super.didChangeDependencies();
   }
 
   _gotoProfile() async {

@@ -36,7 +36,6 @@ class _ProfilesPageState extends State<ProfilesPage> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theChatController = AuthInherited.of(context)?.chatController;
     var theAuthController = AuthInherited.of(context)?.authController;
     myUserId =
@@ -54,6 +53,7 @@ class _ProfilesPageState extends State<ProfilesPage> {
     chatController = theChatController;
     myBlockedProfiles = await chatController?.updateMyBlocks();
     setState(() {});
+    super.didChangeDependencies();
   }
 
   static const TextStyle optionStyle =

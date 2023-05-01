@@ -46,7 +46,6 @@ class _PostsPageState extends State<PostsPage> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
 
     // var theChatController = AuthInherited.of(context)?.chatController;
     var theAuthController = AuthInherited.of(context)?.authController;
@@ -82,6 +81,7 @@ class _PostsPageState extends State<PostsPage> {
 
     // profiles = await chatController?.updateProfiles();
     setState(() {});
+    super.didChangeDependencies();
   }
 
   Future<void> _fetchPage(String pageKey) async {

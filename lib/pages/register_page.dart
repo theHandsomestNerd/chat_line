@@ -37,7 +37,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
@@ -45,6 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (theAnalyticsController != null) {
       analyticsController = theAnalyticsController;
     }
+    super.didChangeDependencies();
   }
 
   Future<void> _setUsername(String newUsername) async {

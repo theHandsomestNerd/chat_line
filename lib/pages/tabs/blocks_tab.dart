@@ -22,10 +22,10 @@ class _BlocksTabState extends State<BlocksTab> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theAnalyticsController = AuthInherited.of(context)?.analyticsController;
     await theAnalyticsController?.logScreenView("blocks-tab");
     setState(() {});
+    super.didChangeDependencies();
   }
 
   @override

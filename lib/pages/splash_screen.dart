@@ -36,7 +36,6 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     AuthController? theAuthController =
         AuthInherited.of(context)?.authController;
     if (theAuthController != null) {
@@ -55,6 +54,7 @@ class _SplashPageState extends State<SplashPage> {
     if (kDebugMode) {
       print("dependencies changed splash page");
     }
+    super.didChangeDependencies();
   }
 
   @override

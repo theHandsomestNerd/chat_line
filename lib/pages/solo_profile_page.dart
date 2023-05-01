@@ -71,7 +71,6 @@ class _SoloProfilePageState extends State<SoloProfilePage> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theChatController = AuthInherited.of(context)?.chatController;
     var theAuthController = AuthInherited.of(context)?.authController;
     AnalyticsController? theAnalyticsController =
@@ -118,6 +117,7 @@ class _SoloProfilePageState extends State<SoloProfilePage> {
     // if (kDebugMode) {
     //   print("profile  dependencies changed is this me $_isThisMe");
     // }
+    super.didChangeDependencies();
   }
 
   // _getTagLine() {

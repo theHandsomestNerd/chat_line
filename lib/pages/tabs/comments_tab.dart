@@ -42,7 +42,6 @@ class _CommentsTabState extends State<CommentsTab> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theChatController = AuthInherited.of(context)?.chatController;
     _comments =
         await theChatController?.profileClient.getProfileComments(widget.id, 'profile-comment') ??
@@ -50,6 +49,7 @@ class _CommentsTabState extends State<CommentsTab> {
     chatController = theChatController;
 
     setState(() {});
+    super.didChangeDependencies();
   }
 
   void _setCommentBody(String newCommentBody) {

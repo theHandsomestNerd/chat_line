@@ -30,13 +30,13 @@ class _AnalyticsLoadingButtonState extends State<AnalyticsLoadingButton> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
 
     var theAnalyticsController = AuthInherited.of(context)?.analyticsController;
     if (theAnalyticsController != null) {
       analyticsController = theAnalyticsController;
       setState(() {});
     }
+    super.didChangeDependencies();
   }
 
   // This widget is the root of your application.

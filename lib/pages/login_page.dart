@@ -47,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     AuthController? theAuthController =
         AuthInherited.of(context)?.authController;
     if (theAuthController != null) {
@@ -66,6 +65,7 @@ class _LoginPageState extends State<LoginPage> {
     if (kDebugMode) {
       print("dependencies changed login page");
     }
+    super.didChangeDependencies();
   }
 
   void _setUsername(String newUsername) async {

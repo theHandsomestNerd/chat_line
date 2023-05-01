@@ -21,7 +21,6 @@ class _ProfileGridState extends State<ProfileGrid> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
 
     var theClient = AuthInherited.of(context)?.chatController?.profileClient;
     if (theClient != null) {
@@ -29,6 +28,7 @@ class _ProfileGridState extends State<ProfileGrid> {
     }
 
     setState(() {});
+    super.didChangeDependencies();
   }
 
   final PagingController<String, AppUser> _pagingController =

@@ -32,10 +32,10 @@ class _TimelineEventsTabState extends State<TimelineEventsTab> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theChatController = AuthInherited.of(context)?.chatController;
     timelineEvents = await theChatController?.updateTimelineEvents();
     setState(() {});
+    super.didChangeDependencies();
   }
 
   @override

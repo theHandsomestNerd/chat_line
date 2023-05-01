@@ -316,7 +316,6 @@ class _HomePageState extends State<HomePage> with RouteAware {
     //     .notifyPageRequestListeners("");
     // _profilePagingController
     //     .notifyPageRequestListeners("");
-    super.didChangeDependencies();
 
     routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
 
@@ -379,6 +378,7 @@ class _HomePageState extends State<HomePage> with RouteAware {
     // _profilePageController.nextPage(
     //     duration: Duration(milliseconds: 500), curve: ElasticInCurve());
     setState(() {});
+    super.didChangeDependencies();
   }
 
   @override

@@ -136,7 +136,6 @@ class _SoloPostPageState extends State<SoloPostPage> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theAuthController = AuthInherited.of(context)?.authController;
     authController = theAuthController;
     var theChatController = AuthInherited.of(context)?.chatController;
@@ -192,6 +191,7 @@ class _SoloPostPageState extends State<SoloPostPage> {
       }
     }
     setState(() {});
+    super.didChangeDependencies();
   }
 
   late bool _isLiking = false;

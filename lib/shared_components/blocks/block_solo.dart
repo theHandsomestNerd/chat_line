@@ -26,10 +26,10 @@ class _BlockSoloState extends State<BlockSolo> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theChatController = AuthInherited.of(context)?.chatController;
     chatController = theChatController;
     setState(() {});
+    super.didChangeDependencies();
   }
 
   // This widget is the root of your application.

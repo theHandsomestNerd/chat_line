@@ -91,7 +91,6 @@ class _EditProfileTabState extends State<EditProfileTab> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theAuthController = AuthInherited.of(context)?.authController;
     var theChatController = AuthInherited.of(context)?.chatController;
     var theUser = AuthInherited.of(context)?.authController?.myAppUser;
@@ -106,6 +105,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
       extProfile = await theChatController?.profileClient
           .getExtendedProfile((theUser?.userId)!);
     }
+    super.didChangeDependencies();
   }
 
   void _setUsername(String newUsername) async {

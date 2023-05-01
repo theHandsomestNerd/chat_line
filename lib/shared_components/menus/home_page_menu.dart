@@ -34,10 +34,10 @@ class _HomePageMenuState extends State<HomePageMenu> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     profileImage =
         AuthInherited.of(context)?.authController?.myAppUser?.profileImage;
     setState(() {});
+    super.didChangeDependencies();
   }
 
   @override

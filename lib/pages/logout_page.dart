@@ -19,12 +19,12 @@ class LogoutPage extends StatefulWidget {
 class _LogoutPageState extends State<LogoutPage> {
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
 
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
     theAnalyticsController?.logScreenView('Logout');
+    super.didChangeDependencies();
   }
 
   @override

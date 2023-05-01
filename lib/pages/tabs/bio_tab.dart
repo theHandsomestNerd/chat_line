@@ -87,7 +87,6 @@ class _BioTabState extends State<BioTab> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theChatController = AuthInherited.of(context)?.chatController;
     var theAnalyticsController = AuthInherited.of(context)?.analyticsController;
     extProfile =
@@ -98,6 +97,7 @@ class _BioTabState extends State<BioTab> {
       analyticsController = theAnalyticsController;
     }
     setState(() {});
+    super.didChangeDependencies();
   }
 
   _likeThisProfile(context) async {

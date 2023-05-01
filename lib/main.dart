@@ -172,9 +172,9 @@ class _MyAppState extends State<MyApp> {
                 thisHashtagId: state.params["id"],
               ))),
       GoRoute(
-          path: '/hashtagLibrary',
+          path: '/hashtagCollections',
           builder: (BuildContext context, GoRouterState state) =>
-              BugReporter(child: HashtagLibraryPage())),
+              const BugReporter(child: const HashtagLibraryPage())),
     ],
   );
 
@@ -225,7 +225,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
 
     // var intermediate =
     //     AuthInherited.of(context)?.authController?.isLoggedIn ?? false;
@@ -247,6 +246,7 @@ class _MyAppState extends State<MyApp> {
     // }
 
     setState(() {});
+    super.didChangeDependencies();
   }
 
   // This widget is the root of your application.

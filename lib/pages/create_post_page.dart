@@ -74,7 +74,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     AuthController? theAuthController =
         AuthInherited.of(context)?.authController;
     authController = theAuthController;
@@ -94,6 +93,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
           ?.sendAnalyticsEvent('post-form-enabled', {"body": _postBody});
     }
     setState(() {});
+    super.didChangeDependencies();
   }
 
   void _setPostBody(String newPostBody) async {

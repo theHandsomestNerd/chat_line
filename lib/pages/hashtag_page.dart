@@ -48,7 +48,6 @@ class _HashtagPageState extends State<HashtagPage> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
 
     // var theChatController = AuthInherited.of(context)?.chatController;
     var theAuthController = AuthInherited.of(context)?.authController;
@@ -84,6 +83,7 @@ class _HashtagPageState extends State<HashtagPage> {
 
     // profiles = await chatController?.updateProfiles();
     setState(() {});
+    super.didChangeDependencies();
   }
 
   Future<void> _fetchPage(String pageKey) async {

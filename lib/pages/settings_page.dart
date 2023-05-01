@@ -39,7 +39,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     AnalyticsController? theAnalyticsController =
         AuthInherited.of(context)?.analyticsController;
 
@@ -68,6 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
     }
 
     setState(() {});
+    super.didChangeDependencies();
   }
 
   Widget _widgetOptions(selectedIndex) {

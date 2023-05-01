@@ -87,7 +87,6 @@ class _PostCommentThreadTabState extends State<PostCommentThreadTab> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theChatController = AuthInherited.of(context)?.chatController;
     var theAnalyticsController = AuthInherited.of(context)?.analyticsController;
     extProfile =
@@ -124,6 +123,7 @@ class _PostCommentThreadTabState extends State<PostCommentThreadTab> {
     setState(() {
       _isLiking = false;
     });
+    super.didChangeDependencies();
   }
 
   _followThisProfile(context) async {

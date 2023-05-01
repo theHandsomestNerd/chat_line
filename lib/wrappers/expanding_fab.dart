@@ -62,10 +62,10 @@ class _ExpandableFabState extends State<ExpandableFab>
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theAuthController = AuthInherited.of(context)?.authController;
     profileImage = theAuthController?.myAppUser?.profileImage;
     setState(() {});
+    super.didChangeDependencies();
   }
 
   @override

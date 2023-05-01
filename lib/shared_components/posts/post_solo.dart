@@ -34,7 +34,6 @@ class _PostSoloState extends State<PostSolo> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theClient = AuthInherited.of(context)?.chatController?.profileClient;
     var theAuthController = AuthInherited.of(context)?.authController;
     // AnalyticsController? theAnalyticsController =
@@ -60,6 +59,7 @@ class _PostSoloState extends State<PostSolo> {
     //     AuthInherited.of(context)?.authController?.myAppUser?.userId ?? "";
     // myBlockedProfiles = await chatController?.updateMyBlocks();
     // setState(() {});
+    super.didChangeDependencies();
   }
 
   updateLikes() async {

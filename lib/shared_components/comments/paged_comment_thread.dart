@@ -39,7 +39,6 @@ class _PagedCommentThreadState extends State<PagedCommentThread> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
 
     // var theChatController = AuthInherited.of(context)?.chatController;
     var theAuthController = AuthInherited.of(context)?.authController;
@@ -75,6 +74,7 @@ class _PagedCommentThreadState extends State<PagedCommentThread> {
 
     // profiles = await chatController?.updateProfiles();
     setState(() {});
+    super.didChangeDependencies();
   }
 
   Future<void> _fetchPage(String pageKey) async {

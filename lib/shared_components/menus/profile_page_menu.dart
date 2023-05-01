@@ -28,10 +28,10 @@ class _ProfilePageMenuState extends State<ProfilePageMenu> {
 
   @override
   didChangeDependencies() async {
-    super.didChangeDependencies();
     var theAuthController = AuthInherited.of(context)?.authController;
     profileImage = theAuthController?.myAppUser?.profileImage;
     setState(() {});
+    super.didChangeDependencies();
   }
 
   @override

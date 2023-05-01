@@ -1,5 +1,7 @@
+import 'package:cookowt/layout/full_page_layout.dart';
 import 'package:cookowt/shared_components/menus/home_page_menu.dart';
 import 'package:cookowt/wrappers/app_scaffold_wrapper.dart';
+import 'package:cookowt/wrappers/hashtag_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_router/go_router.dart';
@@ -42,6 +44,13 @@ class HashtagLibraryPage extends StatefulWidget {
 class _HashtagLibraryPageState extends State<HashtagLibraryPage> {
   @override
   Widget build(BuildContext context) {
+    final List<String> hashtagList = [
+      "the-lines",
+      "numbers",
+      "theta-chi",
+      "other-bruhs",
+      "other-greeks"
+    ];
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -54,210 +63,14 @@ class _HashtagLibraryPageState extends State<HashtagLibraryPage> {
       floatingActionMenu: HomePageMenu(
         updateMenu: () {},
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Lines", style: Theme.of(context).textTheme.titleSmall),
-          Row(
-            children: [
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/FA76");
-                },
-                child: Text(
-                  "#FA76",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/FA99");
-                },
-                child: Text(
-                  "#FA99",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/FA00");
-                },
-                child: Text(
-                  "#FA00",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/SP02");
-                },
-                child: Text(
-                  "#SP02",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/SP06");
-                },
-                child: Text(
-                  "#SP06",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/SP08");
-                },
-                child: Text(
-                  "#SP08",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/FA08");
-                },
-                child: Text(
-                  "#FA08",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-          Text("Numbers", style: Theme.of(context).textTheme.titleSmall),
-          Row(
-            children: [
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/1s");
-                },
-                child: Text(
-                  "#1s",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/2s");
-                },
-                child: Text(
-                  "#2s",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/3s");
-                },
-                child: Text(
-                  "#3s",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/4s");
-                },
-                child: Text(
-                  "#4s",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/5s");
-                },
-                child: Text(
-                  "#5s",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/6s");
-                },
-                child: Text(
-                  "#6s",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/7s");
-                },
-                child: Text(
-                  "#7s",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-
-          Text("Theta Chi", style: Theme.of(context).textTheme.titleSmall),
-          Row(
-            children: [
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/ThetaChiBruhs");
-                },
-                child: Text(
-                  "#ThetaChiBruhs",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(width: 8,),
-              MaterialButton(
-                color: Colors.black87,
-                onPressed: () {
-                  GoRouter.of(context).go("/hashtag/ThetaChiHearts");
-                },
-                child: Text(
-                  "#ThetaChiHearts",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 32,),
-          MaterialButton(
-            color: Colors.black87,
-            onPressed: () {
-              GoRouter.of(context).go("/hashtag/OtherGreeks");
-            },
-            child: Text(
-              "#OtherGreeks",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
+      child: FullPageLayout(
+        child: ListView(
+          children: hashtagList.map((element) {
+            return Hashtag_Collection_Block(
+              collectionSlug: element,
+            );
+          }).toList(),
+        ),
       ),
     );
   }
