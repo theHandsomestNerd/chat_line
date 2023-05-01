@@ -1,3 +1,4 @@
+import 'dart:convert';
 
 import 'package:kookout/models/app_user.dart';
 
@@ -6,33 +7,35 @@ import 'submodels/height.dart';
 class ExtendedProfile {
   int? age;
   int? weight;
-
   Height? height;
-
   String? shortBio;
   String? longBio;
   String? userId;
-  String? gender;
+  String? homeNumber;
+  String? workNumber;
+  String? cellNumber;
   String? facebook;
   String? twitter;
   String? instagram;
-  String? partnerStatus;
+  String? tiktok;
+  String? address1;
+  String? address2;
+  String? city;
+  String? state;
+  String? zip;
+  String? govtIssuedFirstName;
+  String? govtIssuedMiddleName;
+  String? govtIssuedLastName;
+  String? otherChapterAffiliation;
+  String? dopName;
+  String? lineName;
+  String? lineNumber;
+  String? entireLinesName;
+  DateTime? dob;
+  DateTime? crossingDate;
+  String? occupation;
   String? ethnicity;
-  String? iAm;
-  String? imInto;
-  String? imOpenTo;
-  String? whatIDo;
-  String? whatImLookingFor;
-  String? whatInterestsMe;
-  String? whereILive;
-  String? sexPreferences;
-  bool? nsfwFriendly;
-  bool? isTraveling;
-  String? hivStatus;
-  DateTime? lastTested;
-  List<String>? pronouns = [];
-  List<String>? hashtags = [];
-
+  List<String>? children = [];
   AppUser? userRef;
 
   processJsonStringArr(pronounsJson) {
@@ -49,57 +52,64 @@ class ExtendedProfile {
     return pronounListStr;
   }
 
-  ExtendedProfile({
-    this.age,
-    this.height,
-    this.weight,
-    this.shortBio,
-    this.longBio,
-    this.userId,
-    this.gender,
-    this.facebook,
-    this.twitter,
-    this.instagram,
-    this.partnerStatus,
-    this.ethnicity,
-    this.iAm,
-    this.imInto,
-    this.sexPreferences,
-    this.imOpenTo,
-    this.whatIDo,
-    this.whatImLookingFor,
-    this.whatInterestsMe,
-    this.whereILive,
-    this.isTraveling,
-    this.lastTested,
-    this.pronouns,
-    this.hashtags,
-    this.userRef
-  }) {
+  ExtendedProfile(
+      {this.age,
+      this.height,
+      this.weight,
+      this.shortBio,
+      this.longBio,
+      this.userId,
+      this.facebook,
+      this.twitter,
+      this.instagram,
+      this.tiktok,
+      this.homeNumber,
+      this.workNumber,
+      this.cellNumber,
+      this.ethnicity,
+      this.occupation,
+      this.address1,
+      this.address2,
+      this.city,
+      this.state,
+      this.zip,
+      this.lineName,
+      this.lineNumber,
+      this.dopName,
+      this.entireLinesName,
+      this.otherChapterAffiliation,
+      this.crossingDate,
+      this.dob,
+      this.children,
+      this.userRef}) {
     age = age;
-    weight = weight;
     height = height;
+    weight = weight;
     shortBio = shortBio;
     longBio = longBio;
     userId = userId;
-    gender = gender;
     facebook = facebook;
     twitter = twitter;
     instagram = instagram;
-    partnerStatus = partnerStatus;
+    tiktok = tiktok;
+    homeNumber = homeNumber;
+    workNumber = workNumber;
+    cellNumber = cellNumber;
     ethnicity = ethnicity;
-    iAm = iAm;
-    imInto = imInto;
-    imOpenTo = imOpenTo;
-    whatIDo = whatIDo;
-    whatImLookingFor = whatImLookingFor;
-    whatInterestsMe = whatInterestsMe;
-    whereILive = whereILive;
-    sexPreferences = sexPreferences;
-    // isTraveling = isT;
-    // lastTested = DateTime.now();
-    pronouns = pronouns;
-    hashtags = hashtags;
+    occupation = occupation;
+    address1 = address1;
+    address2 = address2;
+    city = city;
+    state = state;
+    zip = zip;
+    lineName = lineName;
+    lineNumber = lineNumber;
+    dopName = dopName;
+    entireLinesName = entireLinesName;
+    otherChapterAffiliation = otherChapterAffiliation;
+    crossingDate = crossingDate;
+    dob = dob;
+    children = children;
     userRef = userRef;
   }
 
@@ -120,34 +130,39 @@ class ExtendedProfile {
         weight = json["weight"];
       }
     }
-    if(json["height"] != null && json["height"] != "null") {
+    if (json["height"] != null && json["height"] != "null") {
       height = Height.fromJson(json['height']);
     }
-    if(json["userRef"] != null && json["userRef"] != "null") {
+    if (json["userRef"] != null && json["userRef"] != "null") {
       userRef = AppUser.fromJson(json['userRef']);
     }
+
     shortBio = json['shortBio'];
     longBio = json['longBio'];
     userId = json['userId'];
-    gender = json['gender'];
     facebook = json['facebook'];
     twitter = json['twitter'];
     instagram = json['instagram'];
-    partnerStatus = json['partnerStatus'];
+    tiktok = json['tiktok'];
+    homeNumber = json['homeNumber'];
+    workNumber = json['workNumber'];
+    cellNumber = json['cellNumber'];
     ethnicity = json['ethnicity'];
-    iAm = json['iAm'];
-    imInto = json['imInto'];
-    imOpenTo = json['imOpenTo'];
-    whatIDo = json['whatIDo'];
-    whatImLookingFor = json['whatImLookingFor'];
-    whatInterestsMe = json['whatInterestsMe'];
-    whereILive = json['whereILive'];
-    sexPreferences = json['sexPreferences'];
-    // nsfwFriendly = json['nsfwFriendly'] as bool?;
-    // isTraveling=json['isTraveling'] as bool?;
-    // lastTested = DateTime(json['lastTested']);
-    // pronouns = processJsonStringArr(json['pronouns']);
-    // hashtags = processJsonStringArr(json['hashtags']);
+    occupation = json['occupation'];
+    address1 = json['address1'];
+    address2 = json['address2'];
+    city = json['city'];
+    state = json['state'];
+    zip = json['zip'];
+    lineName = json['lineName'];
+    dopName = json['dopName'];
+    entireLinesName = json['entireLinesName'];
+    lineName = json['lineName'];
+    otherChapterAffiliation = json['otherChapterAffiliation'];
+    crossingDate = json['crossingDate'];
+    dob = json['dob'];
+    children = json['children'];
+    userRef = json['userRef'];
   }
 
   Map<String, dynamic> toJson() {
@@ -158,56 +173,69 @@ class ExtendedProfile {
     data['longBio'] = longBio;
     data['userId'] = userId;
     data['userRef'] = userRef;
-    data['gender'] = gender;
     data['facebook'] = facebook;
     data['twitter'] = twitter;
     data['instagram'] = instagram;
     // data['height'] = height;
-    data['partnerStatus'] = partnerStatus;
     data['ethnicity'] = ethnicity;
-    data['iAm'] = iAm;
-    data['imInto'] = imInto;
-    data['imOpenTo'] = imOpenTo;
-    data['whatIDo'] = whatIDo;
-    data['whatImLookingFor'] = whatImLookingFor;
-    data['whatInterestsMe'] = whatInterestsMe;
-    data['whereILive'] = whereILive;
-    data['sexPreferences'] = sexPreferences;
-    data['isTraveling'] = isTraveling;
-    data['nsfwFriendly'] = nsfwFriendly;
-    data['lastTested'] = lastTested;
-    data['pronouns'] = pronouns;
-    data['hashtags'] = hashtags;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['shortBio'] = shortBio;
+    data['longBio'] = longBio;
+    data['userId'] = userId;
+    data['facebook'] = facebook;
+    data['twitter'] = twitter;
+    data['instagram'] = instagram;
+    data['tiktok'] = tiktok;
+    data['homeNumber'] = homeNumber;
+    data['workNumber'] = workNumber;
+    data['cellNumber'] = cellNumber;
+    data['ethnicity'] = ethnicity;
+    data['occupation'] = occupation;
+    data['address1'] = address1;
+    data['address2'] = address2;
+    data['city'] = city;
+    data['state'] = state;
+    data['zip'] = zip;
+    data['lineName'] = lineName;
+    data['lineNumber'] = lineNumber;
+    data['dopName'] = dopName;
+    data['entireLinesName'] = entireLinesName;
+    data['otherChapterAffiliation'] = otherChapterAffiliation;
+    data['crossingDate'] = crossingDate;
+    data['dob'] = dob;
+    data['children'] = jsonEncode(children);
+    data['userRef'] = userRef;
     return data;
   }
 
-  // @override
-  // String toString() {
-  //   return '\n__________Extended Profile_______________\n'
-  //       '\nage:$age '
-  //       '\nweight:$weight '
-  //       '\nheight:${height?.feet} ${height?.inches} '
-  //       '\nshortBio:$shortBio '
-  //       '\nlongBio:$longBio '
-  //       '\nuserId:$userId '
-  //       '\ngender:$gender '
-  //       '\nfacebook:$facebook '
-  //       '\ntwitter:$twitter '
-  //       '\ninstagram:$instagram '
-  //       '\npartnerStatus:$partnerStatus '
-  //       '\nethnicity:$ethnicity '
-  //       '\nIam:$iAm '
-  //       '\nIminto:$imInto '
-  //       '\nimopento:$imOpenTo '
-  //       '\nwhatIdo:$whatIDo '
-  //       '\nwhatimlookingfor:$whatImLookingFor '
-  //       '\nwhatinterestsme:$whatInterestsMe '
-  //       '\nsexPreferences:$sexPreferences '
-  //       '\nwhereIlive:$whereILive '
-  //       '\nisTraveling:$isTraveling '
-  //       '\nlasttested:$lastTested '
-  //       '\npronouns:$pronouns '
-  //       '\nhashtags:$hashtags '
-  //       '\n-----------------------------\n';
-  // }
+// @override
+// String toString() {
+//   return '\n__________Extended Profile_______________\n'
+//       '\nage:$age '
+//       '\nweight:$weight '
+//       '\nheight:${height?.feet} ${height?.inches} '
+//       '\nshortBio:$shortBio '
+//       '\nlongBio:$longBio '
+//       '\nuserId:$userId '
+//       '\ngender:$gender '
+//       '\nfacebook:$facebook '
+//       '\ntwitter:$twitter '
+//       '\ninstagram:$instagram '
+//       '\npartnerStatus:$partnerStatus '
+//       '\nethnicity:$ethnicity '
+//       '\nIam:$iAm '
+//       '\nIminto:$imInto '
+//       '\nimopento:$imOpenTo '
+//       '\nwhatIdo:$whatIDo '
+//       '\nwhatimlookingfor:$whatImLookingFor '
+//       '\nwhatinterestsme:$whatInterestsMe '
+//       '\nsexPreferences:$sexPreferences '
+//       '\nwhereIlive:$whereILive '
+//       '\nisTraveling:$isTraveling '
+//       '\nlasttested:$lastTested '
+//       '\npronouns:$pronouns '
+//       '\nhashtags:$hashtags '
+//       '\n-----------------------------\n';
+// }
 }

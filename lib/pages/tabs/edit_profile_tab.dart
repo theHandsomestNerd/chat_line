@@ -45,14 +45,33 @@ class _EditProfileTabState extends State<EditProfileTab> {
 
   String _shortBio = "";
   String _longBio = "";
-  String _iAm = "";
-  String _imInto = "";
-  String _imOpenTo = "";
-  String _whatIDo = "";
-  String _whatImLookingFor = "";
-  String _whatInterestsMe = "";
-  String _whereILive = "";
-  String _sexPreferences = "";
+
+  String _facebook = "";
+  String _twitter = "";
+  String _instagram = "";
+  String _tiktok = "";
+  String _govtIssuedFirstName = "";
+  String _govtIssuedMiddleName = "";
+  String _govtIssuedLastName = "";
+  String _homeNumber = "";
+  String _workNumber = "";
+  String _cellNumber = "";
+  String _ethnicity = "";
+  String _occupation = "";
+  String _address1 = "";
+  String _address2 = "";
+  String _city = "";
+  String _state = "";
+  String _zip = "";
+  String _lineName = "";
+  String _lineNumber = "";
+  String _dopName = "";
+  String _entireLinesName = "";
+  String _otherChapterAffiliation = "";
+  String _crossingDate = "";
+  DateTime? _dob = null;
+  List<String> _children = [];
+
   bool isUpdating = false;
   late SanityImage? profileImage;
 
@@ -65,6 +84,8 @@ class _EditProfileTabState extends State<EditProfileTab> {
   @override
   initState() {
     super.initState();
+    widget.analyticsController
+        ?.logScreenView('set-username-field-edit-profile');
     var theUploader = ImageUploaderImpl();
     imageUploader = theUploader;
 
@@ -72,7 +93,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
       if (kDebugMode) {
         print("image uploader change");
       }
-      if(theUploader.croppedFile != null){
+      if (theUploader.croppedFile != null) {
         if (kDebugMode) {
           print("there iz a cropped");
         }
@@ -83,9 +104,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
         }
         theFileBytes = await theUploader.file?.readAsBytes();
       }
-      setState(() {
-
-      });
+      setState(() {});
     });
   }
 
@@ -109,76 +128,9 @@ class _EditProfileTabState extends State<EditProfileTab> {
   }
 
   void _setUsername(String newUsername) async {
-    await widget.analyticsController
-        ?.logScreenView('set-username-field-edit-profile');
+
     setState(() {
       _loginUsername = newUsername;
-    });
-  }
-
-  void _setDisplayName(String newDisplayName) {
-    setState(() {
-      _displayName = newDisplayName;
-    });
-  }
-
-  void _setShortBio(String newShortBio) {
-    setState(() {
-      _shortBio = newShortBio;
-    });
-  }
-
-  void _setLongBio(String newLongBio) {
-    setState(() {
-      _longBio = newLongBio;
-    });
-  }
-
-  void _setIAm(String newIAm) {
-    setState(() {
-      _iAm = newIAm;
-    });
-  }
-
-  void _setImInto(String newImInto) {
-    setState(() {
-      _imInto = newImInto;
-    });
-  }
-
-  void _setImOpenTo(String newImOpenTo) {
-    setState(() {
-      _imOpenTo = newImOpenTo;
-    });
-  }
-
-  void _setWhatIDo(String newWhatIDo) {
-    setState(() {
-      _whatIDo = newWhatIDo;
-    });
-  }
-
-  void _setWhatImLookingFor(String newWhatImLookingFor) {
-    setState(() {
-      _whatImLookingFor = newWhatImLookingFor;
-    });
-  }
-
-  void _setWhatInterestsMe(String newWhatInterestsMe) {
-    setState(() {
-      _whatInterestsMe = newWhatInterestsMe;
-    });
-  }
-
-  void _setWhereILive(String newWhereILive) {
-    setState(() {
-      _whereILive = newWhereILive;
-    });
-  }
-
-  void _setSexPreferences(String newSexPreference) {
-    setState(() {
-      _sexPreferences = newSexPreference;
     });
   }
 
@@ -199,19 +151,8 @@ class _EditProfileTabState extends State<EditProfileTab> {
       isUpdating = true;
     });
     try {
-      // var theFileBytes = await imageUploader.file?.readAsBytes();
-      //
-      // if(imageUploader.croppedFile != null){
-      //   theFileBytes = await imageUploader.croppedFile?.readAsBytes();
-      // }
-
-
-      var authUser = await authController?.updateUser(
-          _loginUsername,
-          _displayName,
-          imageUploader.file?.name ?? "",
-          theFileBytes,
-          context);
+      var authUser = await authController?.updateUser(_loginUsername,
+          _displayName, imageUploader.file?.name ?? "", theFileBytes, context);
       if (kDebugMode) {
         print("updated fields in authuser result: $authUser");
 
@@ -224,14 +165,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
         longBio: _longBio != "" ? _longBio : null,
         age: _age != 0 ? _age : null,
         weight: _weight != 0 ? _weight : null,
-        iAm: _iAm != "" ? _iAm : null,
-        imInto: _imInto != "" ? _imInto : null,
-        imOpenTo: _imOpenTo != "" ? _imOpenTo : null,
-        whatIDo: _whatIDo != "" ? _whatIDo : null,
-        whatImLookingFor: _whatImLookingFor != "" ? _whatImLookingFor : null,
-        whatInterestsMe: _whatInterestsMe != "" ? _whatInterestsMe : null,
-        whereILive: _whereILive != "" ? _whereILive : null,
-        sexPreferences: _sexPreferences != "" ? _sexPreferences : null,
+        lineName: _lineName != 0 ? _lineName : null,
       );
 
       if (kDebugMode) {
@@ -260,7 +194,6 @@ class _EditProfileTabState extends State<EditProfileTab> {
     //   '/home',
     // );
     GoRouter.of(context).go('/home');
-
   }
 
   Height? _height;
@@ -269,6 +202,21 @@ class _EditProfileTabState extends State<EditProfileTab> {
     setState(() {
       _height = Height.withValues(newFeet, newInches);
     });
+  }
+
+  getListTile(String? value, String label, Function setValue) {
+    return ListTile(
+      title: TextFieldWrapped(
+        key: ObjectKey("$value-${label.replaceAll(' ', '-').toLowerCase()}"),
+        initialValue: value ?? "",
+        setField: (e) {
+          setValue(e);
+        },
+        labelText: label,
+        minLines: 2,
+        maxLines: 4,
+      ),
+    );
   }
 
   @override
@@ -290,7 +238,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
                     height: 350,
                     width: 350,
                     image: SanityImageBuilder.imageProviderFor(
-                        sanityImage: profileImage, showDefaultImage: true)
+                            sanityImage: profileImage, showDefaultImage: true)
                         .image,
                     text: "Change Profile Photo",
                     imageUploader: imageUploader,
@@ -317,7 +265,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
                         "${_myAppUser?.displayName ?? ""}-display-name"),
                     initialValue: _myAppUser?.displayName,
                     setField: (e) {
-                      _setDisplayName(e);
+                      _displayName = e;
                     },
                     labelText: 'Display Name',
                   ),
@@ -365,150 +313,99 @@ class _EditProfileTabState extends State<EditProfileTab> {
                     ),
                   ]),
                 ),
-                ListTile(
-                  title: TextFieldWrapped(
-                    key: ObjectKey("${extProfile?.shortBio}-short-bio"),
-                    initialValue: extProfile?.shortBio,
-                    setField: (e) {
-                      _setShortBio(e);
-                    },
-                    labelText: "Short Bio",
-                    minLines: 2,
-                    maxLines: 4,
-                  ),
-                ),
-                ListTile(
-                  title: TextFieldWrapped(
-                    key: ObjectKey("${extProfile?.longBio}-long-bio"),
-                    initialValue: extProfile?.longBio ?? "",
-                    setField: (e) {
-                      _setLongBio(e);
-                    },
-                    labelText: "Long Bio",
-                    minLines: 2,
-                    maxLines: 4,
-                  ),
-                ),
-                ListTile(
-                  title: TextFieldWrapped(
-                    key: ObjectKey("${extProfile?.iAm}-i-am"),
-                    initialValue: extProfile?.iAm ?? "",
-                    setField: (e) {
-                      _setIAm(e);
-                    },
-                    labelText: "I am",
-                    minLines: 2,
-                    maxLines: 4,
-                  ),
-                ),
-                ListTile(
-                  title: TextFieldWrapped(
-                    key: ObjectKey("${extProfile?.imInto}-im-into"),
-                    initialValue: extProfile?.imInto ?? "",
-                    setField: (e) {
-                      _setImInto(e);
-                    },
-                    labelText: "I'm Into",
-                    minLines: 2,
-                    maxLines: 4,
-                  ),
-                ),
-                ListTile(
-                  title: TextFieldWrapped(
-                    key: ObjectKey("${extProfile?.imOpenTo}-im-open-to"),
-                    initialValue: extProfile?.imOpenTo ?? "",
-                    setField: (e) {
-                      _setImOpenTo(e);
-                    },
-                    labelText: "I'm open to",
-                    minLines: 2,
-                    maxLines: 4,
-                  ),
-                ),
-                ListTile(
-                  title: TextFieldWrapped(
-                    key: ObjectKey("${extProfile?.whatIDo}-what-i-do"),
-                    initialValue: extProfile?.whatIDo ?? "",
-                    setField: (e) {
-                      _setWhatIDo(e);
-                    },
-                    labelText: "What I Do?",
-                    minLines: 2,
-                    maxLines: 4,
-                  ),
-                ),
-                ListTile(
-                  title: TextFieldWrapped(
-                    key: ObjectKey(
-                        "${extProfile?.whatImLookingFor}-what-im-looking-for"),
-                    // controller: _longBioController,
-                    initialValue: extProfile?.whatImLookingFor ?? "",
-                    setField: (e) {
-                      _setWhatImLookingFor(e);
-                    },
-                    labelText: "What Im Looking for",
+                getListTile(extProfile?.dob.toString(), "Date of Birth", (e) {
+                  setState(() {
+                    _dob = e;
+                  });
+                }),
+                getListTile(extProfile?.govtIssuedFirstName, "First Name", (e) {
+                  setState(() {
+                    _govtIssuedFirstName = e;
+                  });
+                }),
+                getListTile(extProfile?.govtIssuedMiddleName, "Middle Name",
+                    (e) {
+                  setState(() {
+                    _govtIssuedMiddleName = e;
+                  });
+                }),
+                getListTile(extProfile?.govtIssuedLastName, "Last Name", (e) {
+                  setState(() {
+                    _govtIssuedLastName = e;
+                  });
+                }),
+                getListTile(extProfile?.shortBio, "Short Bio", (e) {
+                  setState(() {
+                    _shortBio = e;
+                  });
+                }),
+                getListTile(extProfile?.longBio, "Long Bio", (e) {
+                  setState(() {
+                    _longBio = e;
+                  });
+                }),
+                getListTile(extProfile?.address1, "Address 1", (e) {
+                  setState(() {
+                    _address1 = e;
+                  });
+                }),
+                getListTile(extProfile?.address2, "Address 2", (e) {
+                  setState(() {
+                    _address2 = e;
+                  });
+                }),
+                getListTile(extProfile?.city, "City", (e) {
+                  setState(() {
+                    _city = e;
+                  });
+                }),
+                getListTile(extProfile?.state, "State", (e) {
+                  setState(() {
+                    _state = e;
+                  });
+                }),
+                getListTile(extProfile?.otherChapterAffiliation, "Other Chapter Affiliation", (e) {
+                  setState(() {
+                    _otherChapterAffiliation = e;
+                  });
+                }),
+                getListTile(extProfile?.lineName, "Line Name", (e) {
+                  setState(() {
+                    _lineName = e;
+                  });
+                }),
+                getListTile(extProfile?.lineNumber, "Line Number", (e) {
+                  setState(() {
+                    _lineNumber = e;
+                  });
+                }),
+                getListTile(extProfile?.entireLinesName, "Entire Lines Name", (e) {
+                  setState(() {
+                    _entireLinesName = e;
+                  });
+                }),
+                getListTile(extProfile?.dopName, "Dean's Name", (e) {
+                  setState(() {
+                    _dopName = e;
+                  });
+                }),
+                getListTile(extProfile?.crossingDate.toString(), "Crossing Date", (e) {
+                  setState(() {
+                    _crossingDate = e;
+                  });
+                }),
 
-                    minLines: 2,
-                    maxLines: 4,
-                  ),
-                ),
-                ListTile(
-                  title: TextFieldWrapped(
-                    key: ObjectKey(
-                        "${extProfile?.whatInterestsMe}-what-interests-me"),
-                    // controller: _longBioController,
-                    initialValue: extProfile?.whatInterestsMe ?? "",
-                    setField: (e) {
-                      _setWhatInterestsMe(e);
-                    },
-                    labelText: "What interests Me",
-                    minLines: 2,
-                    maxLines: 4,
-                  ),
-                ),
-                ListTile(
-                  title: TextFieldWrapped(
-                    key: ObjectKey("${extProfile?.whereILive}-where-i-live"),
-                    // controller: _longBioController,
-                    initialValue: extProfile?.whereILive ?? "",
-                    setField: (e) {
-                      _setWhereILive(e);
-                    },
-                    labelText: "Where I Live",
-
-                    minLines: 2,
-                    maxLines: 4,
-                  ),
-                ),
-                ListTile(
-                  title: TextFieldWrapped(
-                    key: ObjectKey(
-                        "${extProfile?.sexPreferences}-sex-preferences"),
-                    initialValue: extProfile?.sexPreferences ?? "",
-                    setField: (e) {
-                      _setSexPreferences(e);
-                    },
-                    labelText: "Sex Preferences",
-                    minLines: 2,
-                    maxLines: 4,
-                  ),
-                ),
                 ListTile(
                   title: AnalyticsLoadingButton(
                     analyticsEventData: {
                       'username': _myAppUser?.email,
-                      'sex_preferences': ((extProfile?.sexPreferences?.length ?? 0) > 0).toString(),
                       'height': (extProfile?.height != null).toString(),
                       'weight': (extProfile?.weight != null).toString(),
                       'age': (extProfile?.age != null).toString(),
-                      'where_i_live': ((extProfile?.whereILive?.length ?? 0) > 0).toString(),
-                      'what_interests_me': ((extProfile?.whatInterestsMe?.length ?? 0) > 0).toString(),
-                      'what_im_looking_for': ((extProfile?.whatImLookingFor?.length ?? 0) > 0).toString(),
-                      'what_i_do': ((extProfile?.whatIDo?.length ?? 0) > 0).toString(),
-                      'im_open_to': ((extProfile?.imOpenTo?.length ?? 0) > 0).toString(),
-                      'i_am': ((extProfile?.iAm?.length ?? 0) > 0).toString(),
-                      'short_bio': ((extProfile?.shortBio?.length ?? 0) > 0).toString(),
-                      'long_bio': ((extProfile?.longBio?.length ?? 0) > 0).toString(),
+                      'short_bio':
+                          ((extProfile?.shortBio?.length ?? 0) > 0).toString(),
+                      'long_bio':
+                          ((extProfile?.longBio?.length ?? 0) > 0).toString(),
                     },
                     analyticsEventName: 'settings-save-profile',
                     isDisabled: isUpdating,

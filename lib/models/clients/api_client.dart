@@ -590,42 +590,77 @@ class ApiClient {
       if (newProfile.instagram != null && newProfile.instagram != "null") {
         body = {...body, "instagram": newProfile.instagram};
       }
-      if (newProfile.gender != null && newProfile.gender != "null") {
-        body = {...body, "gender": newProfile.gender};
+      if (newProfile.tiktok != null && newProfile.tiktok != "null") {
+        body = {...body, "tiktok": newProfile.tiktok};
       }
-      if (newProfile.partnerStatus != null &&
-          newProfile.partnerStatus != "null") {
-        body = {...body, "partnerStatus": newProfile.partnerStatus};
+      if (newProfile.address2 != null && newProfile.address2 != "null") {
+        body = {...body, "address2": newProfile.address2};
+      }
+      if (newProfile.address1 != null && newProfile.address1 != "null") {
+        body = {...body, "address1": newProfile.address1};
       }
       if (newProfile.ethnicity != null && newProfile.ethnicity != "null") {
         body = {...body, "ethnicity": newProfile.ethnicity};
       }
-      if (newProfile.iAm != null && newProfile.iAm != "null") {
-        body = {...body, "iAm": newProfile.iAm};
+      if (newProfile.occupation != null && newProfile.occupation != "null") {
+        body = {...body, "occupation": newProfile.occupation};
       }
-      if (newProfile.imInto != null && newProfile.imInto != "null") {
-        body = {...body, "imInto": newProfile.imInto};
+      if (newProfile.city != null && newProfile.city != "null") {
+        body = {...body, "city": newProfile.city};
       }
-      if (newProfile.imOpenTo != null && newProfile.imOpenTo != "null") {
-        body = {...body, "imOpenTo": newProfile.imOpenTo};
+      if (newProfile.state != null && newProfile.state != "null") {
+        body = {...body, "state": newProfile.state};
       }
-      if (newProfile.whatIDo != null && newProfile.whatIDo != "null") {
-        body = {...body, "whatIDo": newProfile.whatIDo};
+      if (newProfile.zip != null && newProfile.zip != "null") {
+        body = {...body, "zip": newProfile.zip};
       }
-      if (newProfile.whatImLookingFor != null &&
-          newProfile.whatImLookingFor != "null") {
-        body = {...body, "whatImLookingFor": newProfile.whatImLookingFor};
+      if (newProfile.govtIssuedFirstName != null &&
+          newProfile.govtIssuedFirstName != "null") {
+        body = {...body, "govtIssuedFirstName": newProfile.govtIssuedFirstName};
       }
-      if (newProfile.whatInterestsMe != null &&
-          newProfile.whatInterestsMe != "null") {
-        body = {...body, "whatInterestsMe": newProfile.whatInterestsMe};
+      if (newProfile.govtIssuedMiddleName != null &&
+          newProfile.govtIssuedMiddleName != "null") {
+        body = {
+          ...body,
+          "govtIssuedMiddleName": newProfile.govtIssuedMiddleName
+        };
       }
-      if (newProfile.whereILive != null && newProfile.whereILive != "null") {
-        body = {...body, "whereILive": newProfile.whereILive};
+      if (newProfile.govtIssuedLastName != null &&
+          newProfile.govtIssuedLastName != "null") {
+        body = {...body, "govtIssuedLastName": newProfile.govtIssuedLastName};
       }
-      if (newProfile.sexPreferences != null &&
-          newProfile.sexPreferences != "null") {
-        body = {...body, "sexPreferences": newProfile.sexPreferences};
+      if (newProfile.lineName != null && newProfile.lineName != "null") {
+        body = {...body, "lineName": newProfile.lineName};
+      }
+      if (newProfile.entireLinesName != null &&
+          newProfile.entireLinesName != "null") {
+        body = {...body, "entireLinesName": newProfile.entireLinesName};
+      }
+      if (newProfile.dopName != null && newProfile.dopName != "null") {
+        body = {...body, "dopName": newProfile.dopName};
+      }
+      if (newProfile.otherChapterAffiliation != null &&
+          newProfile.otherChapterAffiliation != "null") {
+        body = {
+          ...body,
+          "otherChapterAffiliation": newProfile.otherChapterAffiliation
+        };
+      }
+      if (newProfile.crossingDate != null &&
+          newProfile.crossingDate != "null") {
+        body = {...body, "crossingDate": newProfile.crossingDate};
+      }
+      if (newProfile.dob != null && newProfile.dob != "null") {
+        body = {...body, "dob": newProfile.dob};
+      }
+      if (newProfile.homeNumber != null && newProfile.homeNumber != "null") {
+        body = {...body, "homeNumber": newProfile.homeNumber};
+      }
+      if (newProfile.workNumber != null && newProfile.workNumber != "null") {
+        body = {...body, "workNumber": newProfile.workNumber};
+      }
+      if (newProfile.cellNumber != null && newProfile.cellNumber != "null") {
+        body = {...body, "cellNumber": newProfile.cellNumber};
       }
 
       if (kDebugMode) {
