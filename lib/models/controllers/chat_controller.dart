@@ -53,6 +53,7 @@ class ChatController {
 
     myExtProfile = theExtProfile;
     profileList = await profileClient.fetchProfiles();
+    print("theEXT profile $theExtProfile ");
     return theExtProfile;
   }
 

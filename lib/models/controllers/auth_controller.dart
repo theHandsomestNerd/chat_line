@@ -115,8 +115,13 @@ class AuthController with ChangeNotifier {
     }
   }
 
-  Future<AuthUser?> updateUser(String username, String displayName,
+  Future<AuthUser?> updateUser(String? username, String? displayName,
       String filename, fileBytes, BuildContext context) async {
+    if(username == null || displayName==null){
+      return null;
+    }
+
+
     String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (token != null && DefaultConfig.theAuthBaseUrl != null) {
       var request = http.MultipartRequest(

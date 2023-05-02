@@ -120,23 +120,23 @@ class _MyAppState extends State<MyApp> {
       GoRoute(
         path: '/profilesPage',
         builder: (BuildContext context, GoRouterState state) {
-          return const BugReporter(child: ProfilesPage());
+          return ProfilesPage();
         },
       ),
       GoRoute(
         path: '/splash',
         builder: (BuildContext context, GoRouterState state) {
-          return const BugReporter(child: SplashPage());
+          return SplashPage();
         },
       ),
       GoRoute(
           path: '/home',
           builder: (BuildContext context, GoRouterState state) =>
-              const BugReporter(child: HomePage())),
+              HomePage()),
       GoRoute(
           path: '/postsPage',
           builder: (BuildContext context, GoRouterState state) =>
-              const BugReporter(child: PostsPage())),
+              PostsPage()),
       // GoRoute(
       //     path: '/createPostsPage',
       //     builder: (BuildContext context, GoRouterState state) =>
@@ -144,44 +144,40 @@ class _MyAppState extends State<MyApp> {
       GoRoute(
           path: '/register',
           builder: (BuildContext context, GoRouterState state) =>
-              const BugReporter(child: RegisterPage())),
+              RegisterPage()),
       GoRoute(
           path: '/settings',
           builder: (BuildContext context, GoRouterState state) =>
-              const BugReporter(child: SettingsPage())),
+              SettingsPage()),
       GoRoute(
           path: '/post/:id',
-          builder: (BuildContext context, GoRouterState state) => BugReporter(
-                  child: SoloPostPage(
+          builder: (BuildContext context, GoRouterState state) => SoloPostPage(
                 thisPostId: state.params["id"],
-              ))),
+              )),
       GoRoute(
           path: '/profile/:id',
           builder: (BuildContext context, GoRouterState state) {
-            return BugReporter(
-                child: SoloProfilePage(
+            return SoloProfilePage(
               id: state.params["id"]!,
-            ));
+            );
           }),
       GoRoute(
           path: '/myProfile',
           builder: (BuildContext context, GoRouterState state) {
-            return BugReporter(
-                child: SoloProfilePage(
+            return SoloProfilePage(
               id: FirebaseAuth.instance.currentUser?.uid ?? "",
-            ));
+            );
           }),
       GoRoute(
           path: '/hashtag/:id',
-          builder: (BuildContext context, GoRouterState state) => BugReporter(
-                  child: HashtagPage(
+          builder: (BuildContext context, GoRouterState state) => HashtagPage(
                 key: Key(state.params["id"]!),
                 thisHashtagId: state.params["id"],
-              ))),
+              )),
       GoRoute(
           path: '/hashtagCollections',
           builder: (BuildContext context, GoRouterState state) =>
-              const BugReporter(child: const HashtagLibraryPage())),
+              const HashtagLibraryPage()),
     ],
   );
 

@@ -11,9 +11,9 @@ class ExtendedProfile {
   String? shortBio;
   String? longBio;
   String? userId;
-  String? homeNumber;
-  String? workNumber;
-  String? cellNumber;
+  String? homePhone;
+  String? workPhone;
+  String? cellPhone;
   String? facebook;
   String? twitter;
   String? instagram;
@@ -29,7 +29,7 @@ class ExtendedProfile {
   String? otherChapterAffiliation;
   String? dopName;
   String? lineName;
-  String? lineNumber;
+  int? lineNumber;
   String? entireLinesName;
   DateTime? dob;
   DateTime? crossingDate;
@@ -63,9 +63,9 @@ class ExtendedProfile {
       this.twitter,
       this.instagram,
       this.tiktok,
-      this.homeNumber,
-      this.workNumber,
-      this.cellNumber,
+      this.homePhone,
+      this.workPhone,
+      this.cellPhone,
       this.ethnicity,
       this.occupation,
       this.address1,
@@ -73,6 +73,9 @@ class ExtendedProfile {
       this.city,
       this.state,
       this.zip,
+      this.govtIssuedLastName,
+      this.govtIssuedMiddleName,
+      this.govtIssuedFirstName,
       this.lineName,
       this.lineNumber,
       this.dopName,
@@ -92,9 +95,9 @@ class ExtendedProfile {
     twitter = twitter;
     instagram = instagram;
     tiktok = tiktok;
-    homeNumber = homeNumber;
-    workNumber = workNumber;
-    cellNumber = cellNumber;
+    homePhone = homePhone;
+    workPhone = workPhone;
+    cellPhone = cellPhone;
     ethnicity = ethnicity;
     occupation = occupation;
     address1 = address1;
@@ -102,13 +105,16 @@ class ExtendedProfile {
     city = city;
     state = state;
     zip = zip;
+    dob = dob;
+    crossingDate = crossingDate;
     lineName = lineName;
     lineNumber = lineNumber;
+    govtIssuedMiddleName = govtIssuedMiddleName;
+    govtIssuedMiddleName = govtIssuedMiddleName;
+    govtIssuedLastName = govtIssuedLastName;
     dopName = dopName;
     entireLinesName = entireLinesName;
     otherChapterAffiliation = otherChapterAffiliation;
-    crossingDate = crossingDate;
-    dob = dob;
     children = children;
     userRef = userRef;
   }
@@ -144,11 +150,15 @@ class ExtendedProfile {
     twitter = json['twitter'];
     instagram = json['instagram'];
     tiktok = json['tiktok'];
-    homeNumber = json['homeNumber'];
-    workNumber = json['workNumber'];
-    cellNumber = json['cellNumber'];
+    homePhone = json['homePhone'];
+    print("workfone from json ${json['workPhone']}");
+    workPhone = json['workPhone'];
+    cellPhone = json['cellPhone'];
     ethnicity = json['ethnicity'];
     occupation = json['occupation'];
+    govtIssuedFirstName = json['govtIssuedFirstName'];
+    govtIssuedMiddleName = json['govtIssuedMiddleName'];
+    govtIssuedLastName = json['govtIssuedLastName'];
     address1 = json['address1'];
     address2 = json['address2'];
     city = json['city'];
@@ -157,12 +167,22 @@ class ExtendedProfile {
     lineName = json['lineName'];
     dopName = json['dopName'];
     entireLinesName = json['entireLinesName'];
-    lineName = json['lineName'];
+    if (json["lineNumber"] != null) {
+
+      if(json['lineNumber'] is String) {
+        lineNumber = int.parse(json['lineNumber']);
+      } else {
+        lineNumber = json['lineNumber'];
+      }
+    }
     otherChapterAffiliation = json['otherChapterAffiliation'];
-    crossingDate = json['crossingDate'];
-    dob = json['dob'];
+    if (json["crossingDate"] != null) {
+      crossingDate = DateTime.parse(json['crossingDate']);
+    }
+    if (json["dob"] != null) {
+      dob = DateTime.parse(json['dob']);
+    }
     children = json['children'];
-    userRef = json['userRef'];
   }
 
   Map<String, dynamic> toJson() {
@@ -187,9 +207,12 @@ class ExtendedProfile {
     data['twitter'] = twitter;
     data['instagram'] = instagram;
     data['tiktok'] = tiktok;
-    data['homeNumber'] = homeNumber;
-    data['workNumber'] = workNumber;
-    data['cellNumber'] = cellNumber;
+    data['govtIssuedLastName'] = govtIssuedLastName;
+    data['govtIssuedMiddleName'] = govtIssuedMiddleName;
+    data['govtIssuedFirstName'] = govtIssuedFirstName;
+    data['homePhone'] = homePhone;
+    data['workPhone'] = workPhone;
+    data['cellPhone'] = cellPhone;
     data['ethnicity'] = ethnicity;
     data['occupation'] = occupation;
     data['address1'] = address1;
@@ -209,33 +232,39 @@ class ExtendedProfile {
     return data;
   }
 
-// @override
-// String toString() {
-//   return '\n__________Extended Profile_______________\n'
-//       '\nage:$age '
-//       '\nweight:$weight '
-//       '\nheight:${height?.feet} ${height?.inches} '
-//       '\nshortBio:$shortBio '
-//       '\nlongBio:$longBio '
-//       '\nuserId:$userId '
-//       '\ngender:$gender '
-//       '\nfacebook:$facebook '
-//       '\ntwitter:$twitter '
-//       '\ninstagram:$instagram '
-//       '\npartnerStatus:$partnerStatus '
-//       '\nethnicity:$ethnicity '
-//       '\nIam:$iAm '
-//       '\nIminto:$imInto '
-//       '\nimopento:$imOpenTo '
-//       '\nwhatIdo:$whatIDo '
-//       '\nwhatimlookingfor:$whatImLookingFor '
-//       '\nwhatinterestsme:$whatInterestsMe '
-//       '\nsexPreferences:$sexPreferences '
-//       '\nwhereIlive:$whereILive '
-//       '\nisTraveling:$isTraveling '
-//       '\nlasttested:$lastTested '
-//       '\npronouns:$pronouns '
-//       '\nhashtags:$hashtags '
-//       '\n-----------------------------\n';
-// }
+@override
+String toString() {
+  return '\n__________Extended Profile_______________\n'
+      '\n age:$age '
+      '\n weight:$weight '
+      '\n height:${height?.feet} ${height?.inches} '
+      '\n shortBio:$shortBio '
+      '\n dob:$dob '
+      '\n longBio:$longBio '
+      '\n userId:$userId '
+      '\n facebook:$facebook '
+      '\n twitter:$twitter '
+      '\n instagram:$instagram '
+      '\n tiktok:$tiktok '
+      '\n ethnicity:$ethnicity '
+      '\n occupation:$occupation '
+      '\n govtIssuedMiddleName:$govtIssuedMiddleName '
+      '\n govtIssuedLastName:$govtIssuedLastName '
+      '\n govtIssuedFirstName:$govtIssuedFirstName '
+      '\n lineNumber:$lineNumber '
+      '\n lineName:$lineName '
+      '\n crossingDate:$crossingDate '
+      '\n entireLinesName:$entireLinesName '
+      '\n dopName:$dopName '
+      '\n address1:$address1 '
+      '\n address2:$address2 '
+      '\n city:$city '
+      '\n zip:$zip '
+      '\n otherChapterAffiliation:$otherChapterAffiliation '
+      '\n cellPhone:$cellPhone '
+      '\n workPhone:$workPhone '
+      '\n homePhone:$homePhone '
+      '\n children:$children '
+      '\n -----------------------------\n';
+}
 }

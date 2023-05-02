@@ -44,24 +44,24 @@ class _HeightInputState extends State<HeightInput> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      key: widget.key,
       children: [
         Flexible(
           child: TextFieldWrapped(
-            key: ObjectKey(
-                "${widget.initialValue?.feet.toString() ?? ""}-height-feet"),
             initialValue: widget.initialValue?.feet.toString() ?? "",
             setField: (e) {
               if (e != "null") {
                 _setFeet(int.parse(e));
               }
             },
+            isNumberInput: true,
             labelText: 'Height Feet',
           ),
         ),
         Flexible(
           child: TextFieldWrapped(
-            key: ObjectKey(
-                "${widget.initialValue?.inches.toString() ?? ""}-height-inches"),
+            isNumberInput: true,
+
             initialValue: widget.initialValue?.inches.toString() ?? "",
             setField: (e) {
               if (e != "null") {
