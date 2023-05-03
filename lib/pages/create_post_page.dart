@@ -1,8 +1,8 @@
-import 'package:cookowt/models/controllers/auth_inherited.dart';
-import 'package:cookowt/models/extract_hash_tag_details.dart';
-import 'package:cookowt/models/hash_tag.dart';
-import 'package:cookowt/wrappers/alerts_snackbar.dart';
-import 'package:cookowt/wrappers/analytics_loading_button.dart';
+import 'package:kookout/models/controllers/auth_inherited.dart';
+import 'package:kookout/models/extract_hash_tag_details.dart';
+import 'package:kookout/models/hash_tag.dart';
+import 'package:kookout/wrappers/alerts_snackbar.dart';
+import 'package:kookout/wrappers/analytics_loading_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sanity_image_url/flutter_sanity_image_url.dart';

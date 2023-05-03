@@ -1,4 +1,4 @@
-import 'package:cookowt/shared_components/bug_reporter/bug_reporter_content.dart';
+import 'package:kookout/shared_components/bug_reporter/bug_reporter_content.dart';
 import 'package:flutter/material.dart';
 
 class BugReporterOpenButton extends StatefulWidget {

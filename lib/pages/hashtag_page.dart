@@ -1,5 +1,5 @@
-import 'package:cookowt/shared_components/menus/home_page_menu.dart';
-import 'package:cookowt/wrappers/app_scaffold_wrapper.dart';
+import 'package:kookout/shared_components/menus/home_page_menu.dart';
+import 'package:kookout/wrappers/app_scaffold_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';

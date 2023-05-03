@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:cookowt/models/clients/api_client.dart';
-import 'package:cookowt/models/position.dart';
+import 'package:kookout/models/clients/api_client.dart';
+import 'package:kookout/models/position.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 

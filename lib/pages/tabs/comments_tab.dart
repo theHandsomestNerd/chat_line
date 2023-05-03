@@ -1,7 +1,7 @@
-import 'package:cookowt/layout/list_and_small_form.dart';
-import 'package:cookowt/models/controllers/chat_controller.dart';
-import 'package:cookowt/shared_components/comments/comment_thread.dart';
-import 'package:cookowt/wrappers/analytics_loading_button.dart';
+import 'package:kookout/layout/list_and_small_form.dart';
+import 'package:kookout/models/controllers/chat_controller.dart';
+import 'package:kookout/shared_components/comments/comment_thread.dart';
+import 'package:kookout/wrappers/analytics_loading_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/app_user.dart';

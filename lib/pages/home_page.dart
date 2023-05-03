@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:cookowt/models/clients/api_client.dart';
-import 'package:cookowt/models/controllers/chat_controller.dart';
-import 'package:cookowt/models/controllers/geolocation_controller.dart';
-import 'package:cookowt/models/extended_profile.dart';
-import 'package:cookowt/models/post.dart';
-import 'package:cookowt/pages/splash_screen.dart';
-import 'package:cookowt/sanity/sanity_image_builder.dart';
-import 'package:cookowt/shared_components/loading_logo.dart';
-import 'package:cookowt/shared_components/menus/home_page_menu.dart';
-import 'package:cookowt/wrappers/app_scaffold_wrapper.dart';
-import 'package:cookowt/wrappers/card_with_actions.dart';
-import 'package:cookowt/wrappers/circular_progress_indicator_with_message.dart';
+import 'package:kookout/models/clients/api_client.dart';
+import 'package:kookout/models/controllers/chat_controller.dart';
+import 'package:kookout/models/controllers/geolocation_controller.dart';
+import 'package:kookout/models/extended_profile.dart';
+import 'package:kookout/models/post.dart';
+import 'package:kookout/pages/splash_screen.dart';
+import 'package:kookout/sanity/sanity_image_builder.dart';
+import 'package:kookout/shared_components/loading_logo.dart';
+import 'package:kookout/shared_components/menus/home_page_menu.dart';
+import 'package:kookout/wrappers/app_scaffold_wrapper.dart';
+import 'package:kookout/wrappers/card_with_actions.dart';
+import 'package:kookout/wrappers/circular_progress_indicator_with_message.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -105,6 +105,10 @@ class _HomePageState extends State<HomePage> with RouteAware {
         }
       }
     } catch (error) {
+      if (!mounted) {
+        return;
+      }
+
       if (_postPagingController != null) _postPagingController.error = error;
     }
   }
@@ -216,11 +220,12 @@ class _HomePageState extends State<HomePage> with RouteAware {
           if (theProfile != null) {
             extProfiles.add(theProfile);
           }
-
-          // highlightedExtProfile = theProfile;
-          setState(() {
-            isExtProfileLoading = false;
-          });
+          if (mounted) {
+            // highlightedExtProfile = theProfile;
+            setState(() {
+              isExtProfileLoading = false;
+            });
+          }
           // setState(() {});
         });
       }
@@ -482,7 +487,8 @@ class _HomePageState extends State<HomePage> with RouteAware {
                             child: CardWithActions(
                               locationRow: Flex(
                                 direction: Axis.horizontal,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     flex: 2,
@@ -636,7 +642,8 @@ class _HomePageState extends State<HomePage> with RouteAware {
                                   'view-post-while-highlighted-pressed',
                                   {"highlightedPostId": theItem.id}).then((x) {
                                 if (theItem.id != null) {
-                                  GoRouter.of(context).go('/post/${theItem.id}');
+                                  GoRouter.of(context)
+                                      .go('/post/${theItem.id}');
 
                                   // Navigator.pushNamed(context, '/post',
                                   //     arguments: {"id": theItem.id});
@@ -652,7 +659,9 @@ class _HomePageState extends State<HomePage> with RouteAware {
                                 cancelHomeScreenTimers();
                                 await analyticsController?.sendAnalyticsEvent(
                                     'view-all-posts-while-highlighted-pressed',
-                                    {"highlightedPostId": theItem.id}).then((x) {
+                                    {
+                                      "highlightedPostId": theItem.id
+                                    }).then((x) {
                                   GoRouter.of(context).go('/postsPage');
 
                                   // Navigator.pushNamed(context, '/postsPage');
@@ -680,7 +689,9 @@ class _HomePageState extends State<HomePage> with RouteAware {
                                 cancelHomeScreenTimers();
                                 await analyticsController?.sendAnalyticsEvent(
                                     'view-all-posts-while-highlighted-pressed',
-                                    {"highlightedPostId": theItem.id}).then((x) {
+                                    {
+                                      "highlightedPostId": theItem.id
+                                    }).then((x) {
                                   GoRouter.of(context).go('/postsPage');
 
                                   // Navigator.pushNamed(context, '/postsPage');
@@ -707,11 +718,11 @@ class _HomePageState extends State<HomePage> with RouteAware {
                                 !isPostLoading && (theItem == null)
                                     ? const Text("No Posts with images")
                                     : Column(
-                                  children: [
-                                    LoadingLogo(),
-                                    Text("Loading Post Previews")
-                                  ],
-                                ),
+                                        children: [
+                                          LoadingLogo(),
+                                          Text("Loading Post Previews")
+                                        ],
+                                      ),
                               ],
                             ),
                           );

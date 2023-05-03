@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.thehandsomestnerd" "\0"
-            VALUE "FileDescription", "cookowt" "\0"
+            VALUE "FileDescription", "kookout" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "cookowt" "\0"
+            VALUE "InternalName", "kookout" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.thehandsomestnerd. All rights reserved." "\0"
-            VALUE "OriginalFilename", "cookowt.exe" "\0"
-            VALUE "ProductName", "cookowt" "\0"
+            VALUE "OriginalFilename", "kookout.exe" "\0"
+            VALUE "ProductName", "kookout" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

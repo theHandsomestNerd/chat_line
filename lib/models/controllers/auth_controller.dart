@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:cookowt/config/default_config.dart';
-import 'package:cookowt/models/auth/auth_user.dart';
-import 'package:cookowt/wrappers/alerts_snackbar.dart';
+import 'package:kookout/config/default_config.dart';
+import 'package:kookout/models/auth/auth_user.dart';
+import 'package:kookout/wrappers/alerts_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -115,8 +115,13 @@ class AuthController with ChangeNotifier {
     }
   }
 
-  Future<AuthUser?> updateUser(String username, String displayName,
+  Future<AuthUser?> updateUser(String? username, String? displayName,
       String filename, fileBytes, BuildContext context) async {
+    if(username == null || displayName==null){
+      return null;
+    }
+
+
     String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
     if (token != null && DefaultConfig.theAuthBaseUrl != null) {
       var request = http.MultipartRequest(

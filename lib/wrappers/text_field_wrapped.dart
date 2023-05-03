@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFieldWrapped extends StatefulWidget {
   const TextFieldWrapped({
@@ -17,8 +18,10 @@ class TextFieldWrapped extends StatefulWidget {
     this.enableSuggestions,
     this.icon,
     this.enabled,
+    this.isNumberInput
   }) : super(key: key);
 
+  final bool? isNumberInput;
   final String? initialValue;
   final Color? borderColor;
   final String? labelText;
@@ -51,6 +54,10 @@ class _TextFieldWrappedState extends State<TextFieldWrapped> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: widget.key,
+      inputFormatters: widget.isNumberInput == true ? <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ]:null,
       enabled: widget.enabled ?? true,
       maxLines: widget.maxLines ?? 1,
       minLines: widget.minLines ?? 1,
