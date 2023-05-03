@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:kookout/models/app_user.dart';
+import 'package:cookowt/models/app_user.dart';
 
 import 'submodels/height.dart';
 

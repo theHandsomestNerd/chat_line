@@ -1,7 +1,7 @@
-import 'package:kookout/models/controllers/analytics_controller.dart';
-import 'package:kookout/models/controllers/chat_controller.dart';
-import 'package:kookout/models/controllers/geolocation_controller.dart';
-import 'package:kookout/models/controllers/post_controller.dart';
+import 'package:cookowt/models/controllers/analytics_controller.dart';
+import 'package:cookowt/models/controllers/chat_controller.dart';
+import 'package:cookowt/models/controllers/geolocation_controller.dart';
+import 'package:cookowt/models/controllers/post_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sanity_image_url/flutter_sanity_image_url.dart';
 

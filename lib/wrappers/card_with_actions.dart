@@ -1,6 +1,6 @@
-import 'package:kookout/models/app_user.dart';
-import 'package:kookout/wrappers/author_and_text.dart';
-import 'package:kookout/wrappers/card_with_background.dart';
+import 'package:cookowt/models/app_user.dart';
+import 'package:cookowt/wrappers/author_and_text.dart';
+import 'package:cookowt/wrappers/card_with_background.dart';
 import 'package:flutter/material.dart';
 
 class CardWithActions extends StatelessWidget {

@@ -1,5 +1,5 @@
-import 'package:kookout/models/app_user.dart';
-import 'package:kookout/sanity/sanity_image_builder.dart';
+import 'package:cookowt/models/app_user.dart';
+import 'package:cookowt/sanity/sanity_image_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

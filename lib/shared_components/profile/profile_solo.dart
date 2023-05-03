@@ -1,6 +1,6 @@
-import 'package:kookout/models/controllers/analytics_controller.dart';
-import 'package:kookout/sanity/sanity_image_builder.dart';
-import 'package:kookout/wrappers/card_with_background.dart';
+import 'package:cookowt/models/controllers/analytics_controller.dart';
+import 'package:cookowt/sanity/sanity_image_builder.dart';
+import 'package:cookowt/wrappers/card_with_background.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

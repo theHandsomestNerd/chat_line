@@ -1,4 +1,4 @@
-package com.thehandsomestnerd.kookout
+package com.thehandsomestnerd.cookowt
 
 import io.flutter.embedding.android.FlutterActivity
 

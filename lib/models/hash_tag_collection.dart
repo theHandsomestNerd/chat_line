@@ -1,4 +1,4 @@
-import 'package:kookout/models/hash_tag.dart';
+import 'package:cookowt/models/hash_tag.dart';
 
 import 'hash_tag.dart';
 

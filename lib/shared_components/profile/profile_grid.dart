@@ -1,5 +1,5 @@
-import 'package:kookout/models/clients/api_client.dart';
-import 'package:kookout/shared_components/profile/profile_solo.dart';
+import 'package:cookowt/models/clients/api_client.dart';
+import 'package:cookowt/shared_components/profile/profile_solo.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
