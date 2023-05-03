@@ -66,7 +66,6 @@ dependencies:
   go_router: ^6.5.7
   collection: ^1.17.0
   hashtagable: ^2.1.0
-  phone_form_field: ^7.1.0
 
 dev_dependencies:
   flutter_test:
